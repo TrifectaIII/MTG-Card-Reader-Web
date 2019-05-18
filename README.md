@@ -1,2 +1,2 @@
-# WebGL-Game
-An excercise to learn javascript, three.js and webgl
+# MTG-Card-Reader-Web
+The evolution of MTG-Card-Reader, built as a webpage (VERY EARLY STAGE)
