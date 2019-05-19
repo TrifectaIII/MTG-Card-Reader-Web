@@ -4,7 +4,6 @@ window.onload = function() {
 	var img = new Image();  
 	img.src = 'test_web/cct_ima.png'
 	img.onload = function(){
-		doFindFeatures();
 	}
 	
 	//Video Feed From Webcam
@@ -28,12 +27,12 @@ window.onload = function() {
 	//var image = document.getElementById('image');
 	
 	var doFindFeatures = function() {
-		console.log('hi');
 		tracking.Fast.THRESHOLD = 25;
 		context.drawImage(webcam_feed, 0, 0, width, height);
 		var imageData = context.getImageData(0, 0, width, height);
 		var gray = tracking.Image.grayscale(imageData.data, width, height);
 		var corners = tracking.Fast.findCorners(gray, width, height);
+		console.log(corners.length);
 		for (var i = 0; i < corners.length; i += 2) {
 			context.fillStyle = '#ff00fa';
 			context.fillRect(corners[i], corners[i + 1], 3, 3);
