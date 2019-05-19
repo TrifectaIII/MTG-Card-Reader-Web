@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width">
     <title>MTG Card Reader</title>
     <link href='favicon.ico' rel='icon' type='image/x-icon'/ >
+	<script src="tracking.js"></script>
   </head>
   <body>
-	<script src="tracking.js"></script>
+	<video autoplay="true" id="webcam_feed" width = '500' height = '375'></video>
+	<!-- <img id="image" src="test_web/cct_ima.png" /> -->
+    <canvas id="canvas" width="500" height="375"></canvas>
+	<button id = 'scan_button'>SCAN</button>
     <script src="script.js"></script>
   </body>
 </html>
