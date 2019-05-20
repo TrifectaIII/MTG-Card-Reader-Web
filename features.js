@@ -1,4 +1,4 @@
-var findFeatures = function(fast_threshold, vidfeed) {
+var findFeaturesVid = function(fast_threshold, vidfeed) {
 	var vid_width = vidfeed.videoWidth;
 	var vid_height = vidfeed.videoHeight;
 	tracking.Fast.THRESHOLD = fast_threshold;
@@ -18,3 +18,7 @@ var findFeatures = function(fast_threshold, vidfeed) {
 		}
 	return features;
 };
+
+var findFeaturesPic = function(fast_threshold, img) {
+	
+}

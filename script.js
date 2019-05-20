@@ -23,7 +23,7 @@ window.onload = function() {
 			});
 	}
 	
-	
+	//Setup for Corner Testings
 	var vid_width;
 	var vid_height;
 	var canvas = document.getElementById('canvas');
@@ -39,8 +39,9 @@ window.onload = function() {
 			vid_height = webcam_feed.videoHeight;
 			canvas.width = vid_width;
 			canvas.height = vid_height;
-			var vid_features = findFeatures(35,webcam_feed,vid_width,vid_height);
+			var vid_features = findFeaturesVid(35,webcam_feed,vid_width,vid_height);
 			var vid_corners = vid_features.corners;
+			//console.log(vid_features.descriptors)
 			context.drawImage(webcam_feed, 0, 0, vid_width, vid_height);
 			for (var i = 0; i < vid_corners.length; i += 2) {
 					context.fillStyle = 'lime';
