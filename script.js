@@ -1,9 +1,20 @@
 window.onload = function() {
 	
-	//Load Hidden Image from File
-	var img = new Image();  
-	img.src = 'test_web/cct_ima.png'
-	img.onload = function(){
+	//Load Hidden Test Images from Files
+	var imgnames = ['bgl','cct','dbm','dkp','drv','evw','grf','lts','mom','ms','ptm','svc','tdy','tsc','vsn'];
+	var imgs = [];
+	var imgfeatures = [];
+	var loaded = 0;
+	
+	
+	for (var i = 0 ; i < imgnames.length ; i++){
+		let imgname = 'test_web/'+imgnames[i]+'_ima.png';
+		let img = new Image();
+		img.src = imgname
+		img.onload = function () {
+			loaded += 1;
+		}
+		imgs.push(img)
 	}
 	
 	//Video Feed From Webcam
@@ -31,24 +42,46 @@ window.onload = function() {
 	//var image = document.getElementById('image');
 	
 	
+	var ft = 25;
+	
 	//Button to Process Frame of Webcam Video
 	scan_button = document.getElementById('scan_button');
 	scan_button.onclick = function () {
-		if (cam_working){
+		if (!cam_working){
+			console.log('camera not working yet')
+		} else {
 			vid_width = webcam_feed.videoWidth;
 			vid_height = webcam_feed.videoHeight;
 			canvas.width = vid_width;
 			canvas.height = vid_height;
-			var vid_features = findFeaturesVid(35,webcam_feed,vid_width,vid_height);
+			var vid_features = findFeaturesVid(webcam_feed,ft,256);
 			var vid_corners = vid_features.corners;
-			//console.log(vid_features.descriptors)
+			console.log("Features Detected:",vid_corners.length/2);
 			context.drawImage(webcam_feed, 0, 0, vid_width, vid_height);
 			for (var i = 0; i < vid_corners.length; i += 2) {
 					context.fillStyle = 'lime';
 					context.fillRect(vid_corners[i], vid_corners[i + 1], 3, 3);
 			}
 		}
-	};
+	}
 
-	//delay = setInterval(scan_button.onclick,1000);
+	match_button = document.getElementById('match_button');
+	match_button.onclick = function () {
+		if (loaded < 15) {
+			console.log('Not all pics loaded yet')
+		} else if (!cam_working) {
+			console.log('camera not working yet')
+		} else {
+			let vid_features = findFeaturesVid(webcam_feed,ft,256);
+			// let best_name = 'none';
+			// let best_matches = 0;
+			// let best_i = 0;
+			for (var i = 0; i < imgs.length; i++) {
+				let img = imgs[i];
+				let pic_features = findFeaturesPic(img,ft,256);
+				let good_matches = matchFeatures(vid_features.corners,vid_features.descriptors,pic_features.corners,pic_features.descriptors,0.75)
+				console.log(imgnames[i],good_matches.length)
+			}
+		}
+	}
 }
