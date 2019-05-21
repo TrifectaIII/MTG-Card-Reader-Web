@@ -1,4 +1,4 @@
-var findFeaturesVid = function(vidfeed, fast_threshold, brief_length) {
+var findFeaturesVid = function(vidfeed, fast_threshold, brief_length,temp_canvas) {
 	
 	// Set Algorithm States
 	tracking.Fast.THRESHOLD = fast_threshold;
@@ -6,10 +6,9 @@ var findFeaturesVid = function(vidfeed, fast_threshold, brief_length) {
 	
 	var vid_width = vidfeed.videoWidth;
 	var vid_height = vidfeed.videoHeight;
-	var temp = document.createElement("CANVAS");
-	temp.width = vid_width;
-	temp.height = vid_height;
-	var temp_context = temp.getContext('2d');
+	temp_canvas.width = vid_width;
+	temp_canvas.height = vid_height;
+	var temp_context = temp_canvas.getContext('2d');
 	temp_context.drawImage(vidfeed,0,0,vid_width,vid_height);
 	var imageData = temp_context.getImageData(0, 0, vid_width, vid_height);
 	var gray = tracking.Image.grayscale(imageData.data, vid_width, vid_height);
@@ -22,7 +21,7 @@ var findFeaturesVid = function(vidfeed, fast_threshold, brief_length) {
 	return features;
 };
 
-var findFeaturesPic = function(img, fast_threshold, brief_length) {
+var findFeaturesPic = function(img, fast_threshold, brief_length,temp_canvas) {
 	
 	// Set Algorithm States
 	tracking.Fast.THRESHOLD = fast_threshold;
@@ -30,10 +29,9 @@ var findFeaturesPic = function(img, fast_threshold, brief_length) {
 	
 	var pic_width = img.width;
 	var pic_height = img.height;
-	var temp = document.createElement("CANVAS");
-	temp.width = pic_width;
-	temp.height = pic_height;
-	var temp_context = temp.getContext('2d');
+	temp_canvas.width = pic_width;
+	temp_canvas.height = pic_height;
+	var temp_context = temp_canvas.getContext('2d');
 	temp_context.drawImage(img,0,0,pic_width,pic_height);
 	var imageData = temp_context.getImageData(0, 0, pic_width, pic_height);
 	var gray = tracking.Image.grayscale(imageData.data, pic_width, pic_height);

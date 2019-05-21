@@ -5,10 +5,8 @@ window.onload = function() {
 	var imgs = [];
 	var imgfeatures = [];
 	var loaded = 0;
-	
-	
 	for (var i = 0 ; i < imgnames.length ; i++){
-		let imgname = 'test_web/'+imgnames[i]+'_ima.png';
+		let imgname = 'resources/test_web/'+imgnames[i]+'_ima.png';
 		let img = new Image();
 		img.src = imgname
 		img.onload = function () {
@@ -40,6 +38,8 @@ window.onload = function() {
 	var canvas = document.getElementById('canvas');
 	var context = canvas.getContext('2d');
 	//var image = document.getElementById('image');
+	var vid_temp = document.createElement("CANVAS");
+	var pic_temp = document.createElement("CANVAS");
 	
 	
 	var ft = 25;
@@ -54,7 +54,7 @@ window.onload = function() {
 			vid_height = webcam_feed.videoHeight;
 			canvas.width = vid_width;
 			canvas.height = vid_height;
-			var vid_features = findFeaturesVid(webcam_feed,ft,256);
+			var vid_features = findFeaturesVid(webcam_feed,ft,256,vid_temp);
 			var vid_corners = vid_features.corners;
 			console.log("Features Detected:",vid_corners.length/2);
 			context.drawImage(webcam_feed, 0, 0, vid_width, vid_height);
@@ -64,7 +64,8 @@ window.onload = function() {
 			}
 		}
 	}
-
+	
+	//Button to compare Webcam Image to Test Files
 	match_button = document.getElementById('match_button');
 	match_button.onclick = function () {
 		if (loaded < 15) {
@@ -72,13 +73,13 @@ window.onload = function() {
 		} else if (!cam_working) {
 			console.log('camera not working yet')
 		} else {
-			let vid_features = findFeaturesVid(webcam_feed,ft,256);
+			let vid_features = findFeaturesVid(webcam_feed,ft,256,vid_temp);
 			// let best_name = 'none';
 			// let best_matches = 0;
 			// let best_i = 0;
 			for (var i = 0; i < imgs.length; i++) {
 				let img = imgs[i];
-				let pic_features = findFeaturesPic(img,ft,256);
+				let pic_features = findFeaturesPic(img,ft,256,pic_temp);
 				let good_matches = matchFeatures(vid_features.corners,vid_features.descriptors,pic_features.corners,pic_features.descriptors,0.75)
 				console.log(imgnames[i],good_matches.length)
 			}
