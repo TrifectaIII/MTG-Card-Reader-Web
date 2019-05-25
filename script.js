@@ -6,9 +6,9 @@ window.onload = function() {
 	var imgfeatures = [];
 	var loaded = 0;
 	for (var i = 0 ; i < imgnames.length ; i++){
-		let imgname = 'resources/test_web/'+imgnames[i]+'_ima.png';
+		let imgpath = 'resources/test_web/'+imgnames[i]+'_ima.png';
 		let img = new Image();
-		img.src = imgname
+		img.src = imgpath
 		img.onload = function () {
 			loaded += 1;
 		}
@@ -32,6 +32,29 @@ window.onload = function() {
 			});
 	}
 	
+	
+	//Test HTTP Requests from Bottle
+	var request = new XMLHttpRequest();
+	request.onload = function() {
+		if (request.status >= 200 && request.status < 400) {
+			// Success!
+			console.log(request.responseText);
+		} else {
+			console.log('Request completed incorrectly',request.status)
+		}
+	};
+	request.onerror = function() {
+		console.log("Didn't work at all")
+	}
+	
+	req_button = document.getElementById('req_button');
+	req_button.onclick = function () {
+		request.open('GET','/test',true);
+		request.send();
+	};
+	
+	
+	
 	//Setup for Corner Testings
 	var vid_width;
 	var vid_height;
@@ -47,6 +70,8 @@ window.onload = function() {
 	//Button to Process Frame of Webcam Video
 	scan_button = document.getElementById('scan_button');
 	scan_button.onclick = function () {
+		request.open('GET','/test',true);
+		request.send();
 		if (!cam_working){
 			console.log('camera not working yet')
 		} else {
@@ -63,7 +88,7 @@ window.onload = function() {
 					context.fillRect(vid_corners[i], vid_corners[i + 1], 3, 3);
 			}
 		}
-	}
+	};
 	
 	//Button to compare Webcam Image to Test Files
 	match_button = document.getElementById('match_button');
@@ -84,5 +109,5 @@ window.onload = function() {
 				console.log(imgnames[i],good_matches.length)
 			}
 		}
-	}
-}
+	};
+};
