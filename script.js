@@ -44,7 +44,7 @@ window.onload = function() {
 	load_set_button = document.getElementById('load_set_button');
 	load_set_button.onclick = function () {
 		load_set_request.open('POST','/load_set',true);
-		load_set_request.send('setcode_placehoder');
+		load_set_request.send('setcode_placeholder');
 	};
 	
     //Match Card Button and Requests

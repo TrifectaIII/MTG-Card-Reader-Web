@@ -9,23 +9,14 @@ abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 
-# Serve Main Page
-@route('/')
-def index():
-    return template('index.html', request=request)
 
-# Testing of JS HTTP Requests
-counter = 0
-@route('/test')
-def test():
-    global counter
-    counter += 1
-    return "testing testing " + str(counter)
+##################################################################################
     
-# Accept request for Set Load
+    
+# Accept Request for Set Load
 @route('/load_set', method = 'POST')
 def get_set():
-    print(request.body.read())
+    print(request.body.read())# has form of bytestring
     return "load_set not fully implemented yet"
 
 # Accept Request for Card Match
@@ -35,9 +26,22 @@ def match_card():
     matching.match(img_png_bs)
     return "match_card not fully implemented yet"
 
+
+##################################################################################
+
+
+# Serve Main Page
+@route('/')
+def index():
+    return template('index.html', request=request)
+
 # Serve Static Files
 @route('/<filepath:path>')
 def send_static(filepath):
     return static_file(filepath,root='.')
+    
+    
+##################################################################################
+
 
 run(host='localhost', port=8000, debug=True)
