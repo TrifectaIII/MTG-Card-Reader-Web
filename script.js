@@ -23,8 +23,9 @@ window.onload = function() {
 	//Setup
 	var vid_width;
 	var vid_height;
-	var canvas = document.getElementById('canvas');
-	var context = canvas.getContext('2d');
+	// var canvas = document.getElementById('canvas');
+    var temp_canvas = document.createElement("CANVAS");
+	var temp_context = temp_canvas.getContext('2d');
     
     
     //Load Set Button and Requests
@@ -50,27 +51,31 @@ window.onload = function() {
     //Match Card Button and Requests
 	var match_card_request = new XMLHttpRequest();
 	match_card_request.onload = function() {
-		if (match_card_request.status >= 200 && match_card_request.status < 400) {
-			// Success!
-			console.log(match_card_request.response);
-		} else {
-			console.log('Request completed incorrectly. Error',match_card_request.status)
-		}
-	};
+        if (match_card_request.status >= 200 && match_card_request.status < 400) {
+            // Success!
+            console.log(match_card_request.response);
+        } else {
+            console.log('Request completed incorrectly. Error',match_card_request.status)
+        }
+    };
 	match_card_request.onerror = function() {
 		console.log("match_card didn't work at all")
 	}
 	
 	match_card_button = document.getElementById('match_card_button');
 	match_card_button.onclick = function () {
-        vid_width = webcam_feed.videoWidth;
-		vid_height = webcam_feed.videoHeight;
-		canvas.width = vid_width;
-		canvas.height = vid_height;
-        context.drawImage(webcam_feed, 0, 0, vid_width, vid_height);
-        var capture = canvas.toDataURL("image/png");
-		match_card_request.open('POST','/match_card',true);
-		match_card_request.send(capture);
+        if (cam_working){
+            vid_width = webcam_feed.videoWidth;
+            vid_height = webcam_feed.videoHeight;
+            temp_canvas.width = vid_width;
+            temp_canvas.height = vid_height;
+            temp_context.drawImage(webcam_feed, 0, 0, vid_width, vid_height);
+            var capture = temp_canvas.toDataURL("image/png");
+            match_card_request.open('POST','/match_card',true);
+            match_card_request.send(capture);
+        } else {
+            console.log('Camera Not Working, so cannot send image for match')
+        }
 	};
     
     

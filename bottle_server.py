@@ -15,16 +15,16 @@ os.chdir(dname)
     
 # Accept Request for Set Load
 @route('/load_set', method = 'POST')
-def get_set():
+def load_set():
     print(request.body.read())# has form of bytestring
     return "load_set not fully implemented yet"
 
 # Accept Request for Card Match
 @route('/match_card', method = 'POST')
 def match_card():
-    img_png_bs = request.body.read()
-    matching.match(img_png_bs)
-    return "match_card not fully implemented yet"
+    cam_png_uri = request.body.read()# Read body of post request
+    card_name = matching.match(cam_png_uri)
+    return card_name
 
 
 ##################################################################################
