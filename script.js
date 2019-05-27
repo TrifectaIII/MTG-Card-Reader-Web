@@ -10,12 +10,13 @@ window.onload = function () {
 			.then(function (stream) {
 				webcam_feed.srcObject = stream;
 				cam_working = true;
+				document.getElementById('notif').innerHTML = "Webcam Functional";
 			})
 			.catch(function (err0r) {
 				console.log("Something went wrong!");
 				cam_working = false;
-				document.getElementById('notif').innerHTML = "Your camera isn't working sorry :(";
-				document.getElementById('notif').style.backgroundColor = 'red';
+				document.getElementById('notif').innerHTML = "WebCam Error: Please ensure camera is connected and that this page has permission to use it.";
+				document.getElementById('notif').style.backgroundColor = 'lightcoral';
 			});
 	}
 
