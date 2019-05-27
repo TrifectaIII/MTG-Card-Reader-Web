@@ -1,1 +1,0 @@
-C:\WINDOWS\system32\cmd.exe /K python bottle_server.py
