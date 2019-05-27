@@ -3,6 +3,7 @@ import numpy as np
 from base64 import b64decode
 
 def uriToCv2(png_uri):
+    
     # Remove URL header from png data
     png_arr = png_uri.split(b',')
     png_data = png_arr[1]
