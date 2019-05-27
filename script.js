@@ -14,7 +14,8 @@ window.onload = function() {
 			.catch(function (err0r) {
 				console.log("Something went wrong!");
 				cam_working = false;
-                document.getElementsByTagName('body')[0].innerHTML = "Your camera isn't working sorry :("; 
+				document.getElementById('notif').innerHTML = "Your camera isn't working sorry :("; 
+				document.getElementById('notif').style.backgroundColor = 'red';
 			});
 	}
 	
