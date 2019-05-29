@@ -1,6 +1,7 @@
 import numpy as np 
 import cv2
 from os import walk
+import time
 
 from matplotlib import pyplot as plt
 
@@ -51,25 +52,36 @@ for name in web_imgs_names:
 #Create Brute Force Matcher Object
 bf = cv2.BFMatcher(cv2.NORM_HAMMING)
 
-#Create FLANN Matcher Object TODO
+#Create FLANN Matcher Object
+index_params= dict(algorithm = 6, #Algorithm 6 is FLANN_INDEX_LSH
+                   table_number = 6, # 12
+                   key_size = 12,     # 20
+                   multi_probe_level = 1) #2
+search_params = dict(checks=50)
+flann = cv2.FlannBasedMatcher(index_params,search_params)
 
 
-def ratioTest(matcher,des1,des2):
+def ratioTestCount(matcher,des1,des2):
     good_matches = []
     matches = matcher.knnMatch(des1,des2,k=2)
-    for m,n in matches:
-        if m.distance < 0.75*n.distance:
-            good_matches.append(m)
-    return good_matches
+    for pair in matches:
+        try:
+            m,n = pair
+            if m.distance < 0.75*n.distance:
+                good_matches.append(m)
+        except ValueError:
+            pass
+    return len(good_matches)
 
 good = 0
 bad = 0
+
+start = time.time()
 
 for test_card in test_imgs:
     best_num = 0
     best_match = None
     for web_card in web_imgs:
-        #matches = bf.match(test_card['des'],web_card['des'])
         matches = ratioTest(bf,test_card['des'],web_card['des'])
         if len(matches) > best_num:
             best_num = len(matches)
@@ -81,3 +93,4 @@ for test_card in test_imgs:
         bad  += 1
 
 print('Accuracy:',str(int((good/(good+bad))*100))+'%')
+print('Runtime (sec):',time.time()-start)
