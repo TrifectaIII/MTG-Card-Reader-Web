@@ -1,13 +1,29 @@
 import numpy as np 
 import cv2
 from os import walk
-import time
+import pickle
+import json
 
 #Test the Ability to Save Descriptors to File
 
-#Setup ORB
+#Setup ORB and Matcher
 
 orb = cv2.ORB_create()
+
+bf = cv2.BFMatcher(cv2.NORM_HAMMING)
+
+def ratioTestCount(matcher,des1,des2):
+    #Counts Number of Good Matches using Ratio Test ()
+    good_matches = []
+    matches = matcher.knnMatch(des1,des2,k=2)
+    for pair in matches:
+        try:
+            m,n = pair
+            if m.distance < 0.75*n.distance:
+                good_matches.append(m)
+        except ValueError:
+            pass
+    return len(good_matches)
 
 # Load all Cam Images for Testing
 test_imgs_names = []
@@ -47,6 +63,35 @@ for name in web_imgs_names:
 #test_imgs contains camera pics
 #web_imgs  contains gatherer pics
 
-img = test_imgs['img']
-kp  = test_imgs['kp']
-des = test_imgs['des']
+
+#Generate File with Dictionary of Web 
+set_dict = dict()
+
+for card in web_imgs:
+    set_dict[card['name']] = card['des']
+
+filename = 'set.des'
+outfile = open(filename,'wb')
+pickle.dump(set_dict,outfile)
+outfile.close()
+
+infile = open(filename,'rb')
+file_dict = pickle.load(infile)
+infile.close()
+
+#print(file_dict)
+
+name1 = test_imgs[3]['name']
+des1  = test_imgs[3]['des']
+
+bigCount = 0
+bigName = ''
+
+for name in file_dict:
+    des = file_dict[name]
+    matchCount = ratioTestCount(bf,des1,des)
+    if matchCount > bigCount:
+        bigCount = matchCount
+        bigName = name
+
+print(name1,bigName)

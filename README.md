@@ -11,4 +11,6 @@ https://pypi.org/project/opencv-python/
 
 http://bottlepy.org/
 
+https://mtgjson.com/
+
 HTML,CSS,JS
