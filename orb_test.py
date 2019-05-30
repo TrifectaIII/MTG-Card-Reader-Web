@@ -58,7 +58,7 @@ index_params= dict(algorithm = 6, #Algorithm 6 is FLANN_INDEX_LSH
 search_params = dict(checks=50)
 flann = cv2.FlannBasedMatcher(index_params,search_params)
 
-
+# Counts number of good matches based on Lowe Ratio Test
 def ratioTestCount(matcher,des1,des2):
     good_matches = []
     matches = matcher.knnMatch(des1,des2,k=2)
@@ -77,14 +77,14 @@ bad = 0
 start = time.time()
 
 for test_card in test_imgs:
-    best_num = 0
+    best_count = 0
     best_match = None
     for web_card in web_imgs:
-        matches = ratioTest(bf,test_card['des'],web_card['des'])
-        if len(matches) > best_num:
-            best_num = len(matches)
+        matchCount = ratioTestCount(bf,test_card['des'],web_card['des'])
+        if matchCount > best_count:
+            best_count = matchCount
             best_match = web_card
-    print(test_card['name'],"=>",best_match['name'],"Matches:",best_num)
+    print(test_card['name'][:-4],"=>",best_match['name'][:-4],"   Matches:",best_count)
     if test_card['name'][:3] == best_match['name'][:3]:
         good += 1
     else:

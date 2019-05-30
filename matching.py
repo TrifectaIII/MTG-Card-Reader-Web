@@ -58,7 +58,7 @@ def match(cam_png_uri):
     #Detect and Compute ORB Descriptors
     kp,des = orb.detectAndCompute(img,None)
 
-    # Display image and wait for key press
+    # PLACEHOLDER Display image and wait for key press
     cv2.imshow('image', img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
