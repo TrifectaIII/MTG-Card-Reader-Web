@@ -11,4 +11,4 @@ https://pypi.org/project/opencv-python/
 
 http://bottlepy.org/
 
-Web Languages (HTML,CSS,JS)
+HTML,CSS,JS
