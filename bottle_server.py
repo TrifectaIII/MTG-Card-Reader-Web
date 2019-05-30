@@ -1,6 +1,5 @@
 from bottle import route, run, debug, template, request, static_file
 import os
-import time
 
 # Self Defined Matching Package which relies on cv2 and numpy
 import matching

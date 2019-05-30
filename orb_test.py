@@ -3,8 +3,6 @@ import cv2
 from os import walk
 import time
 
-from matplotlib import pyplot as plt
-
 # Test the Matching Ability of ORB (Oriented FAST Rotated BRIEF)
 
 #Setup ORB
