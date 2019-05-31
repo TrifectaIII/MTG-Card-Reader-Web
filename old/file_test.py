@@ -2,7 +2,6 @@ import numpy as np
 import cv2
 from os import walk
 import pickle
-import json
 
 #Test the Ability to Save Descriptors to File
 

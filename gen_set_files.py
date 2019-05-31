@@ -1,37 +1,24 @@
 import numpy as np 
 import cv2, pickle, json
+from urllib import request as urlreq
 
-# Setup JSON File #########################################################
+# Setup JSON File #####################################################
 
 try:
-    jsonsets = json.loads(open('AllSets.json',encoding="utf8").read())
+    jsonsets = json.loads(open('resources/AllSets.json',encoding="utf8").read())
 except MemoryError:
     raise Exception('Please ensure you are running 64 bit Python')
 print('json file loaded')
 
-# setup ORB Matching ###################################################
+# setup ORB  ##########################################################
 
 orb = cv2.ORB_create()
-
-bf = cv2.BFMatcher(cv2.NORM_HAMMING)
-
-def ratioTestCount(matcher,des1,des2):
-    #Counts Number of Good Matches using Ratio Test ()
-    good_matches = []
-    matches = matcher.knnMatch(des1,des2,k=2)
-    for pair in matches:
-        try:
-            m,n = pair
-            if m.distance < 0.75*n.distance:
-                good_matches.append(m)
-        except ValueError:
-            pass
-    return len(good_matches)
 
 # getSets returns list of all setcodes ################################
 
 def getSets():
-    #return alphabetized list of all sets, removing sets for which no card images exist
+    # return alphabetized list of all sets, 
+    # removing sets for which no card images exist
     retsets = []
     for set in (list(jsonsets.keys())):
         cards = jsonsets[set]['cards']
@@ -54,5 +41,43 @@ def getSets():
     retsets = sorted(retsets)
     return retsets
 
-print(getSets())
+def getSetsStr():
+    #Joins all setcodes by commas
+    return ','.join(getSets())
 
+# Save sets string as file ############################################
+
+with open('resources/sets.txt','w') as text_file:
+    text_file.write(getSetsStr())
+
+# Save each sets descriptors dict as file in resources/setDes/ ########
+
+#for setcode in getSets():
+for setcode in ['IMA']:
+    set_names = []
+    set_urls  = []
+    set_des   = []
+    try:
+        #Get card objects from mtgjson
+        cards = jsonsets[setcode]['cards']
+    except:
+        raise ValueError('No set found with that setcode')
+    for card in cards:
+        #For each card, save to dictionary
+        name = card['name']
+        id = card['multiverseId']
+        url = 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+str(id)+'&type=card'
+        url_response = urlreq.urlopen(url)
+        img_array = np.array(bytearray(url_response.read()), dtype=np.uint8)
+        img = cv2.imdecode(img_array, -1)
+        _,des = orb.detectAndCompute(img,None)
+        set_names.append(name)
+        set_urls.append(url)
+        set_des.append(des)
+        print(name,'done')
+
+    setInfo = (set_names,set_urls,set_des)
+    with open('resources/setDes/'+setcode+'.des','wb') as des_file:
+        pickle.dump(setInfo,des_file)
+        
+    break
