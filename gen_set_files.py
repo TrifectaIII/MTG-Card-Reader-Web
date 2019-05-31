@@ -1,6 +1,7 @@
 import numpy as np 
 import cv2, pickle, json
 from urllib import request as urlreq
+from os import path
 
 # Setup JSON File #####################################################
 
@@ -53,31 +54,33 @@ with open('resources/sets.txt','w') as text_file:
 # Save each sets descriptors dict as file in resources/setDes/ ########
 
 #for setcode in getSets():
-for setcode in ['IMA']:
-    set_names = []
-    set_urls  = []
-    set_des   = []
-    try:
-        #Get card objects from mtgjson
-        cards = jsonsets[setcode]['cards']
-    except:
-        raise ValueError('No set found with that setcode')
-    for card in cards:
-        #For each card, save to dictionary
-        name = card['name']
-        id = card['multiverseId']
-        url = 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+str(id)+'&type=card'
-        url_response = urlreq.urlopen(url)
-        img_array = np.array(bytearray(url_response.read()), dtype=np.uint8)
-        img = cv2.imdecode(img_array, -1)
-        _,des = orb.detectAndCompute(img,None)
-        set_names.append(name)
-        set_urls.append(url)
-        set_des.append(des)
-        print(name,'done')
+for setcode in ['5ED']:
+    if path.isfile('resources/setDes/'+setcode+'.des'):
+        print(setcode,'file found, skipping')
+    else:
+        print('Starting',setcode)
+        set_names = []
+        set_urls  = []
+        set_des   = []
+        try:
+            #Get card objects from mtgjson
+            cards = jsonsets[setcode]['cards']
+        except:
+            raise ValueError('No set found with that setcode')
+        for card in cards:
+            #For each card, save to dictionary
+            name = card['name']
+            id = card['multiverseId']
+            url = 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+str(id)+'&type=card'
+            print(name,url)
+            url_response = urlreq.urlopen(url)
+            img_array = np.array(bytearray(url_response.read()), dtype=np.uint8)
+            img = cv2.imdecode(img_array, -1)
+            _,des = orb.detectAndCompute(img,None)
+            set_names.append(name)
+            set_urls.append(url)
+            set_des.append(des)
 
-    setInfo = (set_names,set_urls,set_des)
-    with open('resources/setDes/'+setcode+'.des','wb') as des_file:
-        pickle.dump(setInfo,des_file)
-        
-    break
+        setInfo = (set_names,set_urls,set_des)
+        with open('resources/setDes/'+setcode+'.des','wb') as des_file:
+            pickle.dump(setInfo,des_file)
