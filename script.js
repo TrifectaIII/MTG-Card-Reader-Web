@@ -30,25 +30,28 @@ window.onload = function () {
 	var temp_context = temp_canvas.getContext('2d');
 
 
-	//Load Set Button and Requests
-	var load_set_request = new XMLHttpRequest();
-	load_set_request.onload = function () {
-		if (load_set_request.status >= 200 && load_set_request.status < 400) {
-			// Success!
-			console.log(load_set_request.response);
-		} else {
-			console.log('Request completed incorrectly. Error', load_set_request.status)
-		}
-	};
-	load_set_request.onerror = function () {
-		console.log("load_set didn't work at all");
-	};
+	// //Load Set Button and Requests
+	// var load_set_request = new XMLHttpRequest();
+	// load_set_request.onload = function () {
+	// 	if (load_set_request.status >= 200 && load_set_request.status < 400) {
+	// 		// Success!
+	// 		console.log(load_set_request.response);
+	// 	} else {
+	// 		console.log('Request completed incorrectly. Error', load_set_request.status)
+	// 	}
+	// };
+	// load_set_request.onerror = function () {
+	// 	console.log("load_set didn't work at all");
+	// };
 
-	load_set_button = document.getElementById('load_set_button');
-	load_set_button.onclick = function () {
-		load_set_request.open('POST', '/load_set', true);
-		load_set_request.send('setcode_placeholder');
-	};
+	// load_set_button = document.getElementById('load_set_button');
+	// load_set_button.onclick = function () {
+	// 	load_set_request.open('POST', '/load_set', true);
+	// 	load_set_request.send('setcode_placeholder');
+	// };
+
+	//Card Display Image
+	cardDisplay = document.getElementById('cardDisplay');
 
 	//Match Card Button and Requests
 	var match_card_request = new XMLHttpRequest();
@@ -56,6 +59,8 @@ window.onload = function () {
 		if (match_card_request.status >= 200 && match_card_request.status < 400) {
 			// Success!
 			console.log(match_card_request.response);
+			//Display card image from URL
+			cardDisplay.src = match_card_request.response;
 		} else {
 			console.log('Request completed incorrectly. Error', match_card_request.status);
 		}

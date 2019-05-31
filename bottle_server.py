@@ -12,19 +12,19 @@ os.chdir(dname)
 ##################################################################################
 
 
-# Accept Request for Set Load
-@route('/load_set', method='POST')
-def load_set():
-    setBytes = request.body.read()  # has form of bytestring
-    setcode = setBytes.decode('utf-8')
-    return "load_set not fully implemented yet"
+# # Accept Request for Set Load
+# @route('/load_set', method='POST')
+# def load_set():
+#     setBytes = request.body.read()  # has form of bytestring
+#     setcode = setBytes.decode('utf-8')
+#     return "load_set not fully implemented yet"
 
 # Accept Request for Card Match
 @route('/match_card', method='POST')
 def match_card():
     cam_png_uri = request.body.read()  # Read body of post request
-    card_name = matching.match(cam_png_uri,'IMA')# TODO Send setcode along with image data
-    return card_name
+    card_url = matching.match(cam_png_uri,'IMA')# TODO Recieve setcode along with image data, send back URL and name
+    return card_url 
 
 
 ##################################################################################
