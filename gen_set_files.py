@@ -6,7 +6,8 @@ from os import path
 # Setup JSON File #####################################################
 
 try:
-    jsonsets = json.loads(open('resources/AllSets.json',encoding="utf8").read())
+    with open('resources/AllSets.json',encoding="utf8") as json_file:
+        jsonsets = json.loads(json_file.read())
 except MemoryError:
     raise Exception('Please ensure you are running 64 bit Python')
 print('json file loaded')
@@ -70,8 +71,8 @@ for setcode in getSets():
         for card in cards:
             #For each card, save to dictionary
             name = card['name']
-            id = card['multiverseId']
-            url = 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+str(id)+'&type=card'
+            mvid = card['multiverseId']
+            url = 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+str(mvid)+'&type=card'
             print(name,'\t',url)
             url_response = urlreq.urlopen(url)
             img_array = np.array(bytearray(url_response.read()), dtype=np.uint8)

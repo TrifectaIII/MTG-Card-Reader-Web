@@ -9,21 +9,6 @@ orb = cv2.ORB_create()
 #Create Brute Force Matcher Object
 bf = cv2.BFMatcher(cv2.NORM_HAMMING)
 
-
-def ratioTestCount(matcher,des1,des2):
-    #Counts Number of Good Matches using Ratio Test ()
-    good_matches = 0
-    matches = matcher.knnMatch(des1,des2,k=2)
-    for pair in matches:
-        try:
-            m,n = pair
-            if m.distance < 0.75*n.distance:
-                good_matches += 1
-        except ValueError:
-            pass
-    return good_matches
-
-
 def uriToCv2(png_uri):
     #Converts URI PNG from AJAX to cv2 Image
 
@@ -37,6 +22,19 @@ def uriToCv2(png_uri):
     # Convert numpy array to cv2 image, then return
     img_cv2 = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
     return img_cv2
+
+def ratioTestCount(matcher,des1,des2):
+    #Counts Number of Good Matches using Ratio Test ()
+    good_matches = 0
+    matches = matcher.knnMatch(des1,des2,k=2)
+    for pair in matches:
+        try:
+            m,n = pair
+            if m.distance < 0.75*n.distance:
+                good_matches += 1
+        except ValueError:
+            pass
+    return good_matches
 
 def match(cam_png_uri,setcode):
     #Matches URI PNG to Card
@@ -69,12 +67,7 @@ def match(cam_png_uri,setcode):
             bestName  = name
             bestURL   = url
 
-
-
-    # PLACEHOLDER Display image and wait for key press
-    # cv2.imshow('image', img)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
+    #Return Name and URL for Matched Card
     return (bestName,bestURL)
 
 
