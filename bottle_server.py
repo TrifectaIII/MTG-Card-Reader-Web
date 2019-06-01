@@ -23,8 +23,9 @@ os.chdir(dname)
 @route('/match_card', method='POST')
 def match_card():
     cam_png_uri = request.body.read()  # Read body of post request
-    card_url = matching.match(cam_png_uri,'IMA')# TODO Recieve setcode along with image data, send back URL and name
-    return card_url 
+    card_name,card_url = matching.match(cam_png_uri,'IMA')# TODO Recieve setcode along with image data
+    card_both = card_name+'$'+card_url
+    return card_both
 
 
 ##################################################################################

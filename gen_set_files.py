@@ -53,8 +53,8 @@ with open('resources/sets.txt','w') as text_file:
 
 # Save each sets descriptors dict as file in resources/setDes/ ########
 
-#for setcode in getSets():
-for setcode in ['5ED']:
+for setcode in getSets():
+#for setcode in ['5ED']: TODO problem with 5ED
     if path.isfile('resources/setDes/'+setcode+'.des'):
         print(setcode,'file found, skipping')
     else:
@@ -72,7 +72,7 @@ for setcode in ['5ED']:
             name = card['name']
             id = card['multiverseId']
             url = 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+str(id)+'&type=card'
-            print(name,url)
+            print(name,'\t',url)
             url_response = urlreq.urlopen(url)
             img_array = np.array(bytearray(url_response.read()), dtype=np.uint8)
             img = cv2.imdecode(img_array, -1)
