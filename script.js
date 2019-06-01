@@ -65,8 +65,10 @@ window.onload = function () {
 			respName = 'Card Name: ' + respStr[0];
 			respURL  = respStr[1];
 			// Display card image from URL and name from name
-			cardName.innerHTML = respName;
 			cardDisplay.src = respURL;
+			cardDisplay.onload = function() { // Display name only after image has loaded
+				cardName.innerHTML = respName;
+			}
 		} else {
 			console.log('Request completed incorrectly. Error', match_card_request.status);
 		}
