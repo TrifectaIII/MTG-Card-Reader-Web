@@ -21,7 +21,7 @@ window.onload = function () {
 	}
 
 	//Add All Stored Sets to Set Selector
-	set_selector = document.getElementById('set_selector');
+	var set_selector = document.getElementById('set_selector');
 	var set_list_request = new XMLHttpRequest();
 	set_list_request.onload = function () {
 		if (set_list_request.status >= 200 && set_list_request.status < 400) {
@@ -106,16 +106,31 @@ window.onload = function () {
 	match_card_button = document.getElementById('match_card_button');
 	match_card_button.onclick = function () {
 		if (cam_working) {
-			cardName.innerHTML = 'Card Name:';
 			cardDisplay.src = 'resources/blankcard.png';
+			cardDisplay.onload = function() { // Display name only after image has loaded
+				cardName.innerHTML = 'Card Name:';
+			}
+
+			//Capture WebCam Image
 			vid_width  = webcam_feed.videoWidth;
 			vid_height = webcam_feed.videoHeight;
 			temp_canvas.width  = vid_width;
 			temp_canvas.height = vid_height;
 			temp_context.drawImage(webcam_feed, 0, 0, vid_width, vid_height);
 			var capture = temp_canvas.toDataURL("image/png");
+
+			//Append Image to Form
+			let fd = new FormData();
+			fd.append('png',capture)
+
+			//Append Setcode to Form
+			let set_selector = document.getElementById('set_selector');
+			let setcode = set_selector.options[ set_selector.selectedIndex ].value
+			fd.append('setcode',setcode)
+
+			//Send Form with Request
 			match_card_request.open('POST', '/match_card', true);
-			match_card_request.send(capture);
+			match_card_request.send(fd);
 		} else {
 			console.log('Camera Not Working, so cannot send image for match')
 		}

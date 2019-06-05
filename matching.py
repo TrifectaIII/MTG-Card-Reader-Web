@@ -13,8 +13,8 @@ bf = cv2.BFMatcher(cv2.NORM_HAMMING)
 def uriToCv2(png_uri):
     #Converts URI PNG from AJAX to cv2 Image
 
-    # Remove URL header from png data
-    png_arr = png_uri.split(b',')
+    # Remove URI header from png data
+    png_arr = png_uri.split(',')
     png_data = png_arr[1]
     # Decode base64 png data
     png_data_decode = b64decode(png_data)
