@@ -55,7 +55,7 @@ with open('resources/sets.txt','w') as text_file:
 # Save each sets descriptors dict as file in resources/setDes/ ########
 
 for setcode in getSets():
-#for setcode in ['5ED']: TODO problem with 5ED
+#for setcode in ['5ED']: #TODO problem with 5ED
     if path.isfile('resources/setDes/'+setcode+'.des'):
         print(setcode,'file found, skipping')
     else:
