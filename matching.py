@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from base64 import b64decode
 import pickle
+from os import path
 
 #Setup ORB
 orb = cv2.ORB_create()
@@ -70,4 +71,12 @@ def match(cam_png_uri,setcode):
     #Return Name and URL for Matched Card
     return (bestName,bestURL)
 
-
+def setList():
+    #Returns list of all stored setcodes
+    from os import walk
+    setcodes = []
+    for (dirpath, dirnames, filenames) in walk('resources/setDes'):
+        for fn in filenames:
+            setcodes.append(fn[:-4])
+        break
+    return setcodes

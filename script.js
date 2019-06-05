@@ -20,13 +20,39 @@ window.onload = function () {
 			});
 	}
 
+	//Add All Stored Sets to Set Selector
+	set_selector = document.getElementById('set_selector');
+	var set_list_request = new XMLHttpRequest();
+	set_list_request.onload = function () {
+		if (set_list_request.status >= 200 && set_list_request.status < 400) {
+			// Success!
+			respStr  = set_list_request.response;
+			//Split response into name and url
+			respList  = respStr.split('$');
+			for (var i = 0; i < respList.length; i++){
+				setcode = respList[i]
+				let option = document.createElement("option");
+				option.text = setcode;
+				set_selector.add(option);
+			}
+		} else {
+			console.log('Request completed incorrectly. Error', set_list_request.status);
+		}
+	};
+	set_list_request.onerror = function () {
+		console.log("set_list didn't work at all");
+	};
+
+	set_list_request.open('GET','/set_list',true);
+	set_list_request.send();
 
 
-	//Setup
+
+	//Setup For Matching
 	var vid_width;
 	var vid_height;
 	// var canvas = document.getElementById('canvas');
-	var temp_canvas = document.createElement("CANVAS");
+	var temp_canvas  = document.createElement("CANVAS");
 	var temp_context = temp_canvas.getContext('2d');
 
 
@@ -52,18 +78,18 @@ window.onload = function () {
 
 	//Card Display Image and Name Area
 	cardDisplay = document.getElementById('cardDisplay');
-	cardName = document.getElementById('cardName');
+	cardName 	= document.getElementById('cardName');
 
 	//Match Card Button and Requests
 	var match_card_request = new XMLHttpRequest();
 	match_card_request.onload = function () {
 		if (match_card_request.status >= 200 && match_card_request.status < 400) {
 			// Success!
-			respStr = match_card_request.response;
+			respStr  = match_card_request.response;
 			//Split response into name and url
-			respStr = respStr.split('$');
-			respName = 'Card Name: ' + respStr[0];
-			respURL  = respStr[1];
+			respList  = respStr.split('$');
+			respName = 'Card Name: ' + respList[0];
+			respURL  = respList[1];
 			// Display card image from URL and name from name
 			cardDisplay.src = respURL;
 			cardDisplay.onload = function() { // Display name only after image has loaded
@@ -82,9 +108,9 @@ window.onload = function () {
 		if (cam_working) {
 			cardName.innerHTML = 'Card Name:';
 			cardDisplay.src = 'resources/blankcard.png';
-			vid_width = webcam_feed.videoWidth;
+			vid_width  = webcam_feed.videoWidth;
 			vid_height = webcam_feed.videoHeight;
-			temp_canvas.width = vid_width;
+			temp_canvas.width  = vid_width;
 			temp_canvas.height = vid_height;
 			temp_context.drawImage(webcam_feed, 0, 0, vid_width, vid_height);
 			var capture = temp_canvas.toDataURL("image/png");

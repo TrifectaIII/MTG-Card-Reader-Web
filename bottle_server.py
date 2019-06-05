@@ -27,6 +27,13 @@ def match_card():
     card_both = card_name+'$'+card_url
     return card_both
 
+# Accept Request for List of Set Codes
+@route('/set_list')
+def set_list():
+    setcodes = matching.setList()
+    setstr = '$'.join(setcodes)
+    return setstr
+
 
 ##################################################################################
 
