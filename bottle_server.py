@@ -25,8 +25,8 @@ def match_card():
     # Read Image and Setcode from Request Form
     cam_png_uri = request.forms.get('png')
     setcode = request.forms.get('setcode')
-    card_name, card_url = matching.match(cam_png_uri, setcode)
-    card_both = card_name+'$'+card_url
+    card_name, card_mvid = matching.match(cam_png_uri, setcode)
+    card_both = card_name+'$'+str(card_mvid)
     return card_both
 
 

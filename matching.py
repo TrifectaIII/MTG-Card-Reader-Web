@@ -65,22 +65,22 @@ def match(cam_png_uri, setcode):
 
     # Read setDes Data from File
     with open('resources/setDes/'+setcode+'.des', 'rb') as des_file:
-        set_names, set_urls, set_des = pickle.load(des_file)
+        set_names, set_mvids, set_des = pickle.load(des_file)
 
     # Find Match
     bestCount = 0
     bestName = ''
-    bestURL = ''
+    bestMVID = ''
 
     for i in range(len(set_names)):
         name = set_names[i]
-        url = set_urls[i]
+        mvid = set_mvids[i]
         des = set_des[i]
         matchCount = ratioTestCount(bf, desCam, des)
         if matchCount > bestCount:
             bestCount = matchCount
             bestName = name
-            bestURL = url
+            bestMVID = mvid
 
     # Return Name and URL for Matched Card
-    return (bestName, bestURL)
+    return (bestName, bestMVID)

@@ -59,14 +59,14 @@ def getSetsStr():
 # Save each sets descriptors dict as file in resources/setDes/ ########
 
 
-for setcode in getSets():
-    # for setcode in ['5ED']: #TODO problem with 5ED
+#for setcode in getSets():
+for setcode in ['MM3','IMA']: #TODO problem with 5ED
     if path.isfile('resources/setDes/'+setcode+'.des'):
         print(setcode, 'file found, skipping')
     else:
         print('Starting', setcode)
         set_names = []
-        set_urls = []
+        set_mvids = []
         set_des = []
         try:
             # Get card objects from mtgjson
@@ -77,18 +77,16 @@ for setcode in getSets():
             # For each card, save to dictionary
             name = card['name']
             mvid = card['multiverseId']
-            url = 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=' + \
-                str(mvid)+'&type=card'
-            print(name, '\t', url)
+            url = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+str(mvid)+'&type=card'
             url_response = urlreq.urlopen(url)
             img_array = np.array(
                 bytearray(url_response.read()), dtype=np.uint8)
             img = cv2.imdecode(img_array, cv2.IMREAD_GRAYSCALE)
             _, des = orb.detectAndCompute(img, None)
             set_names.append(name)
-            set_urls.append(url)
+            set_mvids.append(mvid)
             set_des.append(des)
 
-        setInfo = (set_names, set_urls, set_des)
+        setInfo = (set_names, set_mvids, set_des)
         with open('resources/setDes/'+setcode+'.des', 'wb') as des_file:
             pickle.dump(setInfo, des_file)

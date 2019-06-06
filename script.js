@@ -85,10 +85,10 @@ window.onload = function () {
 			//Split response into name and url
 			respList = respStr.split('$');
 			respName = respList[0];
-			respURL = respList[1];
+			respMVID = respList[1];
 
 			// Display card image from URL and name from name
-			cardDisplay.src = respURL;
+			cardDisplay.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+respMVID+'&type=card';
 			cardDisplay.onload = function () { // Display name only after image has loaded
 				cardName.innerHTML = 'Card Name: ' + respName;
 			}
