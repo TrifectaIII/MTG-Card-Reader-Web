@@ -1,5 +1,9 @@
 window.onload = function () {
 
+	//Get HTML elements
+	
+	var notif = document.getElementById('notif')
+	
 	//Video Feed From Webcam
 	var webcam_feed = document.getElementById("webcam_feed");
 
@@ -10,13 +14,13 @@ window.onload = function () {
 			.then(function (stream) {
 				webcam_feed.srcObject = stream;
 				cam_working = true;
-				document.getElementById('notif').innerHTML = "Webcam Functional";
+				notif.innerHTML = "Webcam Functional";
 			})
 			.catch(function (err0r) {
 				console.log("Something went wrong!");
 				cam_working = false;
-				document.getElementById('notif').innerHTML = "WebCam Error: Please ensure camera is connected and that this page has permission to use it.";
-				document.getElementById('notif').style.backgroundColor = 'lightcoral';
+				notif.innerHTML = "WebCam Error: Please ensure camera is connected and that this page has permission to use it.";
+				notif.style.backgroundColor = 'lightcoral';
 			});
 	}
 
@@ -78,7 +82,7 @@ window.onload = function () {
 
 	//Card Display Image and Name Area
 	cardDisplay = document.getElementById('cardDisplay');
-	cardName 	= document.getElementById('cardName');
+	cardName    = document.getElementById('cardName');
 
 	//Match Card Button and Requests
 	var match_card_request = new XMLHttpRequest();
@@ -87,7 +91,7 @@ window.onload = function () {
 			// Success!
 			respStr  = match_card_request.response;
 			//Split response into name and url
-			respList  = respStr.split('$');
+			respList = respStr.split('$');
 			respName = 'Card Name: ' + respList[0];
 			respURL  = respList[1];
 			// Display card image from URL and name from name
@@ -117,7 +121,7 @@ window.onload = function () {
 			temp_canvas.width  = vid_width;
 			temp_canvas.height = vid_height;
 			temp_context.drawImage(webcam_feed, 0, 0, vid_width, vid_height);
-			var capture = temp_canvas.toDataURL("image/png");
+			let capture = temp_canvas.toDataURL("image/png");
 
 			//Append Image to Form
 			let fd = new FormData();
