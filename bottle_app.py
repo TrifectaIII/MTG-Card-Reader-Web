@@ -1,4 +1,4 @@
-from bottle import route, template, request, static_file, default_app
+from bottle import route, run, template, request, static_file, default_app
 import os
 
 # Self Defined Matching Package which relies on cv2 and numpy
@@ -36,7 +36,7 @@ def match_card():
 # Serve Main Page
 @route('/')
 def index():
-    return template('index.html', request=request)
+    return static_file('index.html', root='.')
 
 # Serve Static Files
 @route('/<filepath:path>')
