@@ -31,7 +31,7 @@ def uriToCv2(png_uri):
     # Create numpy array with png data
     np_arr = np.asarray(bytearray(png_data_decode), dtype=np.uint8)
     # Convert numpy array to cv2 image, then return
-    img_cv2 = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+    img_cv2 = cv2.imdecode(np_arr, cv2.IMREAD_GRAYSCALE)
     return img_cv2
 
 def ratioTestCount(matcher,des1,des2):

@@ -76,7 +76,7 @@ for setcode in getSets():
             print(name,'\t',url)
             url_response = urlreq.urlopen(url)
             img_array = np.array(bytearray(url_response.read()), dtype=np.uint8)
-            img = cv2.imdecode(img_array, -1)
+            img = cv2.imdecode(img_array, cv2.IMREAD_GRAYSCALE)
             _,des = orb.detectAndCompute(img,None)
             set_names.append(name)
             set_urls.append(url)
