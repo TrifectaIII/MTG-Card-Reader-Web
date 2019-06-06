@@ -1,14 +1,20 @@
 window.onload = function () {
 
-	//Get HTML elements
+	//HTML elements
 	
-	var notif = document.getElementById('notif')
+	var notif 		 	  = document.getElementById('notif')//Text Area for Notifications
+	var webcam_feed 	  = document.getElementById("webcam_feed");//Video Element for Webcam Feed
+	var set_selector	  = document.getElementById('set_selector');//Select Element to Choose Set
+	var cardDisplay 	  = document.getElementById('cardDisplay');//Image Element to Display Matched Card Image
+	var cardName   		  = document.getElementById('cardName');//Text Area to Display Matched Card Name
+	var match_card_button = document.getElementById('match_card_button');//Button to Execute Matching
 	
-	//Video Feed From Webcam
-	var webcam_feed = document.getElementById("webcam_feed");
+	//Global Variables
+	var cam_working = false;//boolean to tell whether Webcam Feed is working
 
-	var cam_working = false;
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	//Access User's Webcam and feed to webcam_feed Element
 	if (navigator.mediaDevices.getUserMedia) {
 		navigator.mediaDevices.getUserMedia({ video: true })
 			.then(function (stream) {
@@ -24,15 +30,22 @@ window.onload = function () {
 			});
 	}
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	//Add All Stored Sets to Set Selector
-	var set_selector = document.getElementById('set_selector');
+
+	//Create set_list Request Object
 	var set_list_request = new XMLHttpRequest();
+
+	//Tell request to populat set_selector element after recieving reponse
 	set_list_request.onload = function () {
 		if (set_list_request.status >= 200 && set_list_request.status < 400) {
-			// Success!
 			respStr  = set_list_request.response;
-			//Split response into name and url
+
+			//Split response array of setcodes
 			respList  = respStr.split('$');
+
+			//Add each setcode to set_selector element
 			for (var i = 0; i < respList.length; i++){
 				setcode = respList[i]
 				let option = document.createElement("option");
@@ -40,39 +53,40 @@ window.onload = function () {
 				set_selector.add(option);
 			}
 		} else {
-			console.log('Request completed incorrectly. Error', set_list_request.status);
+			console.log('set_list request completed incorrectly. Error', set_list_request.status);
 		}
 	};
+
+	//Tell request what to do upon error
 	set_list_request.onerror = function () {
 		console.log("set_list didn't work at all");
 	};
 
+	//send request
 	set_list_request.open('GET','/set_list',true);
 	set_list_request.send();
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	//Matching System
 
-	//Setup For Matching
-	var vid_width;
-	var vid_height;
-	// var canvas = document.getElementById('canvas');
+	//Create Canvas Object for Temporary Image Processing
 	var temp_canvas  = document.createElement("CANVAS");
 	var temp_context = temp_canvas.getContext('2d');
 
-	//Card Display Image and Name Area
-	cardDisplay = document.getElementById('cardDisplay');
-	cardName    = document.getElementById('cardName');
-
-	//Match Card Button and Requests
+	//Create set_list Request Object
 	var match_card_request = new XMLHttpRequest();
+
+	//Tell request to display card after recieving reponse
 	match_card_request.onload = function () {
 		if (match_card_request.status >= 200 && match_card_request.status < 400) {
-			// Success!
 			respStr  = match_card_request.response;
+
 			//Split response into name and url
 			respList = respStr.split('$');
 			respName = 'Card Name: ' + respList[0];
 			respURL  = respList[1];
+
 			// Display card image from URL and name from name
 			cardDisplay.src = respURL;
 			cardDisplay.onload = function() { // Display name only after image has loaded
@@ -82,36 +96,42 @@ window.onload = function () {
 			console.log('Request completed incorrectly. Error', match_card_request.status);
 		}
 	};
+
+	//Tell request what to do upon error
 	match_card_request.onerror = function () {
 		console.log("match_card didn't work at all");
 	};
 
-	var match_card_button = document.getElementById('match_card_button');
+	//Tell match button to send request upon click
 	match_card_button.onclick = function () {
 		if (cam_working) {
+
+			//Remove info of previously matched card
 			cardDisplay.src = 'resources/blankcard.png';
 			cardDisplay.onload = function() { // Display name only after image has loaded
 				cardName.innerHTML = 'Card Name:';
 			}
 
-			//Capture WebCam Image
-			vid_width  = webcam_feed.videoWidth;
-			vid_height = webcam_feed.videoHeight;
+			//Capture image from webcam feed to temp canvas
+			let vid_width  = webcam_feed.videoWidth;
+			let vid_height = webcam_feed.videoHeight;
 			temp_canvas.width  = vid_width;
 			temp_canvas.height = vid_height;
 			temp_context.drawImage(webcam_feed, 0, 0, vid_width, vid_height);
+
+			//Convert temp canvas image to PNG Data
 			let capture = temp_canvas.toDataURL("image/png");
 
-			//Append Image to Form
+			//Create Form Data Object to send with Request
 			let fd = new FormData();
+
+			//Append PNG Data to Form
 			fd.append('png',capture)
 
 			//Append Setcode to Form
-			let set_selector = document.getElementById('set_selector');
-			let setcode = set_selector.options[ set_selector.selectedIndex ].value
-			fd.append('setcode',setcode)
+			fd.append('setcode',set_selector.options[ set_selector.selectedIndex ].value)
 
-			//Send Form with Request
+			//Send Request with Form
 			match_card_request.open('POST', '/match_card', true);
 			match_card_request.send(fd);
 		} else {

@@ -12,12 +12,12 @@ os.chdir(dname)
 ##################################################################################
 
 
-# # Accept Request for Set Load
-# @route('/load_set', method='POST')
-# def load_set():
-#     setBytes = request.body.read()  # has form of bytestring
-#     setcode = setBytes.decode('utf-8')
-#     return "load_set not fully implemented yet"
+# Accept Request for List of Set Codes
+@route('/set_list')
+def set_list():
+    setcodes = matching.setList()
+    setstr = '$'.join(setcodes)
+    return setstr
 
 # Accept Request for Card Match
 @route('/match_card', method='POST')
@@ -28,13 +28,6 @@ def match_card():
     card_name,card_url = matching.match(cam_png_uri,setcode)
     card_both = card_name+'$'+card_url
     return card_both
-
-# Accept Request for List of Set Codes
-@route('/set_list')
-def set_list():
-    setcodes = matching.setList()
-    setstr = '$'.join(setcodes)
-    return setstr
 
 
 ##################################################################################
@@ -54,4 +47,5 @@ def send_static(filepath):
 ##################################################################################
 
 
+# Start localhost Development Server
 run(host='localhost', port=8000, debug=True)

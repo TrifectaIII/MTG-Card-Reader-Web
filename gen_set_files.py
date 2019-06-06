@@ -49,8 +49,8 @@ def getSetsStr():
 
 # Save sets string as file ############################################
 
-with open('resources/sets.txt','w') as text_file:
-    text_file.write(getSetsStr())
+# with open('resources/sets.txt','w') as text_file:
+#     text_file.write(getSetsStr())
 
 # Save each sets descriptors dict as file in resources/setDes/ ########
 

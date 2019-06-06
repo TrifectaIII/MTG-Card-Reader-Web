@@ -10,6 +10,16 @@ orb = cv2.ORB_create()
 #Create Brute Force Matcher Object
 bf = cv2.BFMatcher(cv2.NORM_HAMMING)
 
+def setList():
+    #Returns list of all stored setcodes
+    from os import walk
+    setcodes = []
+    for (dirpath, dirnames, filenames) in walk('resources/setDes'):
+        for fn in filenames:
+            setcodes.append(fn[:-4])
+        break
+    return setcodes
+
 def uriToCv2(png_uri):
     #Converts URI PNG from AJAX to cv2 Image
 
@@ -70,13 +80,3 @@ def match(cam_png_uri,setcode):
 
     #Return Name and URL for Matched Card
     return (bestName,bestURL)
-
-def setList():
-    #Returns list of all stored setcodes
-    from os import walk
-    setcodes = []
-    for (dirpath, dirnames, filenames) in walk('resources/setDes'):
-        for fn in filenames:
-            setcodes.append(fn[:-4])
-        break
-    return setcodes
