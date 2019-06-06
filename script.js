@@ -84,13 +84,13 @@ window.onload = function () {
 
 			//Split response into name and url
 			respList = respStr.split('$');
-			respName = 'Card Name: ' + respList[0];
+			respName = respList[0];
 			respURL = respList[1];
 
 			// Display card image from URL and name from name
 			cardDisplay.src = respURL;
 			cardDisplay.onload = function () { // Display name only after image has loaded
-				cardName.innerHTML = respName;
+				cardName.innerHTML = 'Card Name: ' + respName;
 			}
 		} else {
 			console.log('Request completed incorrectly. Error', match_card_request.status);
@@ -102,13 +102,13 @@ window.onload = function () {
 		console.log("match_card didn't work at all");
 	};
 
-	//Tell match button to send request upon click
+	//Tell match button to send request on click
 	match_card_button.onclick = function () {
 		if (cam_working) {
 
 			//Remove info of previously matched card
 			cardDisplay.src = 'resources/blankcard.png';
-			cardDisplay.onload = function () { // Display name only after image has loaded
+			cardDisplay.onload = function () {
 				cardName.innerHTML = 'Card Name:';
 			}
 
