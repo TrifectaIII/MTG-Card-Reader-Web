@@ -1,4 +1,4 @@
-from bottle import route, run, debug, template, request, static_file
+from bottle import route, run, debug, template, request, static_file, default_app
 import os
 
 # Self Defined Matching Package which relies on cv2 and numpy
@@ -47,5 +47,8 @@ def send_static(filepath):
 ##################################################################################
 
 
-# Start localhost Development Server
+# Start localhost Development Server (For Local Machine Use)
 run(host='localhost', port=8000, debug=True)
+
+# Setup for pythonanywhere
+#application = default_app()
