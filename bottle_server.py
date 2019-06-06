@@ -22,10 +22,10 @@ def set_list():
 # Accept Request for Card Match
 @route('/match_card', method='POST')
 def match_card():
-    #Read Image and Setcode from Request Form
+    # Read Image and Setcode from Request Form
     cam_png_uri = request.forms.get('png')
-    setcode     = request.forms.get('setcode')
-    card_name,card_url = matching.match(cam_png_uri,setcode)
+    setcode = request.forms.get('setcode')
+    card_name, card_url = matching.match(cam_png_uri, setcode)
     card_both = card_name+'$'+card_url
     return card_both
 
