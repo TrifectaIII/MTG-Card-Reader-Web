@@ -59,27 +59,6 @@ window.onload = function () {
 	var temp_canvas  = document.createElement("CANVAS");
 	var temp_context = temp_canvas.getContext('2d');
 
-
-	// //Load Set Button and Requests
-	// var load_set_request = new XMLHttpRequest();
-	// load_set_request.onload = function () {
-	// 	if (load_set_request.status >= 200 && load_set_request.status < 400) {
-	// 		// Success!
-	// 		console.log(load_set_request.response);
-	// 	} else {
-	// 		console.log('Request completed incorrectly. Error', load_set_request.status)
-	// 	}
-	// };
-	// load_set_request.onerror = function () {
-	// 	console.log("load_set didn't work at all");
-	// };
-
-	// load_set_button = document.getElementById('load_set_button');
-	// load_set_button.onclick = function () {
-	// 	load_set_request.open('POST', '/load_set', true);
-	// 	load_set_request.send('setcode_placeholder');
-	// };
-
 	//Card Display Image and Name Area
 	cardDisplay = document.getElementById('cardDisplay');
 	cardName    = document.getElementById('cardName');
@@ -107,7 +86,7 @@ window.onload = function () {
 		console.log("match_card didn't work at all");
 	};
 
-	match_card_button = document.getElementById('match_card_button');
+	var match_card_button = document.getElementById('match_card_button');
 	match_card_button.onclick = function () {
 		if (cam_working) {
 			cardDisplay.src = 'resources/blankcard.png';
