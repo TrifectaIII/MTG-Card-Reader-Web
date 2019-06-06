@@ -1,4 +1,4 @@
-from bottle import route, run, debug, template, request, static_file, default_app
+from bottle import route, template, request, static_file, default_app
 import os
 
 # Self Defined Matching Package which relies on cv2 and numpy

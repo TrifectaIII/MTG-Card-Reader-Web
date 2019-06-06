@@ -23,7 +23,7 @@ window.onload = function () {
 				notif.innerHTML = "Webcam Functional";
 			})
 			.catch(function (err0r) {
-				console.log("Something went wrong!");
+				console.log("Something went wrong!",err0r);
 				cam_working = false;
 				notif.innerHTML = "WebCam Error: Please ensure camera is connected and that this page has permission to use it.";
 				notif.style.backgroundColor = 'lightcoral';
@@ -40,14 +40,16 @@ window.onload = function () {
 	//Tell request to populat set_selector element after recieving reponse
 	set_list_request.onload = function () {
 		if (set_list_request.status >= 200 && set_list_request.status < 400) {
-			respStr = set_list_request.response;
+			
+			//Get full response
+			let respStr = set_list_request.response;
 
 			//Split response array of setcodes
-			respList = respStr.split('$');
+			let respList = respStr.split('$');
 
 			//Add each setcode to set_selector element
 			for (var i = 0; i < respList.length; i++) {
-				setcode = respList[i]
+				let setcode = respList[i]
 				let option = document.createElement("option");
 				option.text = setcode;
 				set_selector.add(option);
@@ -80,17 +82,19 @@ window.onload = function () {
 	//Tell request to display card after recieving reponse
 	match_card_request.onload = function () {
 		if (match_card_request.status >= 200 && match_card_request.status < 400) {
-			respStr = match_card_request.response;
+			
+			//Get full response
+			let respStr = match_card_request.response;
 
 			//Split response into name and url
-			respList = respStr.split('$');
-			respName = respList[0];
-			respMVID = respList[1];
+			let respList = respStr.split('$');
+			let matchName = respList[0];
+			let matchMVID = respList[1];
 
 			// Display card image from URL and name from name
-			cardDisplay.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+respMVID+'&type=card';
+			cardDisplay.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+matchMVID+'&type=card';
 			cardDisplay.onload = function () { // Display name only after image has loaded
-				cardName.innerHTML = 'Card Name: ' + respName;
+				cardName.innerHTML = 'Card Name: ' + matchName;
 			}
 		} else {
 			console.log('Request completed incorrectly. Error', match_card_request.status);

@@ -19,6 +19,7 @@ def setList():
         for fn in filenames:
             setcodes.append(fn[:-4])
         break
+    setcodes.sort()
     return setcodes
 
 
