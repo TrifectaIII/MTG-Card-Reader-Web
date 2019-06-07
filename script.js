@@ -11,6 +11,7 @@ window.onload = function () {
 
 	//Global Variables
 	var cam_working = false;//boolean to tell whether Webcam Feed is working
+	var sets_load = false;//boolean to tell whether set selector has been populated
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -25,7 +26,7 @@ window.onload = function () {
 			.catch(function (err0r) {
 				console.log("Something went wrong!",err0r);
 				cam_working = false;
-				notif.innerHTML = "WebCam Error: Please ensure camera is connected and that this page has permission to use it.";
+				notif.innerHTML = "Webcam Error: Please ensure camera is connected and that this page has permission to use it. Then reload page.";
 				notif.style.backgroundColor = 'lightcoral';
 			});
 	}
@@ -33,6 +34,23 @@ window.onload = function () {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//Add All Stored Sets to Set Selector
+
+	//Turn set_selector into Choices element
+	var set_selector_choice = new Choices(set_selector,{
+		//Options for Choices element
+		addItems: true,
+		removeItems: false,
+		renderChoiceLimit: -1,
+		searchResultLimit: 5,
+		searchPlaceholderValue:"Search For A Set:",
+	});
+
+	//Enable match button once set is selected
+	set_selector.addEventListener('choice', function(){
+		if (sets_load){
+			match_card_button.disabled = false;
+		}
+	});
 
 	//Create set_list Request Object
 	var set_list_request = new XMLHttpRequest();
@@ -47,13 +65,28 @@ window.onload = function () {
 			//Split response array of setcodes
 			let respList = respStr.split('$');
 
-			//Add each setcode to set_selector element
+			//Init List of Choice Objects
+			let options = []
+
 			for (var i = 0; i < respList.length; i++) {
 				let setcode = respList[i]
-				let option = document.createElement("option");
-				option.text = setcode;
-				set_selector.add(option);
+				//Create set Choice object for choices element
+				options.push({
+					value:setcode,
+					label:setcode,
+					selected: false,
+					disabled: false,
+				})
+				// //Old code to add items to set_selector
+				// let option = document.createElement("option");
+				// option.text = setcode;
+				// set_selector.add(option);
 			}
+
+			//Add all set Choice objects to Choices element
+			set_selector_choice.setChoices(options,'value','label',true);
+			sets_load = true;
+			
 		} else {
 			console.log('set_list request completed incorrectly. Error', set_list_request.status);
 		}

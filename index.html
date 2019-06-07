@@ -25,8 +25,18 @@
 			height: 311px;
 			background-color: black;
 		}
+
+		*, *:before, *:after {
+			box-sizing: border-box;
+		}
 	</style>
 	<link href='resources/favicon.ico' rel='icon' type='image/x-icon' />
+	<!-- Include base CSS (optional) -->
+	<!-- <link rel="stylesheet" href="resources/ChoicesJS/base.css"> -->
+	<!-- Include Choices CSS -->
+	<link rel="stylesheet" href="resources/ChoicesJS/choices.css">
+	<!-- Include Choices JavaScript -->
+	<script src="resources/ChoicesJS/choices.min.js"></script>
 </head>
 
 <body>
@@ -35,8 +45,8 @@
 	<video autoplay="true" id="webcam_feed"></video>
 	<br>
 	<span>Set:</span>
-	<select id='set_selector'></select>
-	<button id='match_card_button'>IDENTIFY CARD</button>
+	<select id='set_selector'><option placeholder>Please Select a Set</option></select>
+	<button id='match_card_button' disabled>IDENTIFY CARD</button>
 	<br>
 	<p id='cardName'>Card Name:</p>
 	<br>
