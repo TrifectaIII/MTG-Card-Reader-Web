@@ -27,21 +27,19 @@ def getSets():
     retsets = []
     for set in (list(jsonsets.keys())):
         cards = jsonsets[set]['cards']
-        empties = False
-        exists = False
+        empties = 0
+        exists = 0
         multiverse_ids = []
         for card in cards:
             try:
                 multiverse_ids.append(card['multiverseId'])
-                exists = True
+                exists += 1
             except:
                 multiverse_ids.append(None)
-                empties = True
-        if (empties and (not exists)):
-            pass
-        elif (empties and exists):
-            pass
-        else:
+                empties += 1
+        if empties == 0:
+            retsets.append(set)
+        elif exists >= empties:
             retsets.append(set)
     retsets = sorted(retsets)
     return retsets
@@ -59,8 +57,8 @@ def getSetsStr():
 # Save each sets descriptors dict as file in resources/setDes/ ########
 
 
-#for setcode in getSets():
-for setcode in ['MM3','IMA']: #TODO problem with 5ED
+for setcode in getSets():
+#for setcode in ['MM3','IMA']:
     if path.isfile('resources/setDes/'+setcode+'.des'):
         print(setcode, 'file found, skipping')
     else:
@@ -76,16 +74,21 @@ for setcode in ['MM3','IMA']: #TODO problem with 5ED
         for card in cards:
             # For each card, save to dictionary
             name = card['name']
-            mvid = card['multiverseId']
-            url = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+str(mvid)+'&type=card'
-            url_response = urlreq.urlopen(url)
-            img_array = np.array(
-                bytearray(url_response.read()), dtype=np.uint8)
-            img = cv2.imdecode(img_array, cv2.IMREAD_GRAYSCALE)
-            _, des = orb.detectAndCompute(img, None)
-            set_names.append(name)
-            set_mvids.append(mvid)
-            set_des.append(des)
+            try:
+                mvid = card['multiverseId']
+            except:
+                #print(name,'has missing MVID')
+                pass
+            else:
+                #print(name,'works')
+                url = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+str(mvid)+'&type=card'
+                url_response = urlreq.urlopen(url)
+                img_array = np.array(bytearray(url_response.read()), dtype=np.uint8)
+                img = cv2.imdecode(img_array, cv2.IMREAD_GRAYSCALE)
+                _, des = orb.detectAndCompute(img, None)
+                set_names.append(name)
+                set_mvids.append(mvid)
+                set_des.append(des)
 
         setInfo = (set_names, set_mvids, set_des)
         with open('resources/setDes/'+setcode+'.des', 'wb') as des_file:
