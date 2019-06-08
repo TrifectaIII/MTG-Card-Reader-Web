@@ -1,5 +1,6 @@
 from bottle import route, run, template, request, static_file, default_app
 import os
+import json
 
 # Self Defined Matching Package which relies on cv2 and numpy
 import matching
@@ -14,10 +15,10 @@ os.chdir(dname)
 
 # Accept Request for List of Set Codes
 @route('/set_list')
-def set_list():
-    setcodes = matching.setList()
-    setstr = '$'.join(setcodes)
-    return setstr
+def sets_listing():
+    with open('resources/sets.json','r') as json_file:
+        setsJSON = json_file.read()
+    return setsJSON
 
 # Accept Request for Card Match
 @route('/match_card', method='POST')
@@ -26,8 +27,9 @@ def match_card():
     cam_png_uri = request.forms.get('png')
     setcode = request.forms.get('setcode')
     card_name, card_mvid = matching.match(cam_png_uri, setcode)
-    card_both = card_name+'$'+str(card_mvid)
-    return card_both
+    card_dict = {'name':card_name,
+                 'mvid':str(card_mvid)}
+    return card_dict
 
 
 ##################################################################################

@@ -42,7 +42,8 @@ window.onload = function () {
 		removeItems: false,
 		renderChoiceLimit: -1,
 		searchResultLimit: 5,
-		searchPlaceholderValue:"Search For A Set:",
+		searchPlaceholderValue:"Search by Set Name or Code:",
+		itemSelectText:'',
 	});
 
 	//Enable match button once set is selected
@@ -59,29 +60,22 @@ window.onload = function () {
 	set_list_request.onload = function () {
 		if (set_list_request.status >= 200 && set_list_request.status < 400) {
 			
-			//Get full response
-			let respStr = set_list_request.response;
-
-			//Split response array of setcodes
-			let respList = respStr.split('$');
+			//Get full response as JSON
+			let respJSON = JSON.parse(set_list_request.response);
 
 			//Init List of Choice Objects
-			let options = []
+			let options = [];
 
-			for (var i = 0; i < respList.length; i++) {
-				let setcode = respList[i]
-				//Create set Choice object for choices element
+			//for each set in JSON, add set to options
+			for (let setcode in respJSON){
+				let setname = respJSON[setcode];
 				options.push({
 					value:setcode,
-					label:setcode,
+					label:setname + ' ('+setcode+')',
 					selected: false,
 					disabled: false,
 				})
-				// //Old code to add items to set_selector
-				// let option = document.createElement("option");
-				// option.text = setcode;
-				// set_selector.add(option);
-			}
+			};
 
 			//Add all set Choice objects to Choices element
 			set_selector_choice.setChoices(options,'value','label',true);
@@ -116,13 +110,12 @@ window.onload = function () {
 	match_card_request.onload = function () {
 		if (match_card_request.status >= 200 && match_card_request.status < 400) {
 			
-			//Get full response
-			let respStr = match_card_request.response;
+			//Get full response as JSON
+			let respJSON = JSON.parse(match_card_request.response);
 
-			//Split response into name and url
-			let respList = respStr.split('$');
-			let matchName = respList[0];
-			let matchMVID = respList[1];
+			//Access response for name and url
+			let matchName = respJSON.name;
+			let matchMVID = respJSON.mvid ;
 
 			// Display card image from URL and name from name
 			cardDisplay.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+matchMVID+'&type=card';

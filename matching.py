@@ -11,18 +11,6 @@ orb = cv2.ORB_create()
 bf = cv2.BFMatcher(cv2.NORM_HAMMING)
 
 
-def setList():
-    # Returns list of all stored setcodes
-    from os import walk
-    setcodes = []
-    for (dirpath, dirnames, filenames) in walk('resources/setDes'):
-        for fn in filenames:
-            setcodes.append(fn[:-4])
-        break
-    setcodes.sort()
-    return setcodes
-
-
 def uriToCv2(png_uri):
     # Converts URI PNG from AJAX to cv2 Image
 
@@ -85,3 +73,28 @@ def match(cam_png_uri, setcode):
 
     # Return Name and URL for Matched Card
     return (bestName, bestMVID)
+
+
+# def setsStr():
+#     # Returns list of all stored setcodes
+#     from os import walk
+#     setsGen = []
+#     for (dirpath, dirnames, filenames) in walk('resources/setDes'):
+#         for fn in filenames:
+#             setsGen.append(fn[:-4])
+#         break
+#     setsGen.sort()
+
+#     # Access List of Set Names
+#     with open('resources/sets.dict','rb') as dict_file:
+#         setnameDict = pickle.load(dict_file)
+
+#     # Generate String with setcodes and names of generated sets
+#     # Sets seperated by ',' setcode and setname seperated by '#'
+#     setsList = []
+#     for setcode in setsGen:
+#         setsList.append(setcode+'#'+setnameDict[setcode])
+
+#     fstr = ','.join(setsList)
+
+#     return fstr

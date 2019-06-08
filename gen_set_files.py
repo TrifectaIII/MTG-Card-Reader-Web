@@ -18,8 +18,8 @@ print('json file loaded')
 
 orb = cv2.ORB_create()
 
-# getSets returns list of all setcodes ################################
 
+# getSets returns list of all setcodes ################################
 
 def getSets():
     # return alphabetized list of all sets,
@@ -45,22 +45,28 @@ def getSets():
     return retsets
 
 
-def getSetsStr():
+def getSetsDict():
     # Joins all setcodes by commas
-    return ','.join(getSets())
+    #return ','.join(getSets())
+    setsdict = dict()
+    for set in getSets():
+        setsdict[set] = jsonsets[set]['name']
+    return setsdict
 
-# Save sets string as file ############################################
 
-# with open('resources/sets.txt','w') as text_file:
-#     text_file.write(getSetsStr())
+# Save sets dict as file ##############################################
+
+with open('resources/sets.json','w') as dict_file:
+    json.dump(getSetsDict(),dict_file,indent=4)
+
 
 # Save each sets descriptors dict as file in resources/setDes/ ########
 
-
 for setcode in getSets():
-#for setcode in ['MM3','IMA']:
+#for setcode in ['CON']: # TODO Fix Problem with CON
     if path.isfile('resources/setDes/'+setcode+'.des'):
         print(setcode, 'file found, skipping')
+    
     else:
         print('Starting', setcode)
         set_names = []
