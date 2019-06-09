@@ -60,7 +60,7 @@ with open('static/sets.json','w') as dict_file:
     json.dump(getSetsDict(),dict_file)
 
 
-# Save each sets descriptors dict as file in resources/setDes/ ########
+# Save each sets descriptors dict as file in setDes/ ########
 
 for setcode in getSets():
 #for setcode in ['CON']: # TODO Fix Problem with CON

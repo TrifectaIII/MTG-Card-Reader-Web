@@ -1,5 +1,8 @@
 window.onload = function () {
 
+	//SETUP
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	//HTML elements
 	var notif = document.getElementById('notif')//Text Area for Notifications
 	var webcam_feed = document.getElementById("webcam_feed");//Video Element for Webcam Feed
@@ -20,6 +23,7 @@ window.onload = function () {
 	var plimg_error = new Image();
 	plimg_error.src = '/static/errorcard.png';
 	
+	// WEBCAM
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//Access User's Webcam and feed to webcam_feed Element
@@ -45,9 +49,8 @@ window.onload = function () {
 			});
 	}
 
+	// POPULATE SET LIST
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	//Add All Stored Sets to Set Selector
 
 	//Turn set_selector into Choices element
 	var set_selector_choice = new Choices(set_selector,{
@@ -112,9 +115,8 @@ window.onload = function () {
 	set_list_request.open('GET', '/static/sets.json', true);
 	set_list_request.send();
 
+	// MATCHING SYSTEM
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	//Matching System
 
 	//Create Canvas Object for Temporary Image Processing
 	var temp_canvas = document.createElement("CANVAS");
