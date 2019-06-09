@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 from base64 import b64decode
 import pickle
-from os import path, walk
 
 # Setup ORB
 orb = cv2.ORB_create()
@@ -16,6 +15,7 @@ setsDict = dict()
 
 #Load All SetDes files to Memory
 def loadAllFiles():
+    from os import walk
     setsGen = []
     for (dirpath, dirnames, filenames) in walk('resources/setDes'):
         for fn in filenames:
