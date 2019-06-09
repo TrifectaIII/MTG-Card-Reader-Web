@@ -28,9 +28,9 @@ def loadAllFiles():
         with open('resources/setDes/'+setcode+'.des', 'rb') as des_file:
             set_names, set_mvids, set_des = pickle.load(des_file)
         setsDict[setcode] = (set_names, set_mvids, set_des)
-        
+
     global loadall
-    loadlall = True
+    loadall = True
 
 
 def uriToCv2(png_uri):
