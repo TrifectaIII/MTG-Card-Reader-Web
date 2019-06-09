@@ -32,12 +32,12 @@ def match_card():
 # Serve Main Page
 @route('/')
 def index():
-    return static_file('index.html', root='.')
+    return static_file('static/index.html', root='.')
 
 # Serve Static Files
-@route('/<filepath:path>')
+@route('/static/<filepath:path>')
 def send_static(filepath):
-    return static_file(filepath, root='.')
+    return static_file(filepath, root='./static/')
 
 
 ##################################################################################

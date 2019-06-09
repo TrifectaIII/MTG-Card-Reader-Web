@@ -21,7 +21,7 @@
 			width: 500px;
 			height: 375px;
 			background-color: white;
-			background-image: url('resources/loading.gif');
+			background-image: url('static/loading.gif');
 			background-position: center;
 			background-repeat: no-repeat;
 		}
@@ -30,18 +30,21 @@
 			float:left;
 			text-align: center;
 			width:40%;
+			margin: auto;
 		}
 
 		#matching_section {
 			float:left;
 			text-align: center;
 			width:30%;
+			margin: auto;
 		}
 
 		#text_section {
 			float:right;
 			text-align: center;
 			width:30%;
+			margin: auto;
 		}
 
 		#matching_tools {
@@ -60,6 +63,11 @@
 			font-size: 20px;
 		}
 
+		#cardName {
+			width: 223px;
+			margin: auto;
+		}
+
 		#cardDisplay {
 			width: 223px;
 			height: 311px;
@@ -72,14 +80,15 @@
 			resize: none;
 		}
 	</style>
-	<link href='resources/favicon.ico' rel='icon' type='image/x-icon' />
+	<link href='static/favicon.ico' rel='icon' type='image/x-icon' />
+	
 	<!-- Include Choices CSS -->
-	<link rel="stylesheet" href="resources/ChoicesJS/choices.min.css">
+	<link rel="stylesheet" href="static/ChoicesJS/choices.min.css">
 	<!-- Include Choices JavaScript -->
-	<script src="resources/ChoicesJS/choices.min.js"></script>
+	<script src="static/ChoicesJS/choices.min.js"></script>
 
 	<!-- LOAD MAIN SCRIPT -->
-	<script src="script.js"></script>
+	<script src="static/script.js"></script>
 </head>
 
 <body>
@@ -95,8 +104,9 @@
 			<select id='set_selector'><option placeholder>Please Select a Set</option></select>
 			<button id='match_card_button' disabled>IDENTIFY CARD</button>
 		</div>
+		<br>
 		<p id='cardName'>Card Name:</p>
-		<img id='cardDisplay' src='resources/blankcard.png'>
+		<img id='cardDisplay' src='static/blankcard.png'>
 	</div>
 	<div id='text_section'>
 		<textarea id='cardList' rows=35 placeholder='Cards you add will appear here!'></textarea>

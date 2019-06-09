@@ -56,15 +56,15 @@ def getSetsDict():
 
 # Save sets dict as file ##############################################
 
-with open('resources/sets.json','w') as dict_file:
-    json.dump(getSetsDict(),dict_file,indent=4)
+with open('static/sets.json','w') as dict_file:
+    json.dump(getSetsDict(),dict_file)
 
 
 # Save each sets descriptors dict as file in resources/setDes/ ########
 
 for setcode in getSets():
 #for setcode in ['CON']: # TODO Fix Problem with CON
-    if path.isfile('resources/setDes/'+setcode+'.des'):
+    if path.isfile('setDes/'+setcode+'.des'):
         print(setcode, 'file found, skipping')
     
     else:
@@ -97,5 +97,5 @@ for setcode in getSets():
                 set_des.append(des)
 
         setInfo = (set_names, set_mvids, set_des)
-        with open('resources/setDes/'+setcode+'.des', 'wb') as des_file:
+        with open('setDes/'+setcode+'.des', 'wb') as des_file:
             pickle.dump(setInfo, des_file)

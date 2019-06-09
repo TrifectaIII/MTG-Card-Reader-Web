@@ -1,7 +1,6 @@
 window.onload = function () {
 
 	//HTML elements
-
 	var notif = document.getElementById('notif')//Text Area for Notifications
 	var webcam_feed = document.getElementById("webcam_feed");//Video Element for Webcam Feed
 	var set_selector = document.getElementById('set_selector');//Select Element to Choose Set
@@ -13,7 +12,14 @@ window.onload = function () {
 	var cam_working = false;//boolean to track whether Webcam Feed is working
 	var sets_load = false;//boolean to track whether set selector has been populated
 	var set_selected = false;//boolean to track whether set has been selected
+	var match_start = 0;//integer to help calculate response time of match requests
 
+	//Preload Loading Card and Error Card Images
+	var plimg_load  = new Image();
+	plimg_load.src  = '/static/loadingcard.png';
+	var plimg_error = new Image();
+	plimg_error.src = '/static/errorcard.png';
+	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//Access User's Webcam and feed to webcam_feed Element
@@ -103,7 +109,7 @@ window.onload = function () {
 	};
 
 	//send request targeting sets.json file
-	set_list_request.open('GET', '/resources/sets.json', true);
+	set_list_request.open('GET', '/static/sets.json', true);
 	set_list_request.send();
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -121,17 +127,30 @@ window.onload = function () {
 	match_card_request.onload = function () {
 		if (match_card_request.status >= 200 && match_card_request.status < 400) {
 			
+			//Calculate Response Time and print to console
+			console.log('Match_Card Response Time (s):',(Date.now()-match_start)/1000)
+
+
 			//Get full response as JSON
 			let respJSON = JSON.parse(match_card_request.response);
 
 			//Access response for name and url
 			let matchName = respJSON.name;
-			let matchMVID = respJSON.mvid ;
+			let matchMVID = respJSON.mvid;
 
-			// Display card image from URL and name from name
-			cardDisplay.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+matchMVID+'&type=card';
-			cardDisplay.onload = function () { // Display name only after image has loaded
-				cardName.innerHTML = 'Card Name: ' + matchName;
+			if (matchName.length == 0){
+				// If no match is made, display error
+				cardDisplay.onload = function () {
+					cardName.innerHTML = 'COULD NOT IDENTIFY CARD';
+				cardName.style.backgroundColor = 'lightcoral';
+				}
+				cardDisplay.src = '/static/errorcard.png';
+			} else {
+				// Display card image from URL and name from name
+				cardDisplay.onload = function () { // Display name only after image has loaded
+					cardName.innerHTML = 'Card Name: ' + matchName;
+				}
+				cardDisplay.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+matchMVID+'&type=card';
 			}
 		} else {
 			console.log('Request completed incorrectly. Error', match_card_request.status);
@@ -147,11 +166,15 @@ window.onload = function () {
 	match_card_button.onclick = function () {
 		if (cam_working) {
 
-			//Remove info of previously matched card
-			cardDisplay.src = 'resources/blankcard.png';
+			//start response timer
+			match_start = Date.now()
+
+			//Remove previous card and display loading
 			cardDisplay.onload = function () {
-				cardName.innerHTML = 'Card Name:';
+				cardName.innerHTML = 'Loading...';
+				cardName.style.backgroundColor = '';
 			}
+			cardDisplay.src = '/static/loadingcard.png';
 
 			//Capture image from webcam feed to temp canvas
 			let vid_width = webcam_feed.videoWidth;

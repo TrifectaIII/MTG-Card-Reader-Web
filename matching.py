@@ -17,7 +17,7 @@ setsDict = dict()
 def loadAllFiles():
     from os import walk
     setsGen = []
-    for (dirpath, dirnames, filenames) in walk('resources/setDes'):
+    for (dirpath, dirnames, filenames) in walk('setDes/'):
         for fn in filenames:
             setsGen.append(fn[:-4])
         break
@@ -25,7 +25,7 @@ def loadAllFiles():
 
     global setsDict
     for setcode in setsGen:
-        with open('resources/setDes/'+setcode+'.des', 'rb') as des_file:
+        with open('setDes/'+setcode+'.des', 'rb') as des_file:
             set_names, set_mvids, set_des = pickle.load(des_file)
         setsDict[setcode] = (set_names, set_mvids, set_des)
 
@@ -77,7 +77,7 @@ def match(cam_png_uri, setcode):
 
     # Read setDes Data from File if not loading all
     if not loadall:
-        with open('resources/setDes/'+setcode+'.des', 'rb') as des_file:
+        with open('setDes/'+setcode+'.des', 'rb') as des_file:
             set_names, set_mvids, set_des = pickle.load(des_file)
     # Else retrieve setDes Data from dictionary
     else:
