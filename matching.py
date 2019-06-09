@@ -12,6 +12,7 @@ bf = cv2.BFMatcher(cv2.NORM_HAMMING)
 
 # Global Switch on Reading From Files vs Loading All to Memory
 loadall = False
+setsDict = dict()
 
 #Load All SetDes files to Memory
 def loadAllFiles():
@@ -22,8 +23,7 @@ def loadAllFiles():
         break
     setsGen.sort()
 
-    setsDict = dict()
-
+    global setsDict
     for setcode in setsGen:
         with open('resources/setDes/'+setcode+'.des', 'rb') as des_file:
             set_names, set_mvids, set_des = pickle.load(des_file)
