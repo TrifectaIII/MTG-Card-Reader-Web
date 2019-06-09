@@ -9,6 +9,8 @@ abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 
+# Tells Matching.py to Load all files into memory
+matching.loadAllFiles()
 
 ##################################################################################
 

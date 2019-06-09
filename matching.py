@@ -14,7 +14,7 @@ bf = cv2.BFMatcher(cv2.NORM_HAMMING)
 loadall = False
 
 #Load All SetDes files to Memory
-if loadall:
+def loadAllFiles():
     setsGen = []
     for (dirpath, dirnames, filenames) in walk('resources/setDes'):
         for fn in filenames:
@@ -28,6 +28,9 @@ if loadall:
         with open('resources/setDes/'+setcode+'.des', 'rb') as des_file:
             set_names, set_mvids, set_des = pickle.load(des_file)
         setsDict[setcode] = (set_names, set_mvids, set_des)
+        
+    global loadall
+    loadlall = True
 
 
 def uriToCv2(png_uri):
@@ -98,28 +101,3 @@ def match(cam_png_uri, setcode):
 
     # Return Name and URL for Matched Card
     return (bestName, bestMVID)
-
-
-# def setsStr():
-#     # Returns list of all stored setcodes
-#     from os import walk
-#     setsGen = []
-#     for (dirpath, dirnames, filenames) in walk('resources/setDes'):
-#         for fn in filenames:
-#             setsGen.append(fn[:-4])
-#         break
-#     setsGen.sort()
-
-#     # Access List of Set Names
-#     with open('resources/sets.dict','rb') as dict_file:
-#         setnameDict = pickle.load(dict_file)
-
-#     # Generate String with setcodes and names of generated sets
-#     # Sets seperated by ',' setcode and setname seperated by '#'
-#     setsList = []
-#     for setcode in setsGen:
-#         setsList.append(setcode+'#'+setnameDict[setcode])
-
-#     fstr = ','.join(setsList)
-
-#     return fstr
