@@ -2,13 +2,32 @@ import cv2
 import numpy as np
 from base64 import b64decode
 import pickle
-from os import path
+from os import path, walk
 
 # Setup ORB
 orb = cv2.ORB_create()
 
 # Create Brute Force Matcher Object
 bf = cv2.BFMatcher(cv2.NORM_HAMMING)
+
+# Global Switch on Reading From Files vs Loading All to Memory
+loadall = False
+
+#Load All SetDes files to Memory
+if loadall:
+    setsGen = []
+    for (dirpath, dirnames, filenames) in walk('resources/setDes'):
+        for fn in filenames:
+            setsGen.append(fn[:-4])
+        break
+    setsGen.sort()
+
+    setsDict = dict()
+
+    for setcode in setsGen:
+        with open('resources/setDes/'+setcode+'.des', 'rb') as des_file:
+            set_names, set_mvids, set_des = pickle.load(des_file)
+        setsDict[setcode] = (set_names, set_mvids, set_des)
 
 
 def uriToCv2(png_uri):
@@ -45,6 +64,7 @@ def match(cam_png_uri, setcode):
 
     global bf
     global orb
+    global loadall
 
     # Convert request data to cv2 image
     img = uriToCv2(cam_png_uri)
@@ -52,9 +72,14 @@ def match(cam_png_uri, setcode):
     # Detect and Compute ORB Descriptors
     _, desCam = orb.detectAndCompute(img, None)
 
-    # Read setDes Data from File
-    with open('resources/setDes/'+setcode+'.des', 'rb') as des_file:
-        set_names, set_mvids, set_des = pickle.load(des_file)
+    # Read setDes Data from File if not loading all
+    if not loadall:
+        with open('resources/setDes/'+setcode+'.des', 'rb') as des_file:
+            set_names, set_mvids, set_des = pickle.load(des_file)
+    # Else retrieve setDes Data from dictionary
+    else:
+        global setsDict
+        set_names, set_mvids, set_des = setsDict[setcode]
 
     # Find Match
     bestCount = 0
