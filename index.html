@@ -6,9 +6,13 @@
 	<meta name="viewport" content="width=device-width">
 	<title>MTG Card Reader</title>
 	<style>
+		*, *:before, *:after {
+			/* Required to make Choices element look right */
+			box-sizing: border-box;
+		}
+
 		body {
 			background-color: MediumPurple;
-			text-align: center;
 			font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 			font-weight: bold;
 		}
@@ -22,18 +26,26 @@
 			background-repeat: no-repeat;
 		}
 
-		#cardDisplay {
-			width: 223px;
-			height: 311px;
-			background-color: black;
+		#webcam_section {
+			float:left;
+			text-align: center;
+			width:40%;
 		}
 
-		*, *:before, *:after {
-			box-sizing: border-box;
+		#matching_section {
+			float:left;
+			text-align: center;
+			width:30%;
 		}
 
-		#set_select_div {
-			width: 500px;
+		#text_section {
+			float:right;
+			text-align: center;
+			width:30%;
+		}
+
+		#matching_tools {
+			width: 80%;
 			margin: auto;
 			font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 			font-weight: bold;
@@ -41,36 +53,54 @@
 
 		#match_card_button {
 			display: block;
+			margin: auto;
 			width: 100%;
 			padding: 14px 28px;
 			font-weight:bolder;
 			font-size: 20px;
 		}
+
+		#cardDisplay {
+			width: 223px;
+			height: 311px;
+			background-color: black;
+		}
+
+		#cardList {
+			width: 80%;
+			height: 100%;
+			resize: none;
+		}
 	</style>
 	<link href='resources/favicon.ico' rel='icon' type='image/x-icon' />
-	<!-- Include base CSS (optional) -->
-	<!-- <link rel="stylesheet" href="resources/ChoicesJS/base.min.css"> -->
 	<!-- Include Choices CSS -->
 	<link rel="stylesheet" href="resources/ChoicesJS/choices.min.css">
 	<!-- Include Choices JavaScript -->
 	<script src="resources/ChoicesJS/choices.min.js"></script>
+
+	<!-- LOAD MAIN SCRIPT -->
+	<script src="script.js"></script>
 </head>
 
 <body>
-	<p id='notif'> Loading Webcam... </p>
-	<br>
-	<video autoplay="true" id="webcam_feed"></video>
-	<br>
-	<div id='set_select_div'>
-		<span>Set:</span></nobr>
-		<select id='set_selector'><option placeholder>Please Select a Set</option></select>
-		<button id='match_card_button' disabled>IDENTIFY CARD</button>
+	<div id='webcam_section'>
+		<p id='notif'> Loading Webcam... </p>
+		<br>
+		<video autoplay="true" id="webcam_feed"></video>
+		<br>
 	</div>
-	<br>
-	<p id='cardName'>Card Name:</p>
-	<br>
-	<img id='cardDisplay' src='resources/blankcard.png'>
-	<script src="script.js"></script>
+	<div id='matching_section'>
+		<div id='matching_tools'>
+			<span>Set:</span></nobr>
+			<select id='set_selector'><option placeholder>Please Select a Set</option></select>
+			<button id='match_card_button' disabled>IDENTIFY CARD</button>
+		</div>
+		<p id='cardName'>Card Name:</p>
+		<img id='cardDisplay' src='resources/blankcard.png'>
+	</div>
+	<div id='text_section'>
+		<textarea id='cardList' rows=35 placeholder='Cards you add will appear here!'></textarea>
+	</div>
 </body>
 
 </html>

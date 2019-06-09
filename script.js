@@ -10,8 +10,9 @@ window.onload = function () {
 	var match_card_button = document.getElementById('match_card_button');//Button to Execute Matching
 
 	//Global Variables
-	var cam_working = false;//boolean to tell whether Webcam Feed is working
-	var sets_load = false;//boolean to tell whether set selector has been populated
+	var cam_working = false;//boolean to track whether Webcam Feed is working
+	var sets_load = false;//boolean to track whether set selector has been populated
+	var set_selected = false;//boolean to track whether set has been selected
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -19,11 +20,18 @@ window.onload = function () {
 	if (navigator.mediaDevices.getUserMedia) {
 		navigator.mediaDevices.getUserMedia({ video: true })
 			.then(function (stream) {
+				//If Cam is Working
 				webcam_feed.srcObject = stream;
 				cam_working = true;
 				notif.innerHTML = "Webcam Functional";
+
+				//Enable match button once set is selected and camera is working
+				if (set_selected){
+					match_card_button.disabled = false;
+				}
 			})
 			.catch(function (err0r) {
+				//If Cam Fails
 				console.log("Something went wrong!",err0r);
 				cam_working = false;
 				notif.innerHTML = "Webcam Error: Please ensure camera is connected and that this page has permission to use it. Then reload page.";
@@ -46,10 +54,13 @@ window.onload = function () {
 		itemSelectText:'',
 	});
 
-	//Enable match button once set is selected
+	//Enable match button once set is selected and camera is working
 	set_selector.addEventListener('choice', function(){
 		if (sets_load){
-			match_card_button.disabled = false;
+			set_selected = true;
+			if (cam_working){
+				match_card_button.disabled = false;
+			}
 		}
 	});
 
