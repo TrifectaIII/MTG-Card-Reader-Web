@@ -15,13 +15,6 @@ matching.loadAllFiles()
 ##################################################################################
 
 
-# Accept Request for List of Set Codes
-@route('/set_list')
-def sets_listing():
-    with open('resources/sets.json','r') as json_file:
-        setsJSON = json_file.read()
-    return setsJSON
-
 # Accept Request for Card Match
 @route('/match_card', method='POST')
 def match_card():

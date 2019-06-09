@@ -102,8 +102,8 @@ window.onload = function () {
 		console.log("set_list didn't work at all");
 	};
 
-	//send request
-	set_list_request.open('GET', '/set_list', true);
+	//send request targeting sets.json file
+	set_list_request.open('GET', '/resources/sets.json', true);
 	set_list_request.send();
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
