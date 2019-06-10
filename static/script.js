@@ -19,7 +19,7 @@ window.onload = function () {
 
 	//Preload Loading Card and Error Card Images
 	var plimg_load  = new Image();
-	plimg_load.src  = '/static/loadingcard.png';
+	plimg_load.src  = '/static/loadingcard.gif';
 	var plimg_error = new Image();
 	plimg_error.src = '/static/errorcard.png';
 	
@@ -150,7 +150,7 @@ window.onload = function () {
 			} else {
 				// Display card image from URL and name from name
 				cardDisplay.onload = function () { // Display name only after image has loaded
-					cardName.innerHTML = 'Card Name: ' + matchName;
+					cardName.innerHTML = matchName;
 				}
 				cardDisplay.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+matchMVID+'&type=card';
 			}
@@ -176,7 +176,7 @@ window.onload = function () {
 				cardName.innerHTML = 'Loading...';
 				cardName.style.backgroundColor = '';
 			}
-			cardDisplay.src = '/static/loadingcard.png';
+			cardDisplay.src = '/static/loadingcard.gif';
 
 			//Capture image from webcam feed to temp canvas
 			let vid_width = webcam_feed.videoWidth;

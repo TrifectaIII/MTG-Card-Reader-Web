@@ -66,12 +66,14 @@
 		#cardName {
 			width: 223px;
 			margin: auto;
+			display:block;
 		}
 
 		#cardDisplay {
 			width: 223px;
 			height: 311px;
-			background-color: black;
+			object-fit: contain;
+			background-color: white;
 		}
 
 		#cardList {
@@ -105,7 +107,7 @@
 			<button id='match_card_button' disabled>IDENTIFY CARD</button>
 		</div>
 		<br>
-		<p id='cardName'>Card Name:</p>
+		<p id='cardName'><br></p>
 		<img id='cardDisplay' src='static/blankcard.png'>
 	</div>
 	<div id='text_section'>
