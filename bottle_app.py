@@ -42,9 +42,9 @@ def send_static(filepath):
 
 ##################################################################################
 
-
-# Start localhost Development Server (For Local Machine Use)
-run(host='localhost', port=8000, debug=True)
-
 # Setup for pythonanywhere
-#application = default_app()
+application = default_app()
+
+# Start localhost Development Server (For Local Machine Use) If this is Main file
+if __name__ == '__main__':
+    run(host='localhost', port=8000, debug=True)
