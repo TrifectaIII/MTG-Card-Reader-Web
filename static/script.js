@@ -185,14 +185,15 @@ window.onload = function () {
 			temp_canvas.height = vid_height;
 			temp_context.drawImage(webcam_feed, 0, 0, vid_width, vid_height);
 
-			//Convert temp canvas image to PNG Data
-			let capture = temp_canvas.toDataURL("image/png");
+			//Convert temp canvas image to PNG/JPG Data
+			let capture = temp_canvas.toDataURL("image/jpeg",0.1); //Send as JPG, numeric argument is quality (higher is better quality)
+			//let capture = temp_canvas.toDataURL("image/png"); //Send as PNG
 
 			//Create Form Data Object to send with Request
 			let fd = new FormData();
 
 			//Append PNG Data to Form
-			fd.append('png', capture)
+			fd.append('image', capture)
 
 			//Append Setcode to Form
 			fd.append('setcode', set_selector.options[set_selector.selectedIndex].value)

@@ -18,9 +18,9 @@ matching.loadAllFiles()
 @route('/match_card', method='POST')
 def match_card():
     # Read Image and Setcode from Request Form
-    cam_png_uri = request.forms.get('png')
+    img_uri = request.forms.get('image')
     setcode = request.forms.get('setcode')
-    card_name, card_mvid = matching.match(cam_png_uri, setcode)
+    card_name, card_mvid = matching.match(img_uri, setcode)
     card_dict = {'name':card_name,
                  'mvid':str(card_mvid)}
     return card_dict

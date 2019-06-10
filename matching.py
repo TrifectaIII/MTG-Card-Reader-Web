@@ -33,16 +33,16 @@ def loadAllFiles():
     loadall = True
 
 
-def uriToCv2(png_uri):
-    # Converts URI PNG from AJAX to cv2 Image
+def uriToCv2(img_uri):
+    # Converts URI PNG/JPG from AJAX to cv2 Image
 
     # Remove URI header from png data
-    png_arr = png_uri.split(',')
-    png_data = png_arr[1]
-    # Decode base64 png data
-    png_data_decode = b64decode(png_data)
-    # Create numpy array with png data
-    np_arr = np.asarray(bytearray(png_data_decode), dtype=np.uint8)
+    img_arr = img_uri.split(',')
+    img_data = img_arr[1]
+    # Decode base64 png/jpg data
+    img_data_decode = b64decode(img_data)
+    # Create numpy array with png/jpg data
+    np_arr = np.asarray(bytearray(img_data_decode), dtype=np.uint8)
     # Convert numpy array to cv2 image, then return
     img_cv2 = cv2.imdecode(np_arr, cv2.IMREAD_GRAYSCALE)
     return img_cv2
