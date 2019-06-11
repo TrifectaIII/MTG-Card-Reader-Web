@@ -4,7 +4,7 @@ window.onload = function () {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//HTML elements
-	var notif = document.getElementById('notif')//Text Area for Notifications
+	var notif = document.getElementById('notif');//Text Area for Notifications
 	var webcam_feed = document.getElementById("webcam_feed");//Video Element for Webcam Feed
 	var set_selector = document.getElementById('set_selector');//Select Element to Choose Set
 	var cardDisplay = document.getElementById('cardDisplay');//Image Element to Display Matched Card Image
@@ -47,7 +47,7 @@ window.onload = function () {
 				notif.innerHTML = "Webcam Error: Please ensure camera is connected and that this page has permission to use it. Then reload page.";
 				notif.style.backgroundColor = 'lightcoral';
 			});
-	}
+	};
 
 	// POPULATE SET LIST
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -69,8 +69,8 @@ window.onload = function () {
 			set_selected = true;
 			if (cam_working){
 				match_card_button.disabled = false;
-			}
-		}
+			};
+		};
 	});
 
 	//Create set_list Request Object
@@ -84,26 +84,26 @@ window.onload = function () {
 			let respJSON = JSON.parse(set_list_request.response);
 
 			//Init List of Choice Objects
-			let options = [];
+			let choiceList = [];
 
-			//for each set in JSON, add set to options
+			//for each set in JSON, add set to choiceList
 			for (let setcode in respJSON){
 				let setname = respJSON[setcode];
-				options.push({
+				choiceList.push({
 					value:setcode,
 					label:setname + ' ('+setcode+')',
 					selected: false,
 					disabled: false,
-				})
+				});
 			};
 
 			//Add all set Choice objects to Choices element
-			set_selector_choice.setChoices(options,'value','label',true);
+			set_selector_choice.setChoices(choiceList,'value','label',true);
 			sets_load = true;
 			
 		} else {
 			console.log('set_list request completed incorrectly. Error', set_list_request.status);
-		}
+		};
 	};
 
 	//Tell request what to do upon error
@@ -129,9 +129,8 @@ window.onload = function () {
 	match_card_request.onload = function () {
 		if (match_card_request.status >= 200 && match_card_request.status < 400) {
 			
-			//Calculate Response Time and print to console
-			console.log('Match_Card Response Time (s):',(Date.now()-match_start)/1000)
-
+			//Calculate Response Time and log to console
+			console.log('Match_Card Response Time (s):',(Date.now()-match_start)/1000);
 
 			//Get full response as JSON
 			let respJSON = JSON.parse(match_card_request.response);
@@ -145,18 +144,18 @@ window.onload = function () {
 				cardDisplay.onload = function () {
 					cardName.innerHTML = 'COULD NOT IDENTIFY CARD';
 				cardName.style.backgroundColor = 'lightcoral';
-				}
+				};
 				cardDisplay.src = '/static/errorcard.png';
 			} else {
 				// Display card image from URL and name from name
 				cardDisplay.onload = function () { // Display name only after image has loaded
 					cardName.innerHTML = matchName;
-				}
-				cardDisplay.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+matchMVID+'&type=card';
 			}
+			cardDisplay.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+matchMVID+'&type=card';
+			};
 		} else {
 			console.log('Request completed incorrectly. Error', match_card_request.status);
-		}
+		};
 	};
 
 	//Tell request what to do upon error
@@ -169,13 +168,13 @@ window.onload = function () {
 		if (cam_working) {
 
 			//start response timer
-			match_start = Date.now()
+			match_start = Date.now();
 
 			//Remove previous card and display loading
 			cardDisplay.onload = function () {
 				cardName.innerHTML = 'Loading...';
 				cardName.style.backgroundColor = '';
-			}
+			};
 			cardDisplay.src = '/static/loadingcard.gif';
 
 			//Capture image from webcam feed to temp canvas
@@ -193,16 +192,16 @@ window.onload = function () {
 			let fd = new FormData();
 
 			//Append PNG Data to Form
-			fd.append('image', capture)
+			fd.append('image', capture);
 
 			//Append Setcode to Form
-			fd.append('setcode', set_selector.options[set_selector.selectedIndex].value)
+			fd.append('setcode', set_selector.options[set_selector.selectedIndex].value);
 
 			//Send Request with Form
 			match_card_request.open('POST', '/match_card', true);
 			match_card_request.send(fd);
 		} else {
-			console.log('Camera Not Working, so cannot send image for match')
-		}
+			console.log('Camera Not Working, so cannot send image for match');
+		};
 	};
 };
