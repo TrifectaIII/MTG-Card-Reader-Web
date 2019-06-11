@@ -3,7 +3,7 @@ import cv2
 import pickle
 import json
 from urllib import request as urlreq
-from os import path
+from os import path, rename
 
 # Setup JSON File #####################################################
 
@@ -59,12 +59,11 @@ def getSetsDict():
 with open('static/sets.json','w') as dict_file:
     json.dump(getSetsDict(),dict_file)
 
-
 # Save each sets descriptors dict as file in setDes/ ########
 
 for setcode in getSets():
-#for setcode in ['CON']: # TODO Fix Problem with CON
-    if path.isfile('setDes/'+setcode+'.des'):
+    if path.isfile('setDes/set'+setcode+'.des'):
+        # Skip if file exists
         print(setcode, 'file found, skipping')
     
     else:
@@ -97,5 +96,5 @@ for setcode in getSets():
                 set_des.append(des)
 
         setInfo = (set_names, set_mvids, set_des)
-        with open('setDes/'+setcode+'.des', 'wb') as des_file:
+        with open('setDes/set'+setcode+'.des', 'wb') as des_file:
             pickle.dump(setInfo, des_file)
