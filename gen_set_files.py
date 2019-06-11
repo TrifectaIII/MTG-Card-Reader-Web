@@ -39,7 +39,7 @@ def getSets():
                 empties += 1
         if empties == 0:
             retsets.append(set)
-        elif exists >= empties:
+        elif exists > 0:
             retsets.append(set)
     retsets = sorted(retsets)
     return retsets
