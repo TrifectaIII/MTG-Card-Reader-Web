@@ -1,3 +1,5 @@
+// Primary JS Script for https://github.com/TrifectaIII/MTG-Card-Reader-Web
+
 window.onload = function () {
 
 	//SETUP

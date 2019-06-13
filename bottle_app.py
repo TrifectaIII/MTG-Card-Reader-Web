@@ -1,3 +1,6 @@
+# Main Bottle App File for https://github.com/TrifectaIII/MTG-Card-Reader-Web
+# Handles routing of HTTP requests
+
 from bottle import route, run, request, static_file, default_app
 import os
 

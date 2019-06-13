@@ -1,3 +1,7 @@
+# Matching Package for https://github.com/TrifectaIII/MTG-Card-Reader-Web
+# Handles the matching of webcam images to individual cards
+# Uses opencv's ORB feature descriptor
+
 import cv2
 import numpy as np
 from base64 import b64decode

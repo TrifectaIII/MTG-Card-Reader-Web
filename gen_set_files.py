@@ -1,3 +1,6 @@
+# Script that processes images from Gatherer for use with https://github.com/TrifectaIII/MTG-Card-Reader-Web
+# Uses opencv's ORB feature descriptor
+
 import numpy as np
 import cv2
 import pickle
