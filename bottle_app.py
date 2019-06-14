@@ -12,6 +12,7 @@ dname = os.path.dirname(abspath)
 os.chdir(dname)
 
 # Tells Matching.py to Load all files into memory
+# Comment out to revert to loading files upon request
 matching.loadAllFiles()
 
 ##################################################################################

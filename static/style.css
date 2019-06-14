@@ -1,0 +1,105 @@
+*, *:before, *:after {
+    /* Required to make Choices element look right */
+    box-sizing: border-box;
+}
+
+body {
+    background-color: MediumPurple;
+    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: bold;
+}
+
+    #webcam_section {
+        float:left;
+        text-align: center;
+        width:40%;
+        margin: auto;
+    }
+
+        #webcam_feed {
+            width: 500px;
+            height: 375px;
+            max-width: 100%;
+            object-fit: contain;
+            background-color: white;
+            background-image: url('static/loading.gif');
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+
+
+    #card_section {
+        float:left;
+        text-align: center;
+        width:30%;
+        margin: auto;
+    }
+
+        #matching_tools {
+            width: 80%;
+            margin: auto;
+            font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-weight: bold;
+        }
+
+            #match_card_button {
+                display: block;
+                margin: auto;
+                width: 100%;
+                padding: 14px 28px;
+                font-weight:bolder;
+                font-size: 20px;
+            }
+
+        #card_tools{
+            width:80%;
+            text-align: center;
+            margin:auto;
+        }
+
+            #card_info {
+                float:left;
+                width: 50%;
+                text-align: center;
+            }
+
+                #cardName {
+                    width: 223px;
+                    margin: auto;
+                }
+
+                #cardDisplay {
+                    width: 223px;
+                    height: 311px;
+                    object-fit: contain;
+                    background-color: white;
+                }
+
+            #adding_buttons {
+                float:right;
+                width:50%;
+                height:100%;
+                text-align: center;
+            }
+
+                .adding_button {
+                    width:100%;
+                    height:75px;
+                    font-size: 130%;
+                    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                    font-weight: normal;
+                }
+
+    #text_section {
+        float:right;
+        text-align: center;
+        width:30%;
+        margin: auto;
+    }
+
+        #cardList {
+            width: 80%;
+            height: 100%;
+            resize: none;
+        }
