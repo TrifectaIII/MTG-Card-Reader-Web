@@ -9,9 +9,10 @@ window.onload = function () {
 	var notif = document.getElementById('notif');//Text Area for Notifications
 	var webcam_feed = document.getElementById("webcam_feed");//Video Element for Webcam Feed
 	var set_selector = document.getElementById('set_selector');//Select Element to Choose Set
-	var cardDisplay = document.getElementById('cardDisplay');//Image Element to Display Matched Card Image
-	var cardName = document.getElementById('cardName');//Text Area to Display Matched Card Name
+	var card_display = document.getElementById('card_display');//Image Element to Display Matched Card Image
+	var card_name = document.getElementById('card_name');//Text Area to Display Matched Card Name
 	var match_card_button = document.getElementById('match_card_button');//Button to Execute Matching
+	var
 
 	//Dictionary to Hold Adding Buttons
 	addingButtonDict = {};
@@ -156,17 +157,17 @@ window.onload = function () {
 
 			if (matchName.length == 0){
 				// If no match is made, display error
-				cardDisplay.onload = function () {
-					cardName.innerHTML = 'COULD NOT IDENTIFY CARD';
-				cardName.style.backgroundColor = 'lightcoral';
+				card_display.onload = function () {
+					card_name.innerHTML = 'COULD NOT IDENTIFY CARD';
+				card_name.style.backgroundColor = 'lightcoral';
 				};
-				cardDisplay.src = '/static/errorcard.png';
+				card_display.src = '/static/errorcard.png';
 			} else {
 				// Display card image from URL and name from name
-				cardDisplay.onload = function () { // Display name only after image has loaded
-					cardName.innerHTML = matchName;
+				card_display.onload = function () { // Display name only after image has loaded
+					card_name.innerHTML = matchName;
 				};
-				cardDisplay.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+matchMVID+'&type=card';
+				card_display.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+matchMVID+'&type=card';
 				//Enable adding Buttons
 				enableButtons(addingButtonDict);
 			};
@@ -188,11 +189,11 @@ window.onload = function () {
 			match_start = Date.now();
 
 			//Remove previous card and display loading
-			cardDisplay.onload = function () {
-				cardName.innerHTML = 'Loading...';
-				cardName.style.backgroundColor = '';
+			card_display.onload = function () {
+				card_name.innerHTML = 'Loading...';
+				card_name.style.backgroundColor = '';
 			};
-			cardDisplay.src = '/static/loadingcard.gif';
+			card_display.src = '/static/loadingcard.gif';
 
 			//Disable all adding buttons until new card matched
 			disableButtons(addingButtonDict);

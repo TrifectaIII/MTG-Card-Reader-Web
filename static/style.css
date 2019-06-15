@@ -64,13 +64,13 @@ body {
                 text-align: center;
             }
 
-                #cardName {
+                #card_name {
                     max-width: 100%;
                     width: 223px;
                     margin: auto;
                 }
 
-                #cardDisplay {
+                #card_display {
                     max-width: 100%;
                     width: 223px;
                     height: 311px;
