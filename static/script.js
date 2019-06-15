@@ -12,7 +12,7 @@ window.onload = function () {
 	var card_display = document.getElementById('card_display');//Image Element to Display Matched Card Image
 	var card_name = document.getElementById('card_name');//Text Area to Display Matched Card Name
 	var match_card_button = document.getElementById('match_card_button');//Button to Execute Matching
-	var
+	var card_list = document.getElementById('match_card_button');//Text Area for generating list of cards
 
 	//Dictionary to Hold Adding Buttons
 	addingButtonDict = {};
