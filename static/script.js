@@ -5,13 +5,26 @@ window.onload = function () {
 	//SETUP
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	//HTML elements
+	//Get HTML Elements
 	var notif = document.getElementById('notif');//Text Area for Notifications
 	var webcam_feed = document.getElementById("webcam_feed");//Video Element for Webcam Feed
 	var set_selector = document.getElementById('set_selector');//Select Element to Choose Set
 	var cardDisplay = document.getElementById('cardDisplay');//Image Element to Display Matched Card Image
 	var cardName = document.getElementById('cardName');//Text Area to Display Matched Card Name
 	var match_card_button = document.getElementById('match_card_button');//Button to Execute Matching
+
+	//Dictionary to Hold Adding Buttons
+	addingButtonDict = {};
+	//List of Adding Button Id's
+	var idList = ['add1','add4','add10','rem1','rem4','rem10','remall'];
+	//Loop through list and add to dict with id as key
+	for (let i=0; i < idList.length; i++){
+		let id = idList[i];
+		addingButtonDict[id] = document.getElementById(id);
+	};
+
+	//Start with all buttons disabled, before any card is matched
+	disableButtons(addingButtonDict);
 
 	//Global Variables
 	var cam_working = false;//boolean to track whether Webcam Feed is working
@@ -152,8 +165,10 @@ window.onload = function () {
 				// Display card image from URL and name from name
 				cardDisplay.onload = function () { // Display name only after image has loaded
 					cardName.innerHTML = matchName;
-			}
-			cardDisplay.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+matchMVID+'&type=card';
+				};
+				cardDisplay.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+matchMVID+'&type=card';
+				//Enable adding Buttons
+				enableButtons(addingButtonDict);
 			};
 		} else {
 			console.log('Request completed incorrectly. Error', match_card_request.status);
@@ -179,6 +194,9 @@ window.onload = function () {
 			};
 			cardDisplay.src = '/static/loadingcard.gif';
 
+			//Disable all adding buttons until new card matched
+			disableButtons(addingButtonDict);
+
 			//Capture image from webcam feed to temp canvas
 			let vid_width = webcam_feed.videoWidth;
 			let vid_height = webcam_feed.videoHeight;
@@ -202,8 +220,23 @@ window.onload = function () {
 			//Send Request with Form
 			match_card_request.open('POST', '/match_card', true);
 			match_card_request.send(fd);
+
 		} else {
 			console.log('Camera Not Working, so cannot send image for match');
 		};
 	};
 };
+
+//Disable all buttons stored in a dictionary
+var disableButtons = function (dict) {
+	for (let id in dict) {
+		dict[id].disabled = true;
+	}
+}
+
+//Enable all buttons stored in a dictionary
+var enableButtons = function (dict) {
+	for (let id in dict) {
+		dict[id].disabled = false;
+	}
+}
