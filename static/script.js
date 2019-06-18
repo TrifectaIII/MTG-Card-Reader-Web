@@ -12,7 +12,7 @@ window.onload = function () {
 	var card_display = document.getElementById('card_display');//Image Element to Display Matched Card Image
 	var card_name = document.getElementById('card_name');//Text Area to Display Matched Card Name
 	var match_card_button = document.getElementById('match_card_button');//Button to Execute Matching
-	var card_list = document.getElementById('match_card_button');//Text Area for generating list of cards
+	var card_list = document.getElementById('card_list');//Text Area for generating list of cards
 
 	//Dictionary to Hold Adding Buttons
 	addingButtonDict = {};
@@ -227,16 +227,37 @@ window.onload = function () {
 
 	// ADDING BUTTONS
 	//////////////////////////////////////////////////////////////////////////////
-
-	// Disable all adding buttons at start (prior to any match)
-	//disableButtons(addingButtonDict)
+	// Note: All buttons are disabled at start until a card is matched
 
 	// Set all onclick functions for the adding buttons
 	for (let id in addingButtonDict) {
 		let button = addingButtonDict[id];
-		button.onclick = function () {
-			console.log(id);
-			console.log(card_name.innerHTML)
+
+		//command will be 'add' or 'rem'
+		let command = id.slice(0,3);
+		//amount will be an integer string or 'all'
+		let amount = id.slice(3);
+
+		//define onclick function for this particular button
+		if (command == 'add') {
+			// function for adding buttons
+			button.onclick = function () {
+
+				//get name of card from card_name element
+				let card = card_name.innerHTML;
+
+				//get exisiting textarea contents
+				let existing = card_list.value;
+
+				//Append new line to textarea
+				card_list.value = card_list.value +'\n'+ amount +' '+ card;
+			};
+
+		} else {
+			// function for removal buttons
+			button.onclick = function () {
+				console.log('Removal buttons not working yet');
+			};
 		};
 	};
 };
