@@ -236,7 +236,7 @@ window.onload = function () {
 		//command will be 'add' or 'rem'
 		let command = id.slice(0,3);
 		//amount will be an integer string or 'all'
-		let amount = id.slice(3);
+		let amount = parseInt(id.slice(3),10);
 
 		//define onclick function for this particular button
 		if (command == 'add') {
@@ -246,11 +246,41 @@ window.onload = function () {
 				//get name of card from card_name element
 				let card = card_name.innerHTML;
 
-				//get exisiting textarea contents
-				let existing = card_list.value;
+				//get exisiting textarea contents, split by line
+				let existingLines = card_list.value.split('\n');
 
-				//Append new line to textarea
-				card_list.value = card_list.value +'\n'+ amount +' '+ card;
+				//boolean to track whether or not a line has changed
+				let existed = false;
+
+				//check each line to see if card already exists, if so add to amount on that line
+				for (let i = 0; i < existingLines.length; i++) {
+					let line = existingLines[i];
+					let existingAmountStr = line.substr(0,line.indexOf(' '));
+					let existingCard = line.substr(line.indexOf(' ')+1);
+					if (existingCard == card) {
+						existingAmountInt = parseInt(existingAmountStr,10);
+						if (existingAmountInt > 0) {
+							newAmountInt = existingAmountInt + amount;
+							newLine = newAmountInt.toString(10) + ' ' + existingCard;
+							existingLines[i] = newLine;
+							//now we are chaing a line
+							existed = true;
+						};
+					};
+				};
+				//If doesn't already exist, Append new line to textarea
+				if (!existed) {
+					console.log(existingLines)
+					console.log(existingLines[existingLines.length - 1])
+					if (existingLines[existingLines.length-1] == ''){
+						card_list.value = existingLines.join('\n') + amount +' '+ card;
+					} else {
+						card_list.value = existingLines.join('\n') +'\n'+ amount +' '+ card;
+					}
+				//Else just recombine the existingLines
+				} else {
+					card_list.value = existingLines.join('\n');
+				};
 			};
 
 		} else {
