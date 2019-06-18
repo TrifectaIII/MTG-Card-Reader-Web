@@ -237,6 +237,7 @@ window.onload = function () {
 		let command = id.slice(0,3);
 		//amount will be an integer string or 'all'
 		let amount = parseInt(id.slice(3),10);
+		console.log(amount);
 
 		//define onclick function for this particular button
 		if (command == 'add') {
@@ -247,46 +248,92 @@ window.onload = function () {
 				let card = card_name.innerHTML;
 
 				//get exisiting textarea contents, split by line
-				let existingLines = card_list.value.split('\n');
+				let lines = card_list.value.split('\n');
 
 				//boolean to track whether or not a line has changed
 				let existed = false;
 
 				//check each line to see if card already exists, if so add to amount on that line
-				for (let i = 0; i < existingLines.length; i++) {
-					let line = existingLines[i];
-					let existingAmountStr = line.substr(0,line.indexOf(' '));
+				for (let i = 0; i < lines.length; i++) {
+					let line = lines[i];
+					let existingAmount = parseInt(line.substr(0,line.indexOf(' ')),10);
 					let existingCard = line.substr(line.indexOf(' ')+1);
-					if (existingCard == card) {
-						existingAmountInt = parseInt(existingAmountStr,10);
-						if (existingAmountInt > 0) {
-							newAmountInt = existingAmountInt + amount;
-							newLine = newAmountInt.toString(10) + ' ' + existingCard;
-							existingLines[i] = newLine;
-							//now we are chaing a line
-							existed = true;
+					if ((existingCard == card) && (existingAmount > 0)) {
+						//changing a line by increasing amount
+						existed = true;
+
+						//do nothing if amount is not a number
+						if (Number.isNaN(amount)){
+							newAmount = existingAmount;
+						} else {
+							newAmount = existingAmount + amount;
 						};
+						// build new version of line, and replace in lines array.
+						newLine = newAmount.toString(10) + ' ' + existingCard;
+						lines[i] = newLine;
 					};
 				};
 				//If doesn't already exist, Append new line to textarea
 				if (!existed) {
-					console.log(existingLines)
-					console.log(existingLines[existingLines.length - 1])
-					if (existingLines[existingLines.length-1] == ''){
-						card_list.value = existingLines.join('\n') + amount +' '+ card;
+					if (lines[lines.length-1] == ''){
+						card_list.value = lines.join('\n') + amount +' '+ card;
 					} else {
-						card_list.value = existingLines.join('\n') +'\n'+ amount +' '+ card;
+						card_list.value = lines.join('\n') +'\n'+ amount +' '+ card;
 					}
-				//Else just recombine the existingLines
+				//Else just recombine the lines
 				} else {
-					card_list.value = existingLines.join('\n');
+					card_list.value = lines.join('\n');
 				};
 			};
 
 		} else {
 			// function for removal buttons
 			button.onclick = function () {
-				console.log('Removal buttons not working yet');
+				//get name of card from card_name element
+				let card = card_name.innerHTML;
+
+				//get exisiting textarea contents, split by line
+				let lines = card_list.value.split('\n');
+
+				//array to hold lines that should be deleted
+				let deletes = [];
+
+				//check each line to see if card already exists, if so delete the appropriate amount
+				for (let i = 0; i < lines.length; i++) {
+					let line = lines[i];
+					let existingAmount = parseInt(line.substr(0,line.indexOf(' ')),10);
+					let existingCard = line.substr(line.indexOf(' ')+1);
+					if ((existingCard == card) && (existingAmount > 0)) {
+						//changing a line by subtracting amount
+
+						//remove all if amount is not an integer
+						if (Number.isNaN(amount)){
+							newAmount = 0;
+						} else {
+							newAmount = existingAmount - amount;
+						};
+
+						// if new amount is 0 or negative, mark line for deletion
+						if (newAmount < 1){
+							deletes.push(i);
+						} else {
+							// build new version of line, and replace in lines array.
+							newLine = newAmount.toString(10) + ' ' + existingCard;
+							lines[i] = newLine;
+						}
+					};
+				};
+
+				// remove lines marked for deletion
+				newLines = [];
+				for (let i = 0; i < lines.length; i++) {
+					if (!(deletes.includes(i))){
+						newLines.push(lines[i]);
+					};
+				};
+
+				//recombine the lines
+				card_list.value = newLines.join('\n');
 			};
 		};
 	};
