@@ -3,7 +3,7 @@
 window.onload = function () {
 
 	//SETUP
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////
 
 	//Get HTML Elements
 	var notif = document.getElementById('notif');//Text Area for Notifications
@@ -24,9 +24,6 @@ window.onload = function () {
 		addingButtonDict[id] = document.getElementById(id);
 	};
 
-	//Start with all buttons disabled, before any card is matched
-	disableButtons(addingButtonDict);
-
 	//Global Variables
 	var cam_working = false;//boolean to track whether Webcam Feed is working
 	var sets_load = false;//boolean to track whether set selector has been populated
@@ -40,7 +37,7 @@ window.onload = function () {
 	plimg_error.src = '/static/errorcard.png';
 	
 	// WEBCAM
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////
 
 	//Access User's Webcam and feed to webcam_feed Element
 	if (navigator.mediaDevices.getUserMedia) {
@@ -66,7 +63,7 @@ window.onload = function () {
 	};
 
 	// POPULATE SET LIST
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////
 
 	//Turn set_selector into Choices element
 	var set_selector_choice = new Choices(set_selector,{
@@ -132,7 +129,7 @@ window.onload = function () {
 	set_list_request.send();
 
 	// MATCHING SYSTEM
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////
 
 	//Create Canvas Object for Temporary Image Processing
 	var temp_canvas = document.createElement("CANVAS");
@@ -164,12 +161,13 @@ window.onload = function () {
 				card_display.src = '/static/errorcard.png';
 			} else {
 				// Display card image from URL and name from name
-				card_display.onload = function () { // Display name only after image has loaded
+				card_display.onload = function () { 
+					// Display name only after image has loaded
 					card_name.innerHTML = matchName;
+					//Enable adding Buttons also after image has loaded
+					enableButtons(addingButtonDict);
 				};
 				card_display.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+matchMVID+'&type=card';
-				//Enable adding Buttons
-				enableButtons(addingButtonDict);
 			};
 		} else {
 			console.log('Request completed incorrectly. Error', match_card_request.status);
@@ -192,11 +190,11 @@ window.onload = function () {
 			card_display.onload = function () {
 				card_name.innerHTML = 'Loading...';
 				card_name.style.backgroundColor = '';
+				//Disable all adding buttons until new card matched
+				disableButtons(addingButtonDict);
 			};
 			card_display.src = '/static/loadingcard.gif';
 
-			//Disable all adding buttons until new card matched
-			disableButtons(addingButtonDict);
 
 			//Capture image from webcam feed to temp canvas
 			let vid_width = webcam_feed.videoWidth;
@@ -226,18 +224,37 @@ window.onload = function () {
 			console.log('Camera Not Working, so cannot send image for match');
 		};
 	};
+
+	// ADDING BUTTONS
+	//////////////////////////////////////////////////////////////////////////////
+
+	// Disable all adding buttons at start (prior to any match)
+	//disableButtons(addingButtonDict)
+
+	// Set all onclick functions for the adding buttons
+	for (let id in addingButtonDict) {
+		let button = addingButtonDict[id];
+		button.onclick = function () {
+			console.log(id);
+			console.log(card_name.innerHTML)
+		};
+	};
 };
+
+
+// GLOBAL FUNCTIONS
+//////////////////////////////////////////////////////////////////////////////////
 
 //Disable all buttons stored in a dictionary
 var disableButtons = function (dict) {
 	for (let id in dict) {
 		dict[id].disabled = true;
-	}
-}
+	};
+};
 
 //Enable all buttons stored in a dictionary
 var enableButtons = function (dict) {
 	for (let id in dict) {
 		dict[id].disabled = false;
-	}
-}
+	};
+};
