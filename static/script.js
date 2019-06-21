@@ -244,7 +244,7 @@ window.onload = function () {
 
 		//define onclick function for this particular button
 		if (command == 'add') {
-			// function for adding buttons
+			// function for add buttons
 			button.onclick = function () {
 
 				//get name of card from card_name element
@@ -257,10 +257,16 @@ window.onload = function () {
 				let existed = false;
 
 				//check each line to see if card already exists, if so add to amount on that line
-				for (let i = 0; i < lines.length; i++) {
+				for (let i = lines.length-1; i >= 0; i--) {
 					let line = lines[i];
+
+					//break if a sideboard line is reached
+					if (line.includes('Sideboard:')){break;};
+
+					//parse info from line
 					let existingAmount = parseInt(line.substr(0,line.indexOf(' ')),10);
 					let existingCard = line.substr(line.indexOf(' ')+1);
+					
 					if ((existingCard == card) && (existingAmount > 0)) {
 						//changing a line by increasing amount
 						existed = true;
@@ -274,6 +280,9 @@ window.onload = function () {
 						// build new version of line, and replace in lines array.
 						newLine = newAmount.toString(10) + ' ' + existingCard;
 						lines[i] = newLine;
+
+						//break after card is found
+						break;
 					};
 				};
 				//If doesn't already exist, Append new line to textarea
@@ -302,10 +311,16 @@ window.onload = function () {
 				let deletes = [];
 
 				//check each line to see if card already exists, if so delete the appropriate amount
-				for (let i = 0; i < lines.length; i++) {
+				for (let i = lines.length-1; i >= 0; i--) {
 					let line = lines[i];
+
+					//break if a sideboard line is reached
+					if (line.includes('Sideboard:')){break;};
+
+					// parse info from line
 					let existingAmount = parseInt(line.substr(0,line.indexOf(' ')),10);
 					let existingCard = line.substr(line.indexOf(' ')+1);
+
 					if ((existingCard == card) && (existingAmount > 0)) {
 						//changing a line by subtracting amount
 
@@ -324,6 +339,9 @@ window.onload = function () {
 							newLine = newAmount.toString(10) + ' ' + existingCard;
 							lines[i] = newLine;
 						}
+
+						//break after card is found
+						break;
 					};
 				};
 
@@ -351,7 +369,7 @@ window.onload = function () {
 
 	//start sideboard button
 	sideboard_button.onclick = function () {
-		card_list.value = card_list.value + '\nSideboard:';
+		card_list.value = card_list.value + '\n\nSideboard:';
 	};
 
 	//button to save contents to file
