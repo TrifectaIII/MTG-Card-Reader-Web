@@ -13,6 +13,9 @@ window.onload = function () {
 	var card_name = document.getElementById('card_name');//Text Area to Display Matched Card Name
 	var match_card_button = document.getElementById('match_card_button');//Button to Execute Matching
 	var card_list = document.getElementById('card_list');//Text Area for generating list of cards
+	var clear_button = document.getElementById('clear');//Button to clear text area
+	var sideboard_button = document.getElementById('sideboard');//Button to start sideboard
+	var save_button = document.getElementById('save');//Button to save contents of textarea to file
 
 	//Dictionary to Hold Adding Buttons
 	addingButtonDict = {};
@@ -337,6 +340,25 @@ window.onload = function () {
 			};
 		};
 	};
+
+	// TEXT AREA BUTTONS
+	//////////////////////////////////////////////////////////////////////////////
+
+	//Clear button should empty all contents of text area
+	clear_button.onclick = function () {
+		card_list.value = '';
+	};
+
+	//start sideboard button
+	sideboard_button.onclick = function () {
+		card_list.value = card_list.value + '\nSideboard:';
+	};
+
+	//button to save contents to file
+	save_button.onclick = function () {
+
+	};
+
 };
 
 
