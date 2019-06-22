@@ -376,7 +376,7 @@ window.onload = function () {
 
 	//button to save contents to file
 	save_button.onclick = function () {
-
+		let toWrite = card_list.value;
 	};
 
 };
