@@ -257,11 +257,12 @@ window.onload = function () {
 				let existed = false;
 
 				//check each line to see if card already exists, if so add to amount on that line
+				//goes from bottom to top
 				for (let i = lines.length-1; i >= 0; i--) {
 					let line = lines[i];
 
 					//break if a sideboard line is reached
-					if (line.includes('Sideboard:')){break;};
+					if (line.includes('Sideboard:')) { break; };
 
 					//parse info from line
 					let existingAmount = parseInt(line.substr(0,line.indexOf(' ')),10);
@@ -311,11 +312,12 @@ window.onload = function () {
 				let deletes = [];
 
 				//check each line to see if card already exists, if so delete the appropriate amount
+				//goes from bottom to top
 				for (let i = lines.length-1; i >= 0; i--) {
 					let line = lines[i];
 
 					//break if a sideboard line is reached
-					if (line.includes('Sideboard:')){break;};
+					if (line.includes('Sideboard:')) { break; };
 
 					// parse info from line
 					let existingAmount = parseInt(line.substr(0,line.indexOf(' ')),10);
