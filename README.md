@@ -18,4 +18,6 @@ https://mtgjson.com/
 
 https://github.com/jshjohnson/Choices
 
+https://github.com/eligrey/FileSaver.js
+
 HTML, CSS, JS
