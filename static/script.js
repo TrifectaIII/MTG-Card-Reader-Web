@@ -1,5 +1,27 @@
 // Primary JS Script for https://github.com/TrifectaIII/MTG-Card-Reader-Web
 
+// GLOBAL FUNCTIONS
+//////////////////////////////////////////////////////////////////////////////////
+
+//Disable all buttons stored in a dictionary
+var disableButtons = function (dict) {
+	for (let id in dict) {
+		dict[id].disabled = true;
+	};
+};
+
+//Enable all buttons stored in a dictionary
+var enableButtons = function (dict) {
+	for (let id in dict) {
+		dict[id].disabled = false;
+	};
+};
+
+//Wrapper Function for getElementById
+var eID = function (id) {
+	return document.getElementById(id);
+};
+
 window.onload = function () {
 
 	//SETUP
@@ -375,28 +397,10 @@ window.onload = function () {
 
 	//button to save contents to file
 	save_button.onclick = function () {
+
 		//create blob with textarea contents
 		let toWrite = new Blob([card_list.value], {type: "text/plain;charset=utf-8"});
 		//use FileSaver.js to save to file
 		saveAs(toWrite,'decklist.txt');
-	};
-
-};
-
-
-// GLOBAL FUNCTIONS
-//////////////////////////////////////////////////////////////////////////////////
-
-//Disable all buttons stored in a dictionary
-var disableButtons = function (dict) {
-	for (let id in dict) {
-		dict[id].disabled = true;
-	};
-};
-
-//Enable all buttons stored in a dictionary
-var enableButtons = function (dict) {
-	for (let id in dict) {
-		dict[id].disabled = false;
 	};
 };
