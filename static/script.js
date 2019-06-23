@@ -240,7 +240,6 @@ window.onload = function () {
 		let command = id.slice(0,3);
 		//amount will be an integer string or 'all'
 		let amount = parseInt(id.slice(3),10);
-		console.log(amount);
 
 		//define onclick function for this particular button
 		if (command == 'add') {
@@ -376,7 +375,10 @@ window.onload = function () {
 
 	//button to save contents to file
 	save_button.onclick = function () {
-		let toWrite = card_list.value;
+		//create blob with textarea contents
+		let toWrite = new Blob([card_list.value], {type: "text/plain;charset=utf-8"});
+		//use FileSaver.js to save to file
+		saveAs(toWrite,'decklist.txt');
 	};
 
 };
