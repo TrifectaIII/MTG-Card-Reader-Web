@@ -18,7 +18,7 @@ var enableButtons = function (dict) {
 };
 
 //Wrapper Function for getElementById
-var eID = function (id) {
+var getId = function (id) {
 	return document.getElementById(id);
 };
 
@@ -28,16 +28,16 @@ window.onload = function () {
 	//////////////////////////////////////////////////////////////////////////////
 
 	//Get HTML Elements
-	var notif = document.getElementById('notif');//Text Area for Notifications
-	var webcam_feed = document.getElementById("webcam_feed");//Video Element for Webcam Feed
-	var set_selector = document.getElementById('set_selector');//Select Element to Choose Set
-	var card_display = document.getElementById('card_display');//Image Element to Display Matched Card Image
-	var card_name = document.getElementById('card_name');//Text Area to Display Matched Card Name
-	var match_card_button = document.getElementById('match_card_button');//Button to Execute Matching
-	var card_list = document.getElementById('card_list');//Text Area for generating list of cards
-	var clear_button = document.getElementById('clear');//Button to clear text area
-	var sideboard_button = document.getElementById('sideboard');//Button to start sideboard
-	var save_button = document.getElementById('save');//Button to save contents of textarea to file
+	var notif = getId('notif');//Text Area for Notifications
+	var webcam_feed = getId("webcam_feed");//Video Element for Webcam Feed
+	var set_selector = getId('set_selector');//Select Element to Choose Set
+	var card_display = getId('card_display');//Image Element to Display Matched Card Image
+	var card_name = getId('card_name');//Text Area to Display Matched Card Name
+	var match_card_button = getId('match_card_button');//Button to Execute Matching
+	var card_list = getId('card_list');//Text Area for generating list of cards
+	var clear_button = getId('clear');//Button to clear text area
+	var sideboard_button = getId('sideboard');//Button to start sideboard
+	var save_button = getId('save');//Button to save contents of textarea to file
 
 	//Dictionary to Hold Adding Buttons
 	addingButtonDict = {};
@@ -46,7 +46,7 @@ window.onload = function () {
 	//Loop through list and add to dict with id as key
 	for (let i=0; i < idList.length; i++){
 		let id = idList[i];
-		addingButtonDict[id] = document.getElementById(id);
+		addingButtonDict[id] = getId(id);
 	};
 
 	//Global Variables
