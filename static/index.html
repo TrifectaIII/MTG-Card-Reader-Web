@@ -47,23 +47,26 @@
 				<img id='card_display' src='static/blankcard.png'>
 			</div>
 			<!-- TABLE FOR ADDING BUTTONS (All disabled by default until a card is matched) -->
-			<table id='adding_buttons'>
-				<tr>
-					<th><button class='adding_button' id='add1' disabled='true'>Add 1</button></th>
-					<th><button class='adding_button' id='rem1' disabled='true'>Remove 1</button></th>
-				</tr>
-				<tr>
-					<th><button class='adding_button' id='add4' disabled='true'>Add 4</button></th>
-					<th><button class='adding_button' id='rem4' disabled='true'>Remove 4</button></th>
-				</tr>
-				<tr>
-					<th><button class='adding_button' id='add10' disabled='true'>Add 10</button></th>
-					<th><button class= 'adding_button' id='rem10' disabled='true'>Remove 10</button></th>
-				</tr>
-				<tr>
-					<th colspan="2"><button class='adding_button' id='remall' disabled='true'>Remove All</button></th>
-				</tr>
-			</table>
+			<div id='adding_info'>
+				<p id='add_button_header'>Add Card</p>
+				<table id='adding_buttons'>
+					<tr>
+						<th><button class='adding_button' id='add1' disabled='true'>Add 1</button></th>
+						<th><button class='adding_button' id='rem1' disabled='true'>Remove 1</button></th>
+					</tr>
+					<tr>
+						<th><button class='adding_button' id='add4' disabled='true'>Add 4</button></th>
+						<th><button class='adding_button' id='rem4' disabled='true'>Remove 4</button></th>
+					</tr>
+					<tr>
+						<th><button class='adding_button' id='add10' disabled='true'>Add 10</button></th>
+						<th><button class= 'adding_button' id='rem10' disabled='true'>Remove 10</button></th>
+					</tr>
+					<tr>
+						<th colspan="2"><button class='adding_button' id='remall' disabled='true'>Remove All</button></th>
+					</tr>
+				</table>
+			</div>
 		</div>
 	</div>
 	<!-- SECTION FOR THE CARD LIST -->
