@@ -202,6 +202,14 @@ window.onload = function () {
 	//Tell request what to do upon error
 	match_card_request.onerror = function () {
 		console.log("match_card didn't work at all");
+
+		//display error image
+		card_display.onload = function () {
+			card_name.innerHTML = 'SERVER ERROR';
+		card_name.style.backgroundColor = 'lightcoral';
+		};
+		card_display.src = '/static/errorcard.png';
+
 	};
 
 	//Tell match button to send request on click
