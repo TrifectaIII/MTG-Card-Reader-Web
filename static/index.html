@@ -27,14 +27,14 @@
 
 <body>
 	<!-- SECTION FOR TITLE AND WEBCAM -->
-	<div id='webcam_section' class='horizontal'>
+	<div id='webcam_section' class='vertical'>
 		<h1 id='title'>MTG: Card Reader</h1>
 		<p id='notif'> Loading Webcam... </p>
 		<video autoplay="true" id="webcam_feed"></video>
 		<br>
 	</div>
 	<!-- SECTION FOR MATCHING AND DISPLAYING CARD INFO, ALONG WITH ADDING BUTTONS -->
-	<div id='card_section' class='horizontal'>
+	<div id='card_section' class='vertical'>
 		<div id='matching_tools'>
 			<span>Set:</span></nobr>
 			<select id='set_selector'><option placeholder>Please Select a Set</option></select>
@@ -70,7 +70,7 @@
 		</div>
 	</div>
 	<!-- SECTION FOR THE CARD LIST -->
-	<div id='text_section' class='horizontal'>
+	<div id='text_section' class='vertical'>
 		<textarea id='card_list' rows=22 placeholder='Cards you add will appear here!'></textarea>
 		<table id='text_buttons'>
 			<tr>

@@ -12,9 +12,16 @@ body {
     display: flex;
 }
 
-.horizontal {
+.vertical {
     flex: 1;
     padding: 16px;
+}
+
+/* stack sections if mobile */
+@media screen and (max-width: 600px) {
+    .vertical {
+      float: none;
+    }
 }
 
 #webcam_section {
