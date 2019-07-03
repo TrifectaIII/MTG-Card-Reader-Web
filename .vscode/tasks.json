@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "run_bottle_app",
+            "label": "run bottle_app",
             "type": "shell",
             "command": "python bottle_app.py",
             "group": {
