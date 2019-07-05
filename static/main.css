@@ -37,6 +37,7 @@ button[disabled] {
     width: 100%;
     margin: auto;
     display: block;
+    font-size: large;
 }
 
 .adding_button {
@@ -61,6 +62,5 @@ button[disabled] {
 }
 
 #clear {
-    background-color:black;
-    color:white;
+    background-color:rgba(240, 128, 128, 0.358);
 }
