@@ -64,3 +64,12 @@ button[disabled] {
 #clear {
     background-color:rgba(240, 128, 128, 0.358);
 }
+
+a {
+    color:royalblue;
+}
+
+#footer {
+    padding-top: 100px;
+    font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+}
