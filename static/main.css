@@ -17,6 +17,7 @@ button[disabled] {
 
 .container {
     max-width: 1600px;
+    padding:0 0px;
 }
 
 .row {
