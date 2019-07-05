@@ -10,6 +10,11 @@ body {
     background-color: white;
 }
 
+button:disabled,
+button[disabled] {
+    background-color:lightgrey;
+}
+
 .container {
     max-width: 1600px;
 }
@@ -36,6 +41,12 @@ body {
 
 .adding_button {
     width:100%;
+    background-color:rgba(0, 255, 128, 0.358);
+}
+
+.remove_button {
+    width:100%;
+    background-color:rgba(240, 128, 128, 0.358);
 }
 
 #card_list {
@@ -47,4 +58,9 @@ body {
 
 .text_button {
     width: 100%;
+}
+
+#clear {
+    background-color:black;
+    color:white;
 }
