@@ -40,7 +40,7 @@ def getSets():
             except:
                 multiverse_ids.append(None)
                 empties += 1
-        if empties == 0:
+        if empties == 0 and exists > 0:
             retsets.append(set)
         elif exists > 0:
             retsets.append(set)
