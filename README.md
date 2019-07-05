@@ -5,7 +5,7 @@ v2.0 of [MTG-Card-Reader](https://github.com/TrifectaIII/MTG-Card-Reader), built
 IN ACTIVE DEVELOPMENT. If you have any questions, complaints, suggestions, etc. feel free to contact me at maddenfong@gmail.com.
 
 ## Site
-A **very** early and slow version of the site is currently hosted at [**www.mtg-cr.tk**](https://www.mtg-cr.tk)
+An early version of the site is currently hosted at [**mtg-cr.tk**](https://www.mtg-cr.tk)
 
 ## Resources
 Project is currently using these tools:
