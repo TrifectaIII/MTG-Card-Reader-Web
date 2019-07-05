@@ -8,16 +8,18 @@ A **very** early and slow version of the site is currently hosted at [**www.mtg-
 ## Resources
 Project is currently using these tools:
 
-https://www.python.org/
+[python](https://www.python.org/)
 
-https://pypi.org/project/opencv-python/
+[OpenCV](https://pypi.org/project/opencv-python/)
 
-http://bottlepy.org/
+[bottle.py](http://bottlepy.org/)
 
-https://mtgjson.com/
+[MTGJSON](https://mtgjson.com/)
 
-https://github.com/jshjohnson/Choices
+[choices.js](https://github.com/jshjohnson/Choices)
 
-https://github.com/eligrey/FileSaver.js
+[FileSaver.js](https://github.com/eligrey/FileSaver.js)
+
+[Skeleton](http://getskeleton.com/)
 
 HTML, CSS, JS
