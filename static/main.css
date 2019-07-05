@@ -1,0 +1,50 @@
+/*  Primary CSS File for https://github.com/TrifectaIII/MTG-Card-Reader-Web */
+
+*, *:before, *:after {
+    /* Required to make Choices element look right */
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+body {
+    background-color: white;
+}
+
+.container {
+    max-width: 1600px;
+}
+
+.row {
+    margin: auto;
+    text-align: center;
+}
+
+#webcam_feed {
+    width: 100%;
+    object-fit: contain;
+    background-color: white;
+    background-image: url('loading.gif');
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#match_card_button {
+    width: 100%;
+    margin: auto;
+    display: block;
+}
+
+.adding_button {
+    width:100%;
+}
+
+#card_list {
+    width: 100%;
+    height: 100%;
+    resize: none;
+    font-size:large;
+}
+
+.text_button {
+    width: 100%;
+}

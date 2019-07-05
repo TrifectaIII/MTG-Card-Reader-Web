@@ -31,7 +31,7 @@ window.onload = function () {
 	var notif = getId('notif');//Text Area for Notifications
 	var webcam_feed = getId("webcam_feed");//Video Element for Webcam Feed
 	var set_selector = getId('set_selector');//Select Element to Choose Set
-	var card_display = getId('card_display');//Image Element to Display Matched Card Image
+	var card_image = getId('card_image');//Image Element to Display Matched Card Image
 	var card_name = getId('card_name');//Text Area to Display Matched Card Name
 	var match_card_button = getId('match_card_button');//Button to Execute Matching
 	var card_list = getId('card_list');//Text Area for generating list of cards
@@ -179,20 +179,20 @@ window.onload = function () {
 
 			if (matchName.length == 0){
 				// If no match is made, display error
-				card_display.onload = function () {
+				card_image.onload = function () {
 					card_name.innerHTML = 'COULD NOT IDENTIFY CARD';
 				card_name.style.backgroundColor = 'lightcoral';
 				};
-				card_display.src = '/static/errorcard.png';
+				card_image.src = '/static/errorcard.png';
 			} else {
 				// Display card image from URL and name from name
-				card_display.onload = function () { 
+				card_image.onload = function () { 
 					// Display name only after image has loaded
 					card_name.innerHTML = matchName;
 					//Enable adding Buttons also after image has loaded
 					enableButtons(addingButtonDict);
 				};
-				card_display.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+matchMVID+'&type=card';
+				card_image.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+matchMVID+'&type=card';
 			};
 		} else {
 			console.log('Request completed incorrectly. Error', match_card_request.status);
@@ -204,11 +204,11 @@ window.onload = function () {
 		console.log("match_card didn't work at all");
 
 		//display error image
-		card_display.onload = function () {
+		card_image.onload = function () {
 			card_name.innerHTML = 'SERVER ERROR';
 		card_name.style.backgroundColor = 'lightcoral';
 		};
-		card_display.src = '/static/errorcard.png';
+		card_image.src = '/static/errorcard.png';
 
 	};
 
@@ -220,13 +220,13 @@ window.onload = function () {
 			match_start = Date.now();
 
 			//Remove previous card and display loading
-			card_display.onload = function () {
+			card_image.onload = function () {
 				card_name.innerHTML = 'Loading...';
 				card_name.style.backgroundColor = '';
 				//Disable all adding buttons until new card matched
 				disableButtons(addingButtonDict);
 			};
-			card_display.src = '/static/loadingcard.gif';
+			card_image.src = '/static/loadingcard.gif';
 
 
 			//Capture image from webcam feed to temp canvas
@@ -395,7 +395,9 @@ window.onload = function () {
 
 	//Clear button should empty all contents of text area
 	clear_button.onclick = function () {
-		card_list.value = '';
+		if (confirm('Are you sure you want to clear the text area?')){
+			card_list.value = '';
+		};
 	};
 
 	//start sideboard button

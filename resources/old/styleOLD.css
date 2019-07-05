@@ -33,7 +33,7 @@ body {
 
 #webcam_feed {
     width: 500px;
-    height: 375px;
+    height: auto;
     max-width: 100%;
     object-fit: contain;
     background-color: white;
