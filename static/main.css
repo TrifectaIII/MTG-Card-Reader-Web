@@ -34,7 +34,7 @@ button[disabled] {
     background-repeat: no-repeat;
 }
 
-#match_card_button {
+#identify_card_button {
     width: 100%;
     margin: auto;
     display: block;

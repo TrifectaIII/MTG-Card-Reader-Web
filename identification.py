@@ -66,7 +66,7 @@ def ratioTestCount(matcher, des1, des2):
     return good_matches
 
 
-def match(cam_png_uri, setcode):
+def identify(cam_png_uri, setcode):
     # Matches URI PNG to Card
 
     global bf

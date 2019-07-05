@@ -31,9 +31,9 @@ window.onload = function () {
 	var notif = getId('notif');//Text Area for Notifications
 	var webcam_feed = getId("webcam_feed");//Video Element for Webcam Feed
 	var set_selector = getId('set_selector');//Select Element to Choose Set
-	var card_image = getId('card_image');//Image Element to Display Matched Card Image
-	var card_name = getId('card_name');//Text Area to Display Matched Card Name
-	var match_card_button = getId('match_card_button');//Button to Execute Matching
+	var card_image = getId('card_image');//Image Element to Display Identified Card Image
+	var card_name = getId('card_name');//Text Area to Display Identified Card Name
+	var identify_card_button = getId('identify_card_button');//Button to Execute Identification
 	var card_list = getId('card_list');//Text Area for generating list of cards
 	var clear_button = getId('clear');//Button to clear text area
 	var sideboard_button = getId('sideboard');//Button to start sideboard
@@ -53,7 +53,7 @@ window.onload = function () {
 	var cam_working = false;//boolean to track whether Webcam Feed is working
 	var sets_load = false;//boolean to track whether set selector has been populated
 	var set_selected = false;//boolean to track whether set has been selected
-	var match_start = 0;//integer to help calculate response time of match requests
+	var identify_start = 0;//integer to help calculate response time of identify requests
 
 	//Preload Loading Card and Error Card Images
 	var plimg_load  = new Image();
@@ -73,9 +73,9 @@ window.onload = function () {
 				cam_working = true;
 				notif.innerHTML = "Webcam Functional";
 
-				//Enable match button once set is selected and camera is working
+				//Enable identify button once set is selected and camera is working
 				if (set_selected){
-					match_card_button.disabled = false;
+					identify_card_button.disabled = false;
 				}
 			})
 			.catch(function (err0r) {
@@ -101,12 +101,12 @@ window.onload = function () {
 		itemSelectText:'',
 	});
 
-	//Enable match button once set is selected and camera is working
+	//Enable identify button once set is selected and camera is working
 	set_selector.addEventListener('choice', function(){
 		if (sets_load){
 			set_selected = true;
 			if (cam_working){
-				match_card_button.disabled = false;
+				identify_card_button.disabled = false;
 			};
 		};
 	});
@@ -161,24 +161,24 @@ window.onload = function () {
 	var temp_context = temp_canvas.getContext('2d');
 
 	//Create set_list Request Object
-	var match_card_request = new XMLHttpRequest();
+	var identify_card_request = new XMLHttpRequest();
 
 	//Tell request to display card after recieving reponse
-	match_card_request.onload = function () {
-		if (match_card_request.status >= 200 && match_card_request.status < 400) {
+	identify_card_request.onload = function () {
+		if (identify_card_request.status >= 200 && identify_card_request.status < 400) {
 			
 			//Calculate Response Time and log to console
-			console.log('Match_Card Response Time (s):',(Date.now()-match_start)/1000);
+			console.log('/identify_card Response Time (s):',(Date.now()-identify_start)/1000);
 
 			//Get full response as JSON
-			let respJSON = JSON.parse(match_card_request.response);
+			let respJSON = JSON.parse(identify_card_request.response);
 
 			//Access response for name and url
-			let matchName = respJSON.name;
-			let matchMVID = respJSON.mvid;
+			let identifiedName = respJSON.name;
+			let identifiedMVID = respJSON.mvid;
 
-			if (matchName.length == 0){
-				// If no match is made, display error
+			if (identifiedName.length == 0){
+				// If no identify is made, display error
 				card_image.onload = function () {
 					card_name.innerHTML = 'COULD NOT IDENTIFY CARD';
 				card_name.style.backgroundColor = 'lightcoral';
@@ -188,20 +188,20 @@ window.onload = function () {
 				// Display card image from URL and name from name
 				card_image.onload = function () { 
 					// Display name only after image has loaded
-					card_name.innerHTML = matchName;
+					card_name.innerHTML = identifiedName;
 					//Enable adding Buttons also after image has loaded
 					enableButtons(addingButtonDict);
 				};
-				card_image.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+matchMVID+'&type=card';
+				card_image.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+identifiedMVID+'&type=card';
 			};
 		} else {
-			console.log('Request completed incorrectly. Error', match_card_request.status);
+			console.log('Request completed incorrectly. Error', identify_card_request.status);
 		};
 	};
 
 	//Tell request what to do upon error
-	match_card_request.onerror = function () {
-		console.log("match_card didn't work at all");
+	identify_card_request.onerror = function () {
+		console.log("identify_card didn't work at all");
 
 		//display error image
 		card_image.onload = function () {
@@ -212,18 +212,18 @@ window.onload = function () {
 
 	};
 
-	//Tell match button to send request on click
-	match_card_button.onclick = function () {
+	//Tell identify button to send request on click
+	identify_card_button.onclick = function () {
 		if (cam_working) {
 
 			//start response timer
-			match_start = Date.now();
+			identify_start = Date.now();
 
 			//Remove previous card and display loading
 			card_image.onload = function () {
 				card_name.innerHTML = 'Loading...';
 				card_name.style.backgroundColor = '';
-				//Disable all adding buttons until new card matched
+				//Disable all adding buttons until new card identifyed
 				disableButtons(addingButtonDict);
 			};
 			card_image.src = '/static/loadingcard.gif';
@@ -250,17 +250,17 @@ window.onload = function () {
 			fd.append('setcode', set_selector.options[set_selector.selectedIndex].value);
 
 			//Send Request with Form
-			match_card_request.open('POST', '/match_card', true);
-			match_card_request.send(fd);
+			identify_card_request.open('POST', '/identify_card', true);
+			identify_card_request.send(fd);
 
 		} else {
-			console.log('Camera Not Working, so cannot send image for match');
+			console.log('Camera Not Working, so cannot send image for identify');
 		};
 	};
 
 	// ADDING BUTTONS
 	//////////////////////////////////////////////////////////////////////////////
-	// Note: All buttons are disabled at start until a card is matched
+	// Note: All buttons are disabled at start until a card is identifyed
 
 	// Set all onclick functions for the adding buttons
 	for (let id in addingButtonDict) {
