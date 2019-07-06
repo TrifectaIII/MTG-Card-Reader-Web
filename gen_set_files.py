@@ -17,6 +17,7 @@ except MemoryError:
     raise Exception('Please ensure you are running 64 bit Python')
 print('json file loaded')
 
+
 # setup ORB  ##########################################################
 
 orb = cv2.ORB_create()
@@ -62,42 +63,71 @@ def getSetsDict():
 with open('static/sets.json','w') as dict_file:
     json.dump(getSetsDict(),dict_file)
 
-# Save each sets descriptors dict as file in setDes/ ########
+
+# Save dictionary of all mvids ########################################
+
+mvidDict = dict()
+
+total = 0
+
+for set in (list(jsonsets.keys())):
+    cards = jsonsets[set]['cards']
+    for card in cards:
+        try:
+            mvid = card['multiverseId']
+            name = card['name']
+            number = card['number']
+            purchaseUrls = card['purchaseUrls']
+        except:
+            pass
+        else:
+            total += 1
+            mvidDict[mvid] = {'name':name, 'number':number, 'purchaseUrls':purchaseUrls}
+
+with open('static/cardsInfo.json','w') as jsonfile:
+    json.dump(mvidDict,jsonfile)
+
+
+# Save each sets descriptors dict as file in setDes/ #################
 
 for setcode in getSets():
-    if path.isfile('setDes/set'+setcode+'.des'):
+    if path.isfile('setDes/set'+setcode+'.pkl'):
         # Skip if file exists
         print(setcode, 'file found, skipping')
-    
+        pass
     else:
-        print('Starting', setcode)
-        set_names = []
-        set_mvids = []
-        set_des = []
-        try:
-            # Get card objects from mtgjson
-            cards = jsonsets[setcode]['cards']
-        except:
-            raise ValueError('No set found with that setcode')
-        for card in cards:
-            # For each card, save to dictionary
-            name = card['name']
+        if path.isfile('setDes/set'+setcode+'.des'):
+            print('converting old version of',setcode)
+            with open('setDes/set'+setcode+'.des','rb') as oldfile:
+                set_names, set_mvids, set_des = pickle.load(oldfile)
+        else:
+            print('Starting', setcode)
+            set_mvids = []
+            set_des = []
             try:
-                mvid = card['multiverseId']
+                # Get card objects from mtgjson
+                cards = jsonsets[setcode]['cards']
             except:
-                #print(name,'has missing MVID')
-                pass
-            else:
-                #print(name,'works')
-                url = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+str(mvid)+'&type=card'
-                url_response = urlreq.urlopen(url)
-                img_array = np.array(bytearray(url_response.read()), dtype=np.uint8)
-                img = cv2.imdecode(img_array, cv2.IMREAD_GRAYSCALE)
-                _, des = orb.detectAndCompute(img, None)
-                set_names.append(name)
-                set_mvids.append(mvid)
-                set_des.append(des)
+                raise ValueError('No set found with that setcode')
+            for card in cards:
+                # For each card, save to dictionary
+                try:
+                    mvid = card['multiverseId']
+                except:
+                    pass
+                else:
+                    url = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+str(mvid)+'&type=card'
+                    url_response = urlreq.urlopen(url)
+                    img_array = np.array(bytearray(url_response.read()), dtype=np.uint8)
+                    img = cv2.imdecode(img_array, cv2.IMREAD_GRAYSCALE)
+                    _, des = orb.detectAndCompute(img, None)
+                    set_mvids.append(mvid)
+                    set_des.append(des)
 
-        setInfo = (set_names, set_mvids, set_des)
-        with open('setDes/set'+setcode+'.des', 'wb') as des_file:
+        setInfo = dict()
+
+        for i in range(len(set_mvids)):
+            setInfo[set_mvids[i]] = set_des[i]
+
+        with open('setDes/set'+setcode+'.pkl', 'wb') as des_file:
             pickle.dump(setInfo, des_file)

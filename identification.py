@@ -6,6 +6,11 @@ import cv2
 import numpy as np
 from base64 import b64decode
 import pickle
+import json
+
+#Load MVID Dictionary
+with open('static/cardsInfo.json','r') as mvidfile:
+    cardsInfo = json.load(mvidfile)
 
 # Setup ORB
 orb = cv2.ORB_create()
@@ -29,9 +34,9 @@ def loadAllFiles():
 
     global setsDict
     for setcode in setsGen:
-        with open('setDes/set'+setcode+'.des', 'rb') as des_file:
-            set_names, set_mvids, set_des = pickle.load(des_file)
-        setsDict[setcode] = (set_names, set_mvids, set_des)
+        with open('setDes/set'+setcode+'.pkl', 'rb') as des_file:
+            desDict = pickle.load(des_file)
+        setsDict[setcode] = desDict
 
     global loadall
     loadall = True
@@ -72,6 +77,7 @@ def identify(cam_png_uri, setcode):
     global bf
     global orb
     global loadall
+    global cardsInfo
 
     # Convert request data to cv2 image
     img = uriToCv2(cam_png_uri)
@@ -81,27 +87,28 @@ def identify(cam_png_uri, setcode):
 
     # Read setDes Data from File if not loading all
     if not loadall:
-        with open('setDes/set'+setcode+'.des', 'rb') as des_file:
-            set_names, set_mvids, set_des = pickle.load(des_file)
+        with open('setDes/set'+setcode+'.pkl', 'rb') as des_file:
+            desDict = pickle.load(des_file)
     # Else retrieve setDes Data from dictionary
     else:
         global setsDict
-        set_names, set_mvids, set_des = setsDict[setcode]
+        desDict = setsDict[setcode]
 
     # Find Match
     bestCount = 0
-    bestName = ''
     bestMVID = ''
 
-    for i in range(len(set_names)):
-        name = set_names[i]
-        mvid = set_mvids[i]
-        des = set_des[i]
+    for mvid in (list(desDict.keys())):
+        des = desDict[mvid]
         matchCount = ratioTestCount(bf, desCam, des)
         if matchCount > bestCount:
             bestCount = matchCount
-            bestName = name
             bestMVID = mvid
 
     # Return Name and URL for Matched Card
+    try:
+        bestName = cardsInfo[str(bestMVID)]['name']
+    except:
+        bestName = ''
+    
     return (bestName, bestMVID)
