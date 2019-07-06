@@ -6,7 +6,7 @@ import cv2
 import pickle
 import json
 from urllib import request as urlreq
-from os import path, rename
+from os import path, rename, remove
 
 # Setup JSON File #####################################################
 
@@ -89,6 +89,10 @@ with open('static/cardsInfo.json','w') as jsonfile:
 
 
 # Save each sets descriptors dict as file in setDes/ #################
+
+# for setcode in getSets():
+#     if path.isfile('setDes/set'+setcode+'.des'):
+#         remove('setDes/set'+setcode+'.des')
 
 for setcode in getSets():
     if path.isfile('setDes/set'+setcode+'.pkl'):
