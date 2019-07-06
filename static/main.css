@@ -48,7 +48,7 @@ button[disabled] {
     border-color:grey;
 }
 
-.adding_button {
+.add_button {
     width:100%;
     background-color:rgba(0, 255, 128, 0.358);
 }

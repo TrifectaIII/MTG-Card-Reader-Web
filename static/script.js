@@ -4,16 +4,16 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 //Disable all buttons stored in a dictionary
-var disableButtons = function (dict) {
-	for (let id in dict) {
-		dict[id].disabled = true;
+var disableButtons = function (nodeli) {
+	for (let i = 0; i < nodeli.length; i++) {
+		nodeli[i].disabled = true;
 	};
 };
 
 //Enable all buttons stored in a dictionary
-var enableButtons = function (dict) {
-	for (let id in dict) {
-		dict[id].disabled = false;
+var enableButtons = function (nodeli) {
+	for (let i = 0; i < nodeli.length; i++) {
+		nodeli[i].disabled = false;
 	};
 };
 
@@ -39,15 +39,10 @@ window.onload = function () {
 	var sideboard_button = getId('sideboard');//Button to start sideboard
 	var save_button = getId('save');//Button to save contents of textarea to file
 
-	//Dictionary to Hold Adding Buttons
-	addingButtonDict = {};
-	//List of Adding Button Id's
-	var idList = ['add1','add4','add10','rem1','rem4','rem10','remall'];
-	//Loop through list and add to dict with id as key
-	for (let i=0; i < idList.length; i++){
-		let id = idList[i];
-		addingButtonDict[id] = getId(id);
-	};
+	//NodeLists to Hold Adding Buttons
+	var addbuttons = document.querySelectorAll('.add_button');//NodeList of adding buttons
+	var removebuttons = document.querySelectorAll('.remove_button');//NodeList of remove buttons
+	var addremovebuttons = document.querySelectorAll('.remove_button, .add_button');//NodeList of add and remove buttons
 
 	//Global Variables
 	var cam_working = false;//boolean to track whether Webcam Feed is working
@@ -190,7 +185,7 @@ window.onload = function () {
 					// Display name only after image has loaded
 					card_name.innerHTML = identifiedName;
 					//Enable adding Buttons also after image has loaded
-					enableButtons(addingButtonDict);
+					enableButtons(addremovebuttons);
 				};
 				card_image.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+identifiedMVID+'&type=card';
 			};
@@ -224,7 +219,7 @@ window.onload = function () {
 				card_name.innerHTML = 'Loading...';
 				card_name.style.backgroundColor = '';
 				//Disable all adding buttons until new card identifyed
-				disableButtons(addingButtonDict);
+				disableButtons(addremovebuttons);
 			};
 			card_image.src = '/static/loadingcard.gif';
 
@@ -258,135 +253,139 @@ window.onload = function () {
 		};
 	};
 
-	// ADDING BUTTONS
+	// ADD/REMOVE BUTTONS
 	//////////////////////////////////////////////////////////////////////////////
 	// Note: All buttons are disabled at start until a card is identifyed
 
-	// Set all onclick functions for the adding buttons
-	for (let id in addingButtonDict) {
-		let button = addingButtonDict[id];
+	// Add Buttons
+	for (let i = 0; i < addbuttons.length; i++) {
+		let addbutton = addbuttons[i];
 
-		//command will be 'add' or 'rem'
-		let command = id.slice(0,3);
+		let id = addbutton.id;
+
 		//amount will be an integer string or 'all'
 		let amount = parseInt(id.slice(3),10);
 
-		//define onclick function for this particular button
-		if (command == 'add') {
-			// function for add buttons
-			button.onclick = function () {
+		addbutton.onclick = function () {
 
-				//get name of card from card_name element
-				let card = card_name.innerHTML;
+			//get name of card from card_name element
+			let card = card_name.innerHTML;
 
-				//get exisiting textarea contents, split by line
-				let lines = card_list.value.split('\n');
+			//get exisiting textarea contents, split by line
+			let lines = card_list.value.split('\n');
 
-				//boolean to track whether or not a line has changed
-				let existed = false;
+			//boolean to track whether or not a line has changed
+			let existed = false;
 
-				//check each line to see if card already exists, if so add to amount on that line
-				//goes from bottom to top
-				for (let i = lines.length-1; i >= 0; i--) {
-					let line = lines[i];
+			//check each line to see if card already exists, if so add to amount on that line
+			//goes from bottom to top
+			for (let i = lines.length-1; i >= 0; i--) {
+				let line = lines[i];
 
-					//break if a sideboard line is reached
-					if (line.includes('Sideboard:')) { break; };
+				//break if a sideboard line is reached
+				if (line.includes('Sideboard:')) { break; };
 
-					//parse info from line
-					let existingAmount = parseInt(line.substr(0,line.indexOf(' ')),10);
-					let existingCard = line.substr(line.indexOf(' ')+1);
-					
-					if ((existingCard == card) && (existingAmount > 0)) {
-						//changing a line by increasing amount
-						existed = true;
+				//parse info from line
+				let existingAmount = parseInt(line.substr(0,line.indexOf(' ')),10);
+				let existingCard = line.substr(line.indexOf(' ')+1);
+				
+				if ((existingCard == card) && (existingAmount > 0)) {
+					//changing a line by increasing amount
+					existed = true;
 
-						//do nothing if amount is not a number
-						if (Number.isNaN(amount)){
-							newAmount = existingAmount;
-						} else {
-							newAmount = existingAmount + amount;
-						};
+					//do nothing if amount is not a number
+					if (Number.isNaN(amount)){
+						newAmount = existingAmount;
+					} else {
+						newAmount = existingAmount + amount;
+					};
+					// build new version of line, and replace in lines array.
+					newLine = newAmount.toString(10) + ' ' + existingCard;
+					lines[i] = newLine;
+
+					//break after card is found
+					break;
+				};
+			};
+			//If doesn't already exist, Append new line to textarea
+			if (!existed) {
+				if (lines[lines.length-1] == ''){
+					card_list.value = lines.join('\n') + amount +' '+ card;
+				} else {
+					card_list.value = lines.join('\n') +'\n'+ amount +' '+ card;
+				}
+			//Else just recombine the lines
+			} else {
+				card_list.value = lines.join('\n');
+			};
+		};
+	};
+
+	// Remove Buttons
+	for (let i = 0; i < removebuttons.length; i++) {
+		let removebutton = removebuttons[i];
+
+		let id = removebutton.id;
+
+		//amount will be an integer string or 'all'
+		let amount = parseInt(id.slice(3),10);
+
+		removebutton.onclick = function () {
+			//get name of card from card_name element
+			let card = card_name.innerHTML;
+
+			//get exisiting textarea contents, split by line
+			let lines = card_list.value.split('\n');
+
+			//array to hold lines that should be deleted
+			let deletes = [];
+
+			//check each line to see if card already exists, if so delete the appropriate amount
+			//goes from bottom to top
+			for (let i = lines.length-1; i >= 0; i--) {
+				let line = lines[i];
+
+				//break if a sideboard line is reached
+				if (line.includes('Sideboard:')) { break; };
+
+				// parse info from line
+				let existingAmount = parseInt(line.substr(0,line.indexOf(' ')),10);
+				let existingCard = line.substr(line.indexOf(' ')+1);
+
+				if ((existingCard == card) && (existingAmount > 0)) {
+					//changing a line by subtracting amount
+
+					//remove all if amount is not an integer
+					if (Number.isNaN(amount)){
+						newAmount = 0;
+					} else {
+						newAmount = existingAmount - amount;
+					};
+
+					// if new amount is 0 or negative, mark line for deletion
+					if (newAmount < 1){
+						deletes.push(i);
+					} else {
 						// build new version of line, and replace in lines array.
 						newLine = newAmount.toString(10) + ' ' + existingCard;
 						lines[i] = newLine;
-
-						//break after card is found
-						break;
-					};
-				};
-				//If doesn't already exist, Append new line to textarea
-				if (!existed) {
-					if (lines[lines.length-1] == ''){
-						card_list.value = lines.join('\n') + amount +' '+ card;
-					} else {
-						card_list.value = lines.join('\n') +'\n'+ amount +' '+ card;
 					}
-				//Else just recombine the lines
-				} else {
-					card_list.value = lines.join('\n');
+
+					//break after card is found
+					break;
 				};
 			};
 
-		} else {
-			// function for removal buttons
-			button.onclick = function () {
-				//get name of card from card_name element
-				let card = card_name.innerHTML;
-
-				//get exisiting textarea contents, split by line
-				let lines = card_list.value.split('\n');
-
-				//array to hold lines that should be deleted
-				let deletes = [];
-
-				//check each line to see if card already exists, if so delete the appropriate amount
-				//goes from bottom to top
-				for (let i = lines.length-1; i >= 0; i--) {
-					let line = lines[i];
-
-					//break if a sideboard line is reached
-					if (line.includes('Sideboard:')) { break; };
-
-					// parse info from line
-					let existingAmount = parseInt(line.substr(0,line.indexOf(' ')),10);
-					let existingCard = line.substr(line.indexOf(' ')+1);
-
-					if ((existingCard == card) && (existingAmount > 0)) {
-						//changing a line by subtracting amount
-
-						//remove all if amount is not an integer
-						if (Number.isNaN(amount)){
-							newAmount = 0;
-						} else {
-							newAmount = existingAmount - amount;
-						};
-
-						// if new amount is 0 or negative, mark line for deletion
-						if (newAmount < 1){
-							deletes.push(i);
-						} else {
-							// build new version of line, and replace in lines array.
-							newLine = newAmount.toString(10) + ' ' + existingCard;
-							lines[i] = newLine;
-						}
-
-						//break after card is found
-						break;
-					};
+			// remove lines marked for deletion
+			newLines = [];
+			for (let i = 0; i < lines.length; i++) {
+				if (!(deletes.includes(i))){
+					newLines.push(lines[i]);
 				};
-
-				// remove lines marked for deletion
-				newLines = [];
-				for (let i = 0; i < lines.length; i++) {
-					if (!(deletes.includes(i))){
-						newLines.push(lines[i]);
-					};
-				};
-
-				//recombine the lines
-				card_list.value = newLines.join('\n');
 			};
+
+			//recombine the lines
+			card_list.value = newLines.join('\n');
 		};
 	};
 
