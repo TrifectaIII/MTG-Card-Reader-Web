@@ -30,6 +30,7 @@ var getId = function (id) {
 var notif = getId('notif');//Text Area for Notifications
 var cam_select = getId('cam_select');//Selector for choosing video input
 var webcam_feed = getId("webcam_feed");//Video Element for Webcam Feed
+var reload_cam_button = getId('reload_cam')//button for reloading the video feed
 var set_selector = getId('set_selector');//Select Element to Choose Set
 var card_image = getId('card_image');//Image Element to Display Identified Card Image
 var card_name = getId('card_name');//Text Area to Display Identified Card Name
@@ -60,16 +61,18 @@ plimg_error.src = '/static/errorcard.png';
 //////////////////////////////////////////////////////////////////////////////
 
 // Populate Video Selector
-gotDevices = function (deviceInfos) {
+var gotDevices = function (deviceInfos) {
 	// Remove all pre-exisiting options
 	for(let i = cam_select.options.length - 1 ; i >= 0 ; i--){
         cam_select.remove(i);
 	};
 
+	anyVideo = false;
 	//add all video devices to selector
 	for (let i = 0; i < deviceInfos.length; ++i) {
 		let deviceInfo = deviceInfos[i];
 		if (deviceInfo.kind === 'videoinput') {
+			anyVideo = true;
 			let option = document.createElement('option');
 			option.value = deviceInfo.deviceId;
 		  	option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
@@ -81,18 +84,18 @@ gotDevices = function (deviceInfos) {
 };
 
 //What to do when camera errors
-errorDevices = function (error) {
+var errorDevices = function (error) {
 	// console.log('navigator.MediaDevices.getUserMedia error: ', error.message, error.name);
 	cam_working = false;
-	notif.innerHTML = "Video Error: Please ensure camera is connected and that this page has permission to use it, then reload page. Or, select another video device.";
+	notif.innerHTML = "Video Error: Please ensure camera is connected and that this page has permission to use it, then reload the video feed. Or, select another video device.";
 	notif.style.backgroundColor = 'lightcoral';
 	identify_card_button.disabled = true;
 };
 
-navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(errorDevices)
+navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(errorDevices);
 
 //What to do when camera works
-function gotStream(stream) {
+var gotStream = function (stream) {
 	window.stream = stream; // make stream available to console
 	webcam_feed.srcObject = stream;
 
@@ -108,7 +111,7 @@ function gotStream(stream) {
 	return navigator.mediaDevices.enumerateDevices();
 };
 
-function start() {
+var start = function () {
 	// stop all running tracks
 	if (window.stream) {
 	  window.stream.getTracks().forEach(track => {
@@ -125,21 +128,19 @@ function start() {
 	};
 
 	navigator.mediaDevices.getUserMedia(constraints).then(gotStream).then(gotDevices).catch(errorDevices);
-
-	// loadCam = function () {
-	// 	if (!cam_working){
-	// 		navigator.mediaDevices.getUserMedia(constraints).then(gotStream).then(gotDevices).catch(errorDevices);
-	// 	} else {
-	// 		navigator.mediaDevices.getUserMedia(constraints).then().then().catch(errorDevices);
-	// 	}
-	// };
-
-	// setInterval(loadCam, 1000);
 };
 
 cam_select.onchange = start;
 
+reload_cam_button.onclick = start;
+
 start();
+
+var checkDevices = function () {
+	navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(errorDevices);
+}
+
+setInterval(checkDevices,1000)
 
 // POPULATE SET LIST
 //////////////////////////////////////////////////////////////////////////////
