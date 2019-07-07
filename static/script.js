@@ -62,21 +62,29 @@ plimg_error.src = '/static/errorcard.png';
 
 // Populate Video Selector
 var gotDevices = function (deviceInfos) {
-	// Remove all pre-exisiting options
-	for(let i = cam_select.options.length - 1 ; i >= 0 ; i--){
-        cam_select.remove(i);
-	};
 
-	anyVideo = false;
+	// Remove all pre-exisiting options
+	// for(let i = cam_select.options.length - 1 ; i >= 0 ; i--){
+    //     cam_select.remove(i);
+	// };
+
 	//add all video devices to selector
 	for (let i = 0; i < deviceInfos.length; ++i) {
 		let deviceInfo = deviceInfos[i];
 		if (deviceInfo.kind === 'videoinput') {
-			anyVideo = true;
-			let option = document.createElement('option');
-			option.value = deviceInfo.deviceId;
-		  	option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
-		  	cam_select.appendChild(option);
+			let existed = false;
+			for (let j = 0; j < cam_select.options.length; j++){
+				if (cam_select.options[j].value == deviceInfo.deviceId){
+					cam_select.options[j].text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
+					existed = true;
+				};
+			};
+			if (!existed){
+				let option = document.createElement('option');
+				option.value = deviceInfo.deviceId;
+		  		option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
+				cam_select.appendChild(option);
+			};
 		} else {
 			// do nothing if device is not videoinput
 		};
@@ -85,7 +93,7 @@ var gotDevices = function (deviceInfos) {
 
 //What to do when camera errors
 var errorDevices = function (error) {
-	// console.log('navigator.MediaDevices.getUserMedia error: ', error.message, error.name);
+	console.log('navigator.MediaDevices.getUserMedia error: ', error.message, error.name);
 	cam_working = false;
 	notif.innerHTML = "Video Error: Please ensure camera is connected and that this page has permission to use it, then reload the video feed. Or, select another video device.";
 	notif.style.backgroundColor = 'lightcoral';
