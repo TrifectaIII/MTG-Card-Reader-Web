@@ -59,8 +59,7 @@ plimg_error.src = '/static/errorcard.png';
 // WEBCAM
 //////////////////////////////////////////////////////////////////////////////
 
-// Build Video Selector
-
+// Populate Video Selector
 gotDevices = function (deviceInfos) {
 	// Remove all pre-exisiting options
 	for(let i = cam_select.options.length - 1 ; i >= 0 ; i--){
@@ -71,7 +70,6 @@ gotDevices = function (deviceInfos) {
 	for (let i = 0; i < deviceInfos.length; ++i) {
 		let deviceInfo = deviceInfos[i];
 		if (deviceInfo.kind === 'videoinput') {
-			anyVideo = true;
 			let option = document.createElement('option');
 			option.value = deviceInfo.deviceId;
 		  	option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
@@ -82,31 +80,33 @@ gotDevices = function (deviceInfos) {
 	};
 };
 
+//What to do when camera errors
 errorDevices = function (error) {
 	// console.log('navigator.MediaDevices.getUserMedia error: ', error.message, error.name);
 	cam_working = false;
-	notif.innerHTML = "Webcam Error: Please ensure camera is connected and that this page has permission to use it. Then reload page. Or select another video device";
+	notif.innerHTML = "Video Error: Please ensure camera is connected and that this page has permission to use it, then reload page. Or, select another video device.";
 	notif.style.backgroundColor = 'lightcoral';
 	identify_card_button.disabled = true;
-}
+};
 
 navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(errorDevices)
 
+//What to do when camera works
 function gotStream(stream) {
 	window.stream = stream; // make stream available to console
 	webcam_feed.srcObject = stream;
 
 	cam_working = true;
 	notif.innerHTML = "Webcam Functional";
-
+	notif.style.backgroundColor = 'transparent';	
 	//Enable identify button once set is selected and camera is working
 	if (set_selected){
 		identify_card_button.disabled = false;
-	}
+	};
 
 	// Refresh button list in case labels have become available
 	return navigator.mediaDevices.enumerateDevices();
-}
+};
 
 function start() {
 	// stop all running tracks
@@ -114,7 +114,10 @@ function start() {
 	  window.stream.getTracks().forEach(track => {
 		track.stop();
 	  });
-	}
+	};
+
+	notif.innerHTML = "Loading Webcam...";
+	notif.style.backgroundColor = 'transparent';
 
 	let videoSource = cam_select.value;
 	let constraints = {
@@ -122,35 +125,21 @@ function start() {
 	};
 
 	navigator.mediaDevices.getUserMedia(constraints).then(gotStream).then(gotDevices).catch(errorDevices);
-}
+
+	loadCam = function () {
+		if (!cam_working){
+			navigator.mediaDevices.getUserMedia(constraints).then(gotStream).then(gotDevices).catch(errorDevices);
+		} else {
+			navigator.mediaDevices.getUserMedia(constraints).then().then().catch(errorDevices);
+		}
+	};
+
+	setInterval(loadCam, 1000);
+};
 
 cam_select.onchange = start;
 
 start();
-
-
-// //Access User's Webcam and feed to webcam_feed Element
-// if (navigator.mediaDevices.getUserMedia) {
-// 	navigator.mediaDevices.getUserMedia({ video: true })
-// 		.then(function (stream) {
-// 			//If Cam is Working
-// 			webcam_feed.srcObject = stream;
-// 			cam_working = true;
-// 			notif.innerHTML = "Webcam Functional";
-
-// 			//Enable identify button once set is selected and camera is working
-// 			if (set_selected){
-// 				identify_card_button.disabled = false;
-// 			}
-// 		})
-// 		.catch(function (err0r) {
-// 			//If Cam Fails
-// 			console.log("Something went wrong!",err0r);
-// 			cam_working = false;
-// 			notif.innerHTML = "Webcam Error: Please ensure camera is connected and that this page has permission to use it. Then reload page.";
-// 			notif.style.backgroundColor = 'lightcoral';
-// 		});
-// };
 
 // POPULATE SET LIST
 //////////////////////////////////////////////////////////////////////////////
