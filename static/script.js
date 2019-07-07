@@ -126,15 +126,15 @@ function start() {
 
 	navigator.mediaDevices.getUserMedia(constraints).then(gotStream).then(gotDevices).catch(errorDevices);
 
-	loadCam = function () {
-		if (!cam_working){
-			navigator.mediaDevices.getUserMedia(constraints).then(gotStream).then(gotDevices).catch(errorDevices);
-		} else {
-			navigator.mediaDevices.getUserMedia(constraints).then().then().catch(errorDevices);
-		}
-	};
+	// loadCam = function () {
+	// 	if (!cam_working){
+	// 		navigator.mediaDevices.getUserMedia(constraints).then(gotStream).then(gotDevices).catch(errorDevices);
+	// 	} else {
+	// 		navigator.mediaDevices.getUserMedia(constraints).then().then().catch(errorDevices);
+	// 	}
+	// };
 
-	setInterval(loadCam, 1000);
+	// setInterval(loadCam, 1000);
 };
 
 cam_select.onchange = start;
