@@ -34,6 +34,19 @@ button[disabled] {
     background-repeat: no-repeat;
 }
 
+/* set Selector to match skeleton buttons */
+.choices__inner {
+    border-color:#bbb;
+    background-color:white;
+}
+
+/* When set selector is focused */
+.is-focused .choices__inner,
+.is-open .choices__inner,
+.is-open .choices__list--dropdown {
+    border-color:#888;
+}
+
 #identify_card_button {
     width: 100%;
     margin: auto;
