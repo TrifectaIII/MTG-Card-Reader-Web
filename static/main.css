@@ -27,14 +27,18 @@ button[disabled] {
 
 #notif_area {
     text-align: center;
-    padding:100 100px;
+    padding:100 100px;  
+}
+
+#cam_select:invalid {
+    color: gray; 
 }
 
 #webcam_feed {
     width: 100%;
     object-fit: contain;
     background-color: white;
-    background-image: url('loading.gif');
+    /* background-image: url('loading.gif'); */
     background-position: center;
     background-repeat: no-repeat;
 }

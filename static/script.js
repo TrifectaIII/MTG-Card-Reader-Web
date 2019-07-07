@@ -63,11 +63,6 @@ plimg_error.src = '/static/errorcard.png';
 // Populate Video Selector
 var gotDevices = function (deviceInfos) {
 
-	// Remove all pre-exisiting options
-	// for(let i = cam_select.options.length - 1 ; i >= 0 ; i--){
-    //     cam_select.remove(i);
-	// };
-
 	//add all video devices to selector
 	for (let i = 0; i < deviceInfos.length; ++i) {
 		let deviceInfo = deviceInfos[i];
@@ -143,7 +138,7 @@ cam_select.onchange = start;
 
 reload_cam_button.onclick = start;
 
-start();
+//start();
 
 // POPULATE SET LIST
 //////////////////////////////////////////////////////////////////////////////
