@@ -11,6 +11,7 @@
     backface-visibility: hidden;
     opacity: 0;
     transition: opacity .15s ease-in-out;
+    overflow-y: scroll;
 }
 .modal.modal-open {
     visibility: visible;
@@ -23,7 +24,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
 }
 .modal .modal-inner .modal-content {

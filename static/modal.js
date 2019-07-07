@@ -4,6 +4,7 @@ var closeButtons = document.querySelectorAll('.close-modal');
 // set open modal behaviour
 document.querySelector('.open-modal').addEventListener('click', function() {
     modal.classList.toggle('modal-open');
+    // document.body.scrollTop = document.documentElement.scrollTop = 0;
 });
 // set close modal behaviour
 for (i = 0; i < closeButtons.length; ++i) {
