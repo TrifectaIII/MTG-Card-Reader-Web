@@ -11,7 +11,7 @@
     backface-visibility: hidden;
     opacity: 0;
     transition: opacity .15s ease-in-out;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 .modal.modal-open {
     visibility: visible;
