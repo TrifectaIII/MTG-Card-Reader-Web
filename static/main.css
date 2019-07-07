@@ -55,16 +55,6 @@ button[disabled] {
     border-color:grey;
 }
 
-.add_button {
-    width:100%;
-    background-color:rgba(0, 255, 128, 0.358);
-}
-
-.remove_button {
-    width:100%;
-    background-color:rgba(240, 128, 128, 0.358);
-}
-
 #card_list {
     width: 100%;
     height: 100%;
@@ -72,8 +62,8 @@ button[disabled] {
     font-size:large;
 }
 
-.text_button {
-    width: 100%;
+#save {
+    background-color: rgb(104, 203, 233);
 }
 
 #clear {
@@ -99,4 +89,27 @@ a {
 #full_page {
     position: relative;
     min-height: 98vh;
+}
+
+.add_button {
+    background-color:rgba(0, 255, 128, 0.358);
+}
+
+.remove_button {
+    background-color:rgba(240, 128, 128, 0.358);
+}
+
+.add_button, .remove_button, .text_button {
+    width: 70%;
+}
+
+@media (min-width: 400px) {
+    .add_button, .remove_button, .text_button {
+        width:80%;
+    }
+}
+@media (min-width: 550px) {
+    .add_button, .remove_button, .text_button {
+        width:100%;
+    }
 }
