@@ -76,11 +76,11 @@ button[disabled] {
 }
 
 #save {
-    background-color: rgb(104, 203, 233);
+    background-color: rgb(182, 238, 255);
 }
 
 #clear {
-    background-color:rgba(240, 128, 128, 0.358);
+    background-color:rgb(255, 208, 216);
 }
 
 a {
@@ -105,11 +105,11 @@ a {
 }
 
 .add_button {
-    background-color:rgba(0, 255, 128, 0.358);
+    background-color:rgb(196, 255, 226);
 }
 
 .remove_button {
-    background-color:rgba(240, 128, 128, 0.358);
+    background-color:rgb(255, 208, 216);
 }
 
 .add_button, .remove_button, .text_button {
