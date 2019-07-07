@@ -25,6 +25,11 @@ button[disabled] {
     text-align: center;
 }
 
+#notif_area {
+    text-align: center;
+    padding:100 100px;
+}
+
 #webcam_feed {
     width: 100%;
     object-fit: contain;

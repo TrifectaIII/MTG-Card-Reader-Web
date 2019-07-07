@@ -105,10 +105,23 @@ def identify(cam_png_uri, setcode):
             bestCount = matchCount
             bestMVID = mvid
 
-    # Return Name and URL for Matched Card
+    #convert MVID into String
+    bestMVID = str(bestMVID)
+
+    # Build Dictionary to return and send to JS
     try:
-        bestName = cardsInfo[str(bestMVID)]['name']
+        bestName = cardsInfo[bestMVID]['name']
     except:
         bestName = ''
+
+    try:
+        bestPurchase = cardsInfo[bestMVID]['purchaseUrls']
+    except:
+        bestPurchase = ''
+
+
+    card_dict = {'name':bestName,
+                 'mvid':bestMVID,
+                 'purchaseUrls':bestPurchase}
     
-    return (bestName, bestMVID)
+    return (card_dict)

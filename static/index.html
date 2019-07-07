@@ -33,11 +33,15 @@
 				<div class="modal-close-icon">
 					<a href="javascript:void(0)" class="close-modal"><i class="fa fa-times" aria-hidden="true"></i></a>
 				</div>
+
+				<!-- Contents of Modal Window -->
 				<div class="modal-content-inner">
 					<div class='row'>
 						<h2>Information</h2>
 						<hr class="modal-buttons-seperator">
 					</div>
+
+					<!-- INSTRUCTIONS -->
 					<div class='row'>
 						<div class='one-third column infocol'>
 							<h4>&#x1F4CB; Instructions</h4>
@@ -50,6 +54,8 @@
 								that the card is in focus, and that the background is as featureless as possible.</b>
 							</p>
 						</div>
+
+						<!-- FAQ -->
 						<div class='one-third column infocol'>
 								<h4>&#x2753; FAQ</h4>
 								<hr class="modal-buttons-seperator">
@@ -59,6 +65,8 @@
 									This section is reserved for answering common user questions.
 								</p>
 						</div>
+
+						<!-- TOOLS -->
 						<div class='one-third column infocol'>
 							<h4>&#x1F528; Tools</h4>
 							<hr class="modal-buttons-seperator">
@@ -73,9 +81,11 @@
 							</ul>
 						</div>
 					</div>
+
+					<!-- Close Modal Button -->
 					<hr class="modal-buttons-seperator">
 					<div class="modal-buttons">
-						<button class="button close-modal">Close</button>
+						<button class="button close-modal button-primary">Close</button>
 					</div>
 				</div>
 			</div>
@@ -83,8 +93,13 @@
 	</div>
 	
 	<!-- MAIN -->
-	<main>
+	<main></main>
 		<div id='full_page' class='container'>
+
+			<!-- NOTIF SECTION -->
+			<div id='notif_area'>
+					<p id='notif'> Loading Webcam... </p>
+			</div>
 
 			<!-- MAIN SECTION -->
 			<div id='main_page' class='row'>
@@ -92,7 +107,8 @@
 				<!-- TITLE AND WEBCAM SECTION -->
 				<div class='one-third column'>
 					<h1 id='title'>MTG Card Reader</h1>
-					<p id='notif'> Loading Webcam... </p>
+					<label>Select Video Input:</label>
+					<select id='cam_select'></select>
 					<video id="webcam_feed" autoplay="true"></video>
 				</div>
 

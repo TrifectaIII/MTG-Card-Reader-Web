@@ -25,9 +25,7 @@ def identify_card():
     # Read Image and Setcode from Request Form
     img_uri = request.forms.get('image')
     setcode = request.forms.get('setcode')
-    card_name, card_mvid = identification.identify(img_uri, setcode)
-    card_dict = {'name':card_name,
-                 'mvid':str(card_mvid)}
+    card_dict = identification.identify(img_uri, setcode)
     return card_dict
 
 
