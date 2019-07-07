@@ -21,85 +21,133 @@
 	<link rel="stylesheet" href="static/ChoicesJS/choices.min.css">
 	<script src="static/ChoicesJS/choices.min.js"></script>
 
-	<!--  Load Main CSS File -->
+	<!--  Load CSS Files -->
 	<link rel="stylesheet" href="static/main.css">
+	<link rel="stylesheet" href="static/modal.css">
+</head>
+<body>
+	<!-- MODAL INFO -->
+	<div class="modal">
+		<div class="modal-inner">
+			<div class="modal-content">
+				<div class="modal-close-icon">
+					<a href="javascript:void(0)" class="close-modal"><i class="fa fa-times" aria-hidden="true"></i></a>
+				</div>
+				<div class="modal-content-inner">
+					<div class='row'>
+						<h2>Information</h2>
+						<hr class="modal-buttons-seperator">
+					</div>
+					<div class='row'>
+						<div class='one-half column infocol'>
+							<h4>Tools</h4>
+							<ul>
+								<li><a href="https://www.python.org/">Python</a></li>
+								<li><a href="https://pypi.org/project/opencv-python/">OpenCV</a></li>
+								<li><a href="http://bottlepy.org/">Bottle</a></li>
+								<li><a href="https://mtgjson.com/">MTGJSON</a></li>
+								<li><a href="https://github.com/jshjohnson/Choices">Choices</a></li>
+								<li><a href="https://github.com/eligrey/FileSaver.js">FileSaver</a></li>
+								<li><a href="http://getskeleton.com/">Skeleton</a></li>
+							</ul>
+						</div>
+						<div class='one-half column infocol'>
+								<h4>FAQ</h4>
+								<p><b>Under Construction</b>, this section is reversed for answering common user questions.</p>
+						</div>
+					</div>
+					<hr class="modal-buttons-seperator">
+					<div class="modal-buttons">
+						<button class="button close-modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- MAIN -->
+	<main>
+		<div id='full_page' class='container'>
+
+			<!-- MAIN SECTION -->
+			<div id='main_page' class='row'>
+
+				<!-- TITLE AND WEBCAM SECTION -->
+				<div class='one-third column'>
+					<h1 id='title'>MTG Card Reader</h1>
+					<p id='notif'> Loading Webcam... </p>
+					<video id="webcam_feed" autoplay="true"></video>
+				</div>
+
+				<!-- IDENTIFY, DISPLAY CARD INFO, ADDING BUTTONS SECTION -->
+				<div class='one-third column'>
+
+					<!-- IDENTIFY -->
+					<div id='identify_tools' class='row'>
+						<span>Set:</span>
+						<br>
+						<select id='set_selector'><option placeholder>Please Select a Set</option></select>
+						<button id='identify_card_button' class='button-primary' disabled='true'>IDENTIFY CARD</button>
+					</div>
+
+					<br>
+
+					<!-- DISPLAY CARD INFO, ADDING BUTTONS -->
+					<div id='card_display_adding_buttons' class='row'>
+						<div id='card_display' class='one-half column'>
+							<span id='card_name'></span>
+							<br>
+							<img id='card_image' src='static/cardback.png'>
+						</div>
+
+						<!-- TABLE FOR ADDING BUTTONS (All disabled by default until a card is matched) -->
+						<div id='adding_buttons' class='one-half column'>
+							<!-- <span>Add Card</span></nobr> -->
+							<button class='add_button' id='add1' disabled='true'>Add 1</button>
+							<button class='add_button' id='add4' disabled='true'>Add 4</button>
+							<button class='add_button' id='add10' disabled='true'>Add 10</button>
+							<button class='remove_button' id='rem1' disabled='true'>Remove 1</button>
+							<button class='remove_button' id='rem4' disabled='true'>Remove 4</button>
+							<button class='remove_button' id='rem10' disabled='true'>Remove 10</button>
+							<button class='remove_button' id='remall' disabled='true'>Remove All</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- TEXTAREA SECTION -->
+				<div id='text_section' class='one-third column'>
+
+					<!-- TEXTAREA -->
+					<div class='row'>
+						<textarea id='card_list' rows=18 placeholder='Cards you add will appear here!'></textarea>
+					</div>
+
+					<!-- TEXTAREA BUTTONS -->
+					<div id='text_buttons' class = 'row'>
+						<button class='text_button' id='sideboard'>Start Sideboard</button>
+						<button class='text_button' id='save'>Save to File</button>
+						<button class='text_button' id='clear'>Clear All</button>
+					</div>	
+				</div>
+			</div>	
+
+			<!-- FOOTER -->
+			<div id='footer' class='row'>
+				<span>Created by Dakota Madden-Fong</span>
+				<br>
+				<a href = "mailto: maddenfong@gmail.com">maddenfong@gmail.com</a>
+				<br>
+				<a href="https://github.com/TrifectaIII/MTG-Card-Reader-Web">GitHub</a>
+				<br>
+				<button class="open-modal">Info</button>
+			</div>
+		</div>
+	</main>
 
 	<!-- Load Main Script -->
 	<script src="static/script.js"></script>
-</head>
-<body>
-	<div id='full_page' class='container'>
 
-		<!-- MAIN SECTION -->
-		<div id='main_page' class='row'>
-
-			<!-- TITLE AND WEBCAM SECTION -->
-			<div class='one-third column'>
-				<h1 id='title'>MTG Card Reader</h1>
-				<p id='notif'> Loading Webcam... </p>
-				<video id="webcam_feed" autoplay="true"></video>
-			</div>
-
-			<!-- IDENTIFY, DISPLAY CARD INFO, ADDING BUTTONS SECTION -->
-			<div class='one-third column'>
-
-				<!-- IDENTIFY -->
-				<div id='identify_tools' class='row'>
-					<span>Set:</span>
-					<br>
-					<select id='set_selector'><option placeholder>Please Select a Set</option></select>
-					<button id='identify_card_button' disabled='true'>IDENTIFY CARD</button>
-				</div>
-
-				<br>
-
-				<!-- DISPLAY CARD INFO, ADDING BUTTONS -->
-				<div id='card_display_adding_buttons' class='row'>
-					<div id='card_display' class='one-half column'>
-						<span id='card_name'></span>
-						<br>
-						<img id='card_image' src='static/cardback.png'>
-					</div>
-
-					<!-- TABLE FOR ADDING BUTTONS (All disabled by default until a card is matched) -->
-					<div id='adding_buttons' class='one-half column'>
-						<!-- <span>Add Card</span></nobr> -->
-						<button class='add_button' id='add1' disabled='true'>Add 1</button>
-						<button class='add_button' id='add4' disabled='true'>Add 4</button>
-						<button class='add_button' id='add10' disabled='true'>Add 10</button>
-						<button class='remove_button' id='rem1' disabled='true'>Remove 1</button>
-						<button class='remove_button' id='rem4' disabled='true'>Remove 4</button>
-						<button class='remove_button' id='rem10' disabled='true'>Remove 10</button>
-						<button class='remove_button' id='remall' disabled='true'>Remove All</button>
-					</div>
-				</div>
-			</div>
-
-			<!-- TEXTAREA SECTION -->
-			<div id='text_section' class='one-third column'>
-
-				<!-- TEXTAREA -->
-				<div class='row'>
-					<textarea id='card_list' rows=18 placeholder='Cards you add will appear here!'></textarea>
-				</div>
-
-				<!-- TEXTAREA BUTTONS -->
-				<div id='text_buttons' class = 'row'>
-					<button class='text_button' id='sideboard'>Start Sideboard</button>
-					<button class='text_button' id='save'>Save to File</button>
-					<button class='text_button' id='clear'>Clear All</button>
-				</div>	
-			</div>
-		</div>	
-
-		<!-- FOOTER -->
-		<div id='footer' class='row'>
-			<span>Created by Dakota Madden-Fong</span>
-			<br>
-			<a href = "mailto: maddenfong@gmail.com">maddenfong@gmail.com</a>
-			<br>
-			<a href="https://github.com/TrifectaIII/MTG-Card-Reader-Web">GitHub</a>
-		</div>
-	</div>
+	<!-- Load Modal Script -->
+	<script src="static/modal.js"></script>
 </body>
 </html>

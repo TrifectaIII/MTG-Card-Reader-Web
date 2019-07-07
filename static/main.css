@@ -41,6 +41,13 @@ button[disabled] {
     font-size: large;
 }
 
+#identify_card_button:disabled,
+#identify_card_button[disabled] {
+    background-color:lightgrey;
+    color:#555;
+    border-color:#bbb;
+}
+
 #card_image {
     border-style:solid;
     border-radius: 13px;
@@ -74,24 +81,19 @@ button[disabled] {
 }
 
 a {
-    color:royalblue;
+    color:rgb(16, 67, 221);
 }
-
-/* #footer {
-    padding-top: 100px;
-    font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
-} */
 
 #footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 8rem;            /* Footer height */
+    height: 12rem;            /* Footer height */
     font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
 }
 
 #main_page {
-    padding-bottom: 8rem;    /* Footer height */
+    padding-bottom: 12rem;    /* Footer height */
 }
 
 #full_page {

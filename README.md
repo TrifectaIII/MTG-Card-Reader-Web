@@ -9,17 +9,17 @@ IN ACTIVE DEVELOPMENT. If you have any questions, complaints, suggestions, etc. 
 ## Resources
 Project is currently using these tools:
 
-[python](https://www.python.org/)
+[Python](https://www.python.org/)
 
 [OpenCV](https://pypi.org/project/opencv-python/)
 
-[bottle.py](http://bottlepy.org/)
+[Bottle](http://bottlepy.org/)
 
 [MTGJSON](https://mtgjson.com/)
 
-[choices.js](https://github.com/jshjohnson/Choices)
+[Choices](https://github.com/jshjohnson/Choices)
 
-[FileSaver.js](https://github.com/eligrey/FileSaver.js)
+[FileSaver](https://github.com/eligrey/FileSaver.js)
 
 [Skeleton](http://getskeleton.com/)
 
