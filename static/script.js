@@ -121,6 +121,7 @@ var start = function () {
 
 	notif.innerHTML = "Loading Webcam...";
 	notif.style.backgroundColor = 'transparent';
+	identify_card_button.disabled = true;
 
 	let videoSource = cam_select.value;
 	let constraints = {
