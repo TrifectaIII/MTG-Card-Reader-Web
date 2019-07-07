@@ -137,12 +137,6 @@ reload_cam_button.onclick = start;
 
 start();
 
-var checkDevices = function () {
-	navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(errorDevices);
-}
-
-setInterval(checkDevices,1000)
-
 // POPULATE SET LIST
 //////////////////////////////////////////////////////////////////////////////
 
