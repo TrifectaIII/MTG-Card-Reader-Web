@@ -18,5 +18,5 @@ var notify = function (message) {
 };
 
 open_notif.addEventListener('click', function () {
-    notify('Testing Testing 123');
+    notify('This is a Test Notification');
 });
