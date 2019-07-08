@@ -1,7 +1,7 @@
 /* Notification Area Styling for https://github.com/TrifectaIII/MTG-Card-Reader-Web */
 
 #notif_wrap {
-    width:inherit;
+    width:100%;
     margin:auto;
     display:flex;
     justify-content: center; 
@@ -13,7 +13,7 @@
     background-color:rgb(255, 104, 129);
     /* border:1px solid black; */
     text-align:center;
-    width:inherit;
+    width:80%;
     position:fixed;
     z-index:1;
     display:none;
@@ -27,17 +27,17 @@
 
 #notif_text {
     margin:auto;
-    width:100%;
+    width:auto;
     line-height:normal;
 }
 
 #close_notif {
     margin:auto;
     border-color:black;
-    width:100%;
+    background-color:black;
+    width:auto;
     height:auto;
     margin-top:2rem;
-    background-color:black;
 }
 
 #close_notif:hover {
@@ -51,17 +51,16 @@
 @media (min-width: 550px) {
     #notif {
         position:relative;
+        width:100%;
     }
     #notif_text {
         float:left;
-        width:auto;
         line-height: 5rem;
         margin-left:2rem;
     }
 
     #close_notif {
         float:right;
-        width:auto;
         height:5rem;
         margin-top:auto;
     }
