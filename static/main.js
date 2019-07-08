@@ -1,63 +1,7 @@
 // Primary JS Script for https://github.com/TrifectaIII/MTG-Card-Reader-Web
 
-// GLOBAL FUNCTIONS
-//////////////////////////////////////////////////////////////////////////////////
 
-//Disable all buttons stored in a dictionary
-var disableButtons = function (nodeli) {
-	for (let i = 0; i < nodeli.length; i++) {
-		nodeli[i].disabled = true;
-	};
-};
-
-//Enable all buttons stored in a dictionary
-var enableButtons = function (nodeli) {
-	for (let i = 0; i < nodeli.length; i++) {
-		nodeli[i].disabled = false;
-	};
-};
-
-//Wrapper Function for getElementById
-var getId = function (id) {
-	return document.getElementById(id);
-};
-
-
-//SETUP
-//////////////////////////////////////////////////////////////////////////////
-
-//Get HTML Elements
-var notif = getId('notif');//Text Area for Notifications
-var cam_select = getId('cam_select');//Selector for choosing video input
-var webcam_feed = getId("webcam_feed");//Video Element for Webcam Feed
-var reload_cam_button = getId('reload_cam')//button for reloading the video feed
-var set_selector = getId('set_selector');//Select Element to Choose Set
-var card_image = getId('card_image');//Image Element to Display Identified Card Image
-var card_name = getId('card_name');//Text Area to Display Identified Card Name
-var identify_card_button = getId('identify_card_button');//Button to Execute Identification
-var card_list = getId('card_list');//Text Area for generating list of cards
-var clear_button = getId('clear');//Button to clear text area
-var sideboard_button = getId('sideboard');//Button to start sideboard
-var save_button = getId('save');//Button to save contents of textarea to file
-
-//NodeLists to Hold Adding Buttons
-var addbuttons = document.querySelectorAll('.add_button');//NodeList of adding buttons
-var removebuttons = document.querySelectorAll('.remove_button');//NodeList of remove buttons
-var addremovebuttons = document.querySelectorAll('.remove_button, .add_button');//NodeList of add and remove buttons
-
-//Global Variables
-var cam_working = false;//boolean to track whether Webcam Feed is working
-var sets_load = false;//boolean to track whether set selector has been populated
-var set_selected = false;//boolean to track whether set has been selected
-var identify_start = 0;//integer to help calculate response time of identify requests
-
-//Preload Loading Card and Error Card Images
-var plimg_load  = new Image();
-plimg_load.src  = '/static/loadingcard.gif';
-var plimg_error = new Image();
-plimg_error.src = '/static/errorcard.png';
-
-// WEBCAM
+// VIDEO
 //////////////////////////////////////////////////////////////////////////////
 
 // Populate Video Selector
@@ -95,8 +39,8 @@ var gotDevices = function (deviceInfos) {
 var errorDevices = function (error) {
 	console.log('navigator.MediaDevices.getUserMedia error: ', error.message, error.name);
 	cam_working = false;
-	notif.innerHTML = "Video Error: Please ensure camera is connected and that this page has permission to use it, then reload the video feed. Or, select another video device.";
-	notif.style.backgroundColor = 'lightcoral';
+	notify("Video Error: Could not connect to video device. Please ensure camera is connected and that this page has\
+	 permission to use it, then reload the video feed. Or, select another video device.");
 	identify_card_button.disabled = true;
 };
 
@@ -108,8 +52,8 @@ var gotStream = function (stream) {
 	webcam_feed.srcObject = stream;
 
 	cam_working = true;
-	notif.innerHTML = "Webcam Functional";
-	notif.style.backgroundColor = 'transparent';	
+	// notif_text.innerHTML = "Webcam Functional";
+
 	//Enable identify button once set is selected and camera is working
 	if (set_selected){
 		identify_card_button.disabled = false;
@@ -127,8 +71,7 @@ var start = function () {
 	  });
 	};
 
-	notif.innerHTML = "Loading Webcam...";
-	notif.style.backgroundColor = 'transparent';
+	// notif_text.innerHTML = "Loading Webcam...";
 	identify_card_button.disabled = true;
 
 	let videoSource = cam_select.value;
@@ -141,7 +84,7 @@ var start = function () {
 
 cam_select.onchange = start;
 
-reload_cam_button.onclick = start;
+reload_cam_button.addEventListener('click', start);
 
 start();
 
@@ -204,7 +147,8 @@ set_list_request.onload = function () {
 
 //Tell request what to do upon error
 set_list_request.onerror = function () {
-	console.log("set_list didn't work at all");
+	console.log("set_list request failed");
+	notify('Server Error: set_list request failed. Please reload page and try again.');
 };
 
 //send request targeting sets.json file
@@ -241,8 +185,8 @@ identify_card_request.onload = function () {
 		if (identifiedName.length == 0){
 			// If no identify is made, display error
 			card_image.onload = function () {
-				card_name.innerHTML = 'COULD NOT IDENTIFY CARD';
-			card_name.style.backgroundColor = 'lightcoral';
+				card_name.innerHTML = 'IDENTIFY ERROR';
+				notify('Identification Error: Unable to identify card. Please ensure card is against a neutral background.');
 			};
 			card_image.src = '/static/errorcard.png';
 		} else {
@@ -267,14 +211,14 @@ identify_card_request.onerror = function () {
 	//display error image
 	card_image.onload = function () {
 		card_name.innerHTML = 'SERVER ERROR';
-	card_name.style.backgroundColor = 'lightcoral';
+		notify('Server Error: identify_card request failed. Please reload page and try again.')
 	};
 	card_image.src = '/static/errorcard.png';
 
 };
 
 //Tell identify button to send request on click
-identify_card_button.onclick = function () {
+identify_card_button.addEventListener('click', function () {
 	if (cam_working) {
 
 		//start response timer
@@ -317,7 +261,7 @@ identify_card_button.onclick = function () {
 	} else {
 		console.log('Camera Not Working, so cannot send image for identify');
 	};
-};
+});
 
 // ADD/REMOVE BUTTONS
 //////////////////////////////////////////////////////////////////////////////
@@ -332,7 +276,7 @@ for (let i = 0; i < addbuttons.length; i++) {
 	//amount will be an integer string or 'all'
 	let amount = parseInt(id.slice(3),10);
 
-	addbutton.onclick = function () {
+	addbutton.addEventListener('click', function () {
 
 		//get name of card from card_name element
 		let card = card_name.innerHTML;
@@ -384,7 +328,7 @@ for (let i = 0; i < addbuttons.length; i++) {
 		} else {
 			card_list.value = lines.join('\n');
 		};
-	};
+	});
 };
 
 // Remove Buttons
@@ -396,7 +340,7 @@ for (let i = 0; i < removebuttons.length; i++) {
 	//amount will be an integer string or 'all'
 	let amount = parseInt(id.slice(3),10);
 
-	removebutton.onclick = function () {
+	removebutton.addEventListener('click', function () {
 		//get name of card from card_name element
 		let card = card_name.innerHTML;
 
@@ -452,29 +396,29 @@ for (let i = 0; i < removebuttons.length; i++) {
 
 		//recombine the lines
 		card_list.value = newLines.join('\n');
-	};
+	});
 };
 
 // TEXT AREA BUTTONS
 //////////////////////////////////////////////////////////////////////////////
 
 //Clear button should empty all contents of text area
-clear_button.onclick = function () {
+clear_button.addEventListener('click', function () {
 	if (confirm('Are you sure you want to clear the text area?')){
 		card_list.value = '';
 	};
-};
+});
 
 //start sideboard button
-sideboard_button.onclick = function () {
+sideboard_button.addEventListener('click', function () {
 	card_list.value = card_list.value + '\n\nSideboard:';
-};
+});
 
 //button to save contents to file
-save_button.onclick = function () {
+save_button.addEventListener('click', function () {
 
 	//create blob with textarea contents
 	let toWrite = new Blob([card_list.value], {type: "text/plain;charset=utf-8"});
 	//use FileSaver.js to save to file
 	saveAs(toWrite,'decklist.txt');
-};
+});

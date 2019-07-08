@@ -1,4 +1,4 @@
-/* MODAL */
+/* Modal Box Window Styling for https://github.com/TrifectaIII/MTG-Card-Reader-Web */
 
 .modal {
     position: fixed;
@@ -17,7 +17,7 @@
     visibility: visible;
     backface-visibility: visible;
     opacity: 1;
-    z-index: 1;
+    z-index: 2;
 }
 .modal .modal-inner {
     position: relative;

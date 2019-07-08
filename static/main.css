@@ -25,57 +25,6 @@ button[disabled] {
     text-align: center;
 }
 
-#notif_area {
-    /* text-align: left; */
-    /* padding-top:100px; */
-    border:1px solid #555;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    background-color:rgb(255, 208, 216);
-    padding: 2px;
-    text-align:center;
-}
-
-notif_area:hover {
-    border-color:#333;
-}
-
-#notif {
-    margin:auto;
-    width:100%;
-    line-height:normal;
-}
-
-#close_notif {
-    margin:auto;
-    border-color:#555;
-    width:100%;
-    height:auto;
-    margin-top:2rem;
-}
-
-#notif, #close_notif {
-    float:none;
-}
-
-@media (min-width: 550px) {
-    #notif {
-        float:left;
-        width:auto;
-        line-height: 5rem;
-    }
-    #close_notif {
-        float:right;
-        width:auto;
-        height:5rem;
-        margin-top:auto;
-    }
-}
-
-#close_notif:hover {
-    border-color:#333;
-}
-
 #cam_select {
     border-color:#bbb;
     color: #555;
@@ -136,11 +85,11 @@ notif_area:hover {
     font-size:large;
 }
 
-#save {
+#save_button {
     background-color: rgb(182, 238, 255);
 }
 
-#clear {
+#clear_button {
     background-color:rgb(255, 208, 216);
 }
 

@@ -24,6 +24,7 @@
 	<!--  Load CSS Files -->
 	<link rel="stylesheet" href="static/main.css">
 	<link rel="stylesheet" href="static/modal.css">
+	<link rel="stylesheet" href="static/notif.css">
 </head>
 <body>
 	<!-- INFO MODAL -->
@@ -95,13 +96,9 @@
 		<div id='full_page' class='container'>
 
 			<!-- NOTIF SECTION -->
-			<div id='notif_area' class='row'>
-				<!-- <div class='column'> -->
-					<span id='notif'> Loading Webcam... </span>
-				<!-- </div> -->
-				<!-- <div class='column'> -->
+			<div id='notif' class='row'>
+					<span id='notif_text'> Loading Webcam... </span>
 					<button id='close_notif'>Close</button>
-				<!-- </div> -->
 			</div>
 
 			<!-- MAIN SECTION -->
@@ -113,7 +110,7 @@
 					<span>Select Video Input:</span>
 					<select id='cam_select'></select>
 					<br>
-					<button id='reload_cam'>Reload Video</button>
+					<button id='reload_cam_button'>Reload Video</button>
 					<video id="webcam_feed" autoplay="true"></video>
 				</div>
 
@@ -162,9 +159,10 @@
 
 					<!-- TEXTAREA BUTTONS -->
 					<div id='text_buttons' class = 'row'>
-						<button class='text_button' id='sideboard'>Start Sideboard</button>
-						<button class='text_button' id='save'>Save to File &#x1F4BE;</button>
-						<button class='text_button' id='clear'>Clear All</button>
+						<button class='text_button' id='sideboard_button'>Start Sideboard</button>
+						<button class='text_button' id='save_button'>Save to File &#x1F4BE;</button>
+						<button class='text_button' id='clear_button'>Clear All</button>
+						<button id='open_notif'>Notify</button>
 					</div>	
 				</div>
 			</div>	
@@ -182,10 +180,19 @@
 		</div>
 	</main>
 
-	<!-- Load Main Script -->
-	<script src="static/script.js"></script>
+	<!-- Load JS Scripts -->
 
-	<!-- Load Modal Script -->
+	<!-- Global -->
+	<script src="static/global.js"></script>
+
+	<!-- Notif - Anything should be able to notify -->
+	<script src="static/notif.js"></script>
+
+	<!-- Modal relies on nothing else -->
 	<script src="static/modal.js"></script>
+
+	<!-- Main relies on global, notif -->
+	<script src="static/main.js"></script>
+
 </body>
 </html>
