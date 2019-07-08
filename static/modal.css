@@ -34,7 +34,7 @@
     position: relative;
     margin: 2em;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.35);
-    border-radius: 5px;
+    border-radius: 4px;
 }
 .modal .modal-inner .modal-content .modal-close-icon {
     position: absolute;
