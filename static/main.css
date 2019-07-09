@@ -10,6 +10,13 @@ body {
     background-color: white;
 }
 
+button {
+    -webkit-transition: background-color 0.3s ease;
+    -moz-transition: background-color 0.3s ease;
+    -o-transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease;
+}
+
 button:disabled,
 button[disabled] {
     background-color:lightgrey;
