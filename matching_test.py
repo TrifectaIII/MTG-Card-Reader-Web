@@ -7,15 +7,15 @@ from os import walk
 setsGen = []
 
 
-for (dirpath, dirnames, filenames) in walk('setDes/'):
+for (dirpath, dirnames, filenames) in walk("setDes/"):
     for fn in filenames:
-        setsGen.append(fn[3:-4])#cuts off the leading 'set' and trailing '.des'
+        setsGen.append(fn[3:-4])  # cuts off the leading 'set' and trailing '.des'
     break
 setsGen.sort()
 
 setsDict = dict()
 for setcode in setsGen:
-    with open('setDes/set'+setcode+'.des', 'rb') as des_file:
+    with open("setDes/set" + setcode + ".des", "rb") as des_file:
         set_names, set_mvids, set_des = pickle.load(des_file)
     setsDict[setcode] = (set_names, set_mvids, set_des)
 
@@ -24,8 +24,8 @@ total = 0
 unique = 0
 
 
-#for key in setsDict:
-set_des = setsDict['M10'][2]
+# for key in setsDict:
+set_des = setsDict["M10"][2]
 for card_des in set_des:
     for des in card_des:
         des = list(des)
@@ -35,6 +35,5 @@ for card_des in set_des:
             unique += 1
             deslist.append(des)
 
-print('Total:',total)
-print('Unique:',unique)
-
+print("Total:", total)
+print("Unique:", unique)

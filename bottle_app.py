@@ -20,11 +20,11 @@ identification.loadAllFiles()
 
 
 # Accept Request for Card Match
-@route('/identify_card', method='POST')
+@route("/identify_card", method="POST")
 def identify_card():
     # Read Image and Setcode from Request Form
-    img_uri = request.forms.get('image')
-    setcode = request.forms.get('setcode')
+    img_uri = request.forms.get("image")
+    setcode = request.forms.get("setcode")
     card_dict = identification.identify(img_uri, setcode)
     return card_dict
 
@@ -33,14 +33,15 @@ def identify_card():
 
 
 # Serve Main Page
-@route('/')
+@route("/")
 def index():
-    return static_file('static/index.html', root='.')
+    return static_file("static/index.html", root=".")
+
 
 # Serve Static Files
-@route('/static/<filepath:path>')
+@route("/static/<filepath:path>")
 def send_static(filepath):
-    return static_file(filepath, root='./static/')
+    return static_file(filepath, root="./static/")
 
 
 ##################################################################################
@@ -49,5 +50,5 @@ def send_static(filepath):
 application = default_app()
 
 # Start localhost Development Server (For Local Machine Use) If this is Main file
-if __name__ == '__main__':
-    run(host='localhost', port=8000, debug=True)
+if __name__ == "__main__":
+    run(host="localhost", port=8000, debug=True)
