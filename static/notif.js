@@ -1,9 +1,9 @@
 // Notification Area Script for https://github.com/TrifectaIII/MTG-Card-Reader-Web
 
-var notif = getById('notif');//Notification Pop-up
-var notif_text = getById('notif_text');//Text in in Notification
-var close_notif = getById('close_notif');//Button to close Notification
-var open_notif = getById('open_notif');//Button to open Notification
+var notif = document.querySelector('.notif');//Notification Pop-up
+var notif_text = document.querySelector('.notif_text');//Text in in Notification
+var close_notif = document.querySelector('.close_notif');//Button to close Notification
+var open_notif = document.querySelector('.open_notif');//Button to open Notification
 
 // close_notif must close the notif
 close_notif.addEventListener('click', function () {

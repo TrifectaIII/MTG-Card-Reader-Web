@@ -4,8 +4,8 @@
 var modal = document.querySelector('.modal');
 var closeButtons = document.querySelectorAll('.close-modal');
 var openButton = document.querySelector('.open-modal');
-inner = document.querySelector('.modal-inner')
-content = document.querySelector('.modal-content')
+var inner = document.querySelector('.modal-inner')
+var content = document.querySelector('.modal-content')
 
 // set open modal behaviour
 openButton.addEventListener('click', function() {

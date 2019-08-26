@@ -4,49 +4,40 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 //Disable all buttons stored in a dictionary
-var disableButtons = function (nodeli) {
+function disableButtons (nodeli) {
 	for (let i = 0; i < nodeli.length; i++) {
 		nodeli[i].disabled = true;
 	};
 };
 
 //Enable all buttons stored in a dictionary
-var enableButtons = function (nodeli) {
+function enableButtons (nodeli) {
 	for (let i = 0; i < nodeli.length; i++) {
 		nodeli[i].disabled = false;
 	};
 };
-
-//Wrapper Function for getElementById
-var getById = function (id) {
-	return document.getElementById(id);
-};
-
-var queryAll = function (cssMatch) {
-    return document.querySelectorAll(cssMatch);
-}
 
 //SETUP
 //////////////////////////////////////////////////////////////////////////////
 
 //Get HTML Elements
 
-var cam_select = getById('cam_select');//Selector for choosing video input
-var webcam_feed = getById("webcam_feed");//Video Element for Webcam Feed
-var reload_cam_button = getById('reload_cam_button')//button for reloading the video feed
-var set_selector = getById('set_selector');//Select Element to Choose Set
-var card_image = getById('card_image');//Image Element to Display Identified Card Image
-var card_name = getById('card_name');//Text Area to Display Identified Card Name
-var identify_card_button = getById('identify_card_button');//Button to Execute Identification
-var card_list = getById('card_list');//Text Area for generating list of cards
-var clear_button = getById('clear_button');//Button to clear text area
-var sideboard_button = getById('sideboard_button');//Button to start sideboard
-var save_button = getById('save_button');//Button to save contents of textarea to file
+var cam_select = document.getElementById('cam_select');//Selector for choosing video input
+var webcam_feed = document.getElementById("webcam_feed");//Video Element for Webcam Feed
+var reload_cam_button = document.getElementById('reload_cam_button')//button for reloading the video feed
+var set_selector = document.getElementById('set_selector');//Select Element to Choose Set
+var card_image = document.getElementById('card_image');//Image Element to Display Identified Card Image
+var card_name = document.getElementById('card_name');//Text Area to Display Identified Card Name
+var identify_card_button = document.getElementById('identify_card_button');//Button to Execute Identification
+var card_list = document.getElementById('card_list');//Text Area for generating list of cards
+var clear_button = document.getElementById('clear_button');//Button to clear text area
+var sideboard_button = document.getElementById('sideboard_button');//Button to start sideboard
+var save_button = document.getElementById('save_button');//Button to save contents of textarea to file
 
 //NodeLists to Hold Adding Buttons
-var addbuttons = queryAll('.add_button');//NodeList of adding buttons
-var removebuttons = queryAll('.remove_button');//NodeList of remove buttons
-var addremovebuttons = queryAll('.remove_button, .add_button');//NodeList of add and remove buttons
+var addbuttons = document.querySelectorAll('.add_button');//NodeList of adding buttons
+var removebuttons = document.querySelectorAll('.remove_button');//NodeList of remove buttons
+var addremovebuttons = document.querySelectorAll('.remove_button, .add_button');//NodeList of add and remove buttons
 
 //Global Variables
 var cam_working = false;//boolean to track whether Webcam Feed is working
