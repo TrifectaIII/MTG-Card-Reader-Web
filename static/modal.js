@@ -8,24 +8,24 @@ var inner = document.querySelector('.modal-inner')
 var content = document.querySelector('.modal-content')
 
 // set open modal behaviour
-openButton.addEventListener('click', function() {
+openButton.addEventListener('click', function () {
     modal.classList.toggle('modal-open');
     // document.body.scrollTop = document.documentElement.scrollTop = 0;
 });
 
 // set close modal behaviour
 for (i = 0; i < closeButtons.length; ++i) {
-closeButtons[i].addEventListener('click', function() {
+    closeButtons[i].addEventListener('click', function () {
         modal.classList.toggle('modal-open');
     });
 }
 
 // close modal if clicked outside content area
-inner.addEventListener('click', function() {
+inner.addEventListener('click', function () {
     modal.classList.toggle('modal-open');
 });
 
 // prevent modal inner from closing parent when clicked
-content.addEventListener('click', function(e) {
+content.addEventListener('click', function (e) {
     e.stopPropagation();
 });

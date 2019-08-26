@@ -9,7 +9,7 @@ var gotDevices = function (deviceInfos) {
 
 	// Remove all pre-exisiting options
 	// for(let i = cam_select.options.length - 1 ; i >= 0 ; i--){
-    //     cam_select.remove(i);
+	//     cam_select.remove(i);
 	// };
 
 	//add all video devices to selector
@@ -17,16 +17,16 @@ var gotDevices = function (deviceInfos) {
 		let deviceInfo = deviceInfos[i];
 		if (deviceInfo.kind === 'videoinput') {
 			let existed = false;
-			for (let j = 0; j < cam_select.options.length; j++){
-				if (cam_select.options[j].value == deviceInfo.deviceId){
+			for (let j = 0; j < cam_select.options.length; j++) {
+				if (cam_select.options[j].value == deviceInfo.deviceId) {
 					cam_select.options[j].text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
 					existed = true;
 				};
 			};
-			if (!existed){
+			if (!existed) {
 				let option = document.createElement('option');
 				option.value = deviceInfo.deviceId;
-		  		option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
+				option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
 				cam_select.appendChild(option);
 			};
 		} else {
@@ -55,7 +55,7 @@ var gotStream = function (stream) {
 	// notif_text.innerHTML = "Webcam Functional";
 
 	//Enable identify button once set is selected and camera is working
-	if (set_selected){
+	if (set_selected) {
 		identify_card_button.disabled = false;
 	};
 
@@ -66,9 +66,9 @@ var gotStream = function (stream) {
 var start = function () {
 	// stop all running tracks
 	if (window.stream) {
-	  window.stream.getTracks().forEach(track => {
-		track.stop();
-	  });
+		window.stream.getTracks().forEach(track => {
+			track.stop();
+		});
 	};
 
 	// notif_text.innerHTML = "Loading Webcam...";
@@ -76,7 +76,7 @@ var start = function () {
 
 	let videoSource = cam_select.value;
 	let constraints = {
-	  video: {deviceId: videoSource ? {exact: videoSource} : undefined}
+		video: { deviceId: videoSource ? { exact: videoSource } : undefined }
 	};
 
 	navigator.mediaDevices.getUserMedia(constraints).then(gotStream).then(gotDevices).catch(errorDevices);
@@ -92,21 +92,21 @@ start();
 //////////////////////////////////////////////////////////////////////////////
 
 //Turn set_selector into Choices element
-var set_selector_choice = new Choices(set_selector,{
+var set_selector_choice = new Choices(set_selector, {
 	//Options for Choices element
 	addItems: true,
 	removeItems: false,
 	renderChoiceLimit: -1,
 	searchResultLimit: 5,
-	searchPlaceholderValue:"Search by Set Name or Code:",
-	itemSelectText:'',
+	searchPlaceholderValue: "Search by Set Name or Code:",
+	itemSelectText: '',
 });
 
 //Enable identify button once set is selected and camera is working
-set_selector.addEventListener('choice', function(){
-	if (sets_load){
+set_selector.addEventListener('choice', function () {
+	if (sets_load) {
 		set_selected = true;
-		if (cam_working){
+		if (cam_working) {
 			identify_card_button.disabled = false;
 		};
 	};
@@ -118,7 +118,7 @@ var set_list_request = new XMLHttpRequest();
 //Tell request to populat set_selector element after recieving reponse
 set_list_request.onload = function () {
 	if (set_list_request.status >= 200 && set_list_request.status < 400) {
-		
+
 		//Get full response as JSON
 		let respJSON = JSON.parse(set_list_request.response);
 
@@ -126,20 +126,20 @@ set_list_request.onload = function () {
 		let choiceList = [];
 
 		//for each set in JSON, add set to choiceList
-		for (let setcode in respJSON){
+		for (let setcode in respJSON) {
 			let setname = respJSON[setcode];
 			choiceList.push({
-				value:setcode,
-				label:setname + ' ('+setcode+')',
+				value: setcode,
+				label: setname + ' (' + setcode + ')',
 				selected: false,
 				disabled: false,
 			});
 		};
 
 		//Add all set Choice objects to Choices element
-		set_selector_choice.setChoices(choiceList,'value','label',true);
+		set_selector_choice.setChoices(choiceList, 'value', 'label', true);
 		sets_load = true;
-		
+
 	} else {
 		console.log('set_list request completed incorrectly. Error', set_list_request.status);
 	};
@@ -168,9 +168,9 @@ var identify_card_request = new XMLHttpRequest();
 //Tell request to display card after recieving reponse
 identify_card_request.onload = function () {
 	if (identify_card_request.status >= 200 && identify_card_request.status < 400) {
-		
+
 		//Calculate Response Time and log to console
-		console.log('/identify_card Response Time (s):',(Date.now()-identify_start)/1000);
+		console.log('/identify_card Response Time (s):', (Date.now() - identify_start) / 1000);
 
 		//Get full response as JSON
 		let respJSON = JSON.parse(identify_card_request.response);
@@ -182,7 +182,7 @@ identify_card_request.onload = function () {
 
 		console.log(identifiedPurchaseUrls);
 
-		if (identifiedName.length == 0){
+		if (identifiedName.length == 0) {
 			// If no identify is made, display error
 			card_image.onload = function () {
 				card_name.innerHTML = 'IDENTIFY ERROR';
@@ -191,13 +191,13 @@ identify_card_request.onload = function () {
 			card_image.src = '/static/errorcard.png';
 		} else {
 			// Display card image from URL and name from name
-			card_image.onload = function () { 
+			card_image.onload = function () {
 				// Display name only after image has loaded
 				card_name.innerHTML = identifiedName;
 				//Enable adding Buttons also after image has loaded
 				enableButtons(addremovebuttons);
 			};
-			card_image.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+identifiedMVID+'&type=card';
+			card_image.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=' + identifiedMVID + '&type=card';
 		};
 	} else {
 		console.log('Request completed incorrectly. Error', identify_card_request.status);
@@ -242,7 +242,7 @@ identify_card_button.addEventListener('click', function () {
 		temp_context.drawImage(webcam_feed, 0, 0, vid_width, vid_height);
 
 		//Convert temp canvas image to PNG/JPG Data
-		let capture = temp_canvas.toDataURL("image/jpeg",0.1); //Send as JPG, numeric argument is quality (higher is better quality)
+		let capture = temp_canvas.toDataURL("image/jpeg", 0.1); //Send as JPG, numeric argument is quality (higher is better quality)
 		//let capture = temp_canvas.toDataURL("image/png"); //Send as PNG
 
 		//Create Form Data Object to send with Request
@@ -274,7 +274,7 @@ for (let i = 0; i < addbuttons.length; i++) {
 	let id = addbutton.id;
 
 	//amount will be an integer string or 'all'
-	let amount = parseInt(id.slice(3),10);
+	let amount = parseInt(id.slice(3), 10);
 
 	addbutton.addEventListener('click', function () {
 
@@ -289,22 +289,22 @@ for (let i = 0; i < addbuttons.length; i++) {
 
 		//check each line to see if card already exists, if so add to amount on that line
 		//goes from bottom to top
-		for (let i = lines.length-1; i >= 0; i--) {
+		for (let i = lines.length - 1; i >= 0; i--) {
 			let line = lines[i];
 
 			//break if a sideboard line is reached
 			if (line.includes('Sideboard:')) { break; };
 
 			//parse info from line
-			let existingAmount = parseInt(line.substr(0,line.indexOf(' ')),10);
-			let existingCard = line.substr(line.indexOf(' ')+1);
-			
+			let existingAmount = parseInt(line.substr(0, line.indexOf(' ')), 10);
+			let existingCard = line.substr(line.indexOf(' ') + 1);
+
 			if ((existingCard == card) && (existingAmount > 0)) {
 				//changing a line by increasing amount
 				existed = true;
 
 				//do nothing if amount is not a number
-				if (Number.isNaN(amount)){
+				if (Number.isNaN(amount)) {
 					newAmount = existingAmount;
 				} else {
 					newAmount = existingAmount + amount;
@@ -319,12 +319,12 @@ for (let i = 0; i < addbuttons.length; i++) {
 		};
 		//If doesn't already exist, Append new line to textarea
 		if (!existed) {
-			if (lines[lines.length-1] == ''){
-				card_list.value = lines.join('\n') + amount +' '+ card;
+			if (lines[lines.length - 1] == '') {
+				card_list.value = lines.join('\n') + amount + ' ' + card;
 			} else {
-				card_list.value = lines.join('\n') +'\n'+ amount +' '+ card;
+				card_list.value = lines.join('\n') + '\n' + amount + ' ' + card;
 			}
-		//Else just recombine the lines
+			//Else just recombine the lines
 		} else {
 			card_list.value = lines.join('\n');
 		};
@@ -338,7 +338,7 @@ for (let i = 0; i < removebuttons.length; i++) {
 	let id = removebutton.id;
 
 	//amount will be an integer string or 'all'
-	let amount = parseInt(id.slice(3),10);
+	let amount = parseInt(id.slice(3), 10);
 
 	removebutton.addEventListener('click', function () {
 		//get name of card from card_name element
@@ -352,28 +352,28 @@ for (let i = 0; i < removebuttons.length; i++) {
 
 		//check each line to see if card already exists, if so delete the appropriate amount
 		//goes from bottom to top
-		for (let i = lines.length-1; i >= 0; i--) {
+		for (let i = lines.length - 1; i >= 0; i--) {
 			let line = lines[i];
 
 			//break if a sideboard line is reached
 			if (line.includes('Sideboard:')) { break; };
 
 			// parse info from line
-			let existingAmount = parseInt(line.substr(0,line.indexOf(' ')),10);
-			let existingCard = line.substr(line.indexOf(' ')+1);
+			let existingAmount = parseInt(line.substr(0, line.indexOf(' ')), 10);
+			let existingCard = line.substr(line.indexOf(' ') + 1);
 
 			if ((existingCard == card) && (existingAmount > 0)) {
 				//changing a line by subtracting amount
 
 				//remove all if amount is not an integer
-				if (Number.isNaN(amount)){
+				if (Number.isNaN(amount)) {
 					newAmount = 0;
 				} else {
 					newAmount = existingAmount - amount;
 				};
 
 				// if new amount is 0 or negative, mark line for deletion
-				if (newAmount < 1){
+				if (newAmount < 1) {
 					deletes.push(i);
 				} else {
 					// build new version of line, and replace in lines array.
@@ -389,7 +389,7 @@ for (let i = 0; i < removebuttons.length; i++) {
 		// remove lines marked for deletion
 		newLines = [];
 		for (let i = 0; i < lines.length; i++) {
-			if (!(deletes.includes(i))){
+			if (!(deletes.includes(i))) {
 				newLines.push(lines[i]);
 			};
 		};
@@ -404,7 +404,7 @@ for (let i = 0; i < removebuttons.length; i++) {
 
 //Clear button should empty all contents of text area
 clear_button.addEventListener('click', function () {
-	if (confirm('Are you sure you want to clear the text area?')){
+	if (confirm('Are you sure you want to clear the text area?')) {
 		card_list.value = '';
 	};
 });
@@ -418,7 +418,7 @@ sideboard_button.addEventListener('click', function () {
 save_button.addEventListener('click', function () {
 
 	//create blob with textarea contents
-	let toWrite = new Blob([card_list.value], {type: "text/plain;charset=utf-8"});
+	let toWrite = new Blob([card_list.value], { type: "text/plain;charset=utf-8" });
 	//use FileSaver.js to save to file
-	saveAs(toWrite,'decklist.txt');
+	saveAs(toWrite, 'decklist.txt');
 });

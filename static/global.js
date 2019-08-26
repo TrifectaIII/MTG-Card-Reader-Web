@@ -4,14 +4,14 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 //Disable all buttons stored in a dictionary
-function disableButtons (nodeli) {
+function disableButtons(nodeli) {
 	for (let i = 0; i < nodeli.length; i++) {
 		nodeli[i].disabled = true;
 	};
 };
 
 //Enable all buttons stored in a dictionary
-function enableButtons (nodeli) {
+function enableButtons(nodeli) {
 	for (let i = 0; i < nodeli.length; i++) {
 		nodeli[i].disabled = false;
 	};
@@ -46,7 +46,7 @@ var set_selected = false;//boolean to track whether set has been selected
 var identify_start = 0;//integer to help calculate response time of identify requests
 
 //Preload Loading Card and Error Card Images
-var plimg_load  = new Image();
-plimg_load.src  = '/static/loadingcard.gif';
+var plimg_load = new Image();
+plimg_load.src = '/static/loadingcard.gif';
 var plimg_error = new Image();
 plimg_error.src = '/static/errorcard.png';
