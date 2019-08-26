@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
@@ -26,6 +27,7 @@
 	<link rel="stylesheet" href="static/modal.css">
 	<link rel="stylesheet" href="static/notif.css">
 </head>
+
 <body>
 	<!-- INFO MODAL -->
 	<div class="modal">
@@ -50,24 +52,27 @@
 							<h4>&#x1F4CB; Instructions</h4>
 							<hr class="modal-buttons-seperator">
 							<p>
-								Plug in your webcam, place the card in front of it, choose the 
-								appropriate set and hit the button. It's really that easy! Well, 
-								it should be. In reality, the indentification technique is 
-								somewhat lacking and will improve in the future. <b>For now, 
-								please ensure that you have good lighting, that the card is in 
-								focus, and that the background is as featureless as possible.</b>
+								Plug in your webcam, place the card in front of it, choose the
+								appropriate set and hit the button. It's really that easy! Well,
+								it should be. In reality, the indentification technique is
+								somewhat lacking and will improve in the future.
+								<b>
+									For now, please ensure that you have good lighting, that 
+									the card is in focus, and that the background is as 
+									featureless as possible.
+								</b>
 							</p>
 						</div>
 
 						<!-- FAQ -->
 						<div class='one-third column infocol'>
-								<h4>&#x2753; FAQ</h4>
-								<hr class="modal-buttons-seperator">
-								<p>
-									<b>Under Construction</b>
-									<br>
-									This section is reserved for answering common user questions.
-								</p>
+							<h4>&#x2753; FAQ</h4>
+							<hr class="modal-buttons-seperator">
+							<p>
+								<b>Under Construction</b>
+								<br>
+								This section is reserved for answering common user questions.
+							</p>
 						</div>
 
 						<!-- TOOLS -->
@@ -95,7 +100,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- MAIN -->
 	<div id='full_page' class='container'>
 
@@ -131,7 +136,9 @@
 				<div id='identify_tools' class='row'>
 					<span>Set:</span>
 					<br>
-					<select id='set_selector'><option placeholder>Please Select a Set</option></select>
+					<select id='set_selector'>
+						<option placeholder>Please Select a Set</option>
+					</select>
 					<button id='identify_card_button' class='button-primary' disabled='true'>IDENTIFY CARD</button>
 				</div>
 
@@ -168,20 +175,20 @@
 				</div>
 
 				<!-- TEXTAREA BUTTONS -->
-				<div id='text_buttons' class = 'row'>
+				<div id='text_buttons' class='row'>
 					<button class='text_button' id='sideboard_button'>Start Sideboard</button>
 					<button class='text_button' id='save_button'>Save to File &#x1F4BE;</button>
 					<button class='text_button' id='clear_button'>Clear All</button>
 					<button class='open_notif'>Test Notification</button>
-				</div>	
+				</div>
 			</div>
-		</div>	
+		</div>
 
 		<!-- FOOTER -->
 		<div id='footer' class='row'>
 			<span>Created by Dakota Madden-Fong</span>
 			<br>
-			<a href = "mailto: maddenfong@gmail.com">maddenfong@gmail.com</a>
+			<a href="mailto: maddenfong@gmail.com">maddenfong@gmail.com</a>
 			<br>
 			<a href="https://github.com/TrifectaIII/MTG-Card-Reader-Web">GitHub</a>
 			<br>
@@ -204,4 +211,5 @@
 	<script src="static/main.js"></script>
 
 </body>
+
 </html>
