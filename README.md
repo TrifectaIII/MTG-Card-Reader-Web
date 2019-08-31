@@ -17,6 +17,8 @@ Project is currently using these tools:
 
 [MTGJSON](https://mtgjson.com/)
 
+[Scryfall API](https://scryfall.com/docs/api)
+
 [Choices](https://github.com/jshjohnson/Choices)
 
 [FileSaver](https://github.com/eligrey/FileSaver.js)
