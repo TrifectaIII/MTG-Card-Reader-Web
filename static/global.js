@@ -22,17 +22,17 @@ function enableButtons(nodeli) {
 
 //Get HTML Elements
 
-var cam_select = document.getElementById('cam_select');//Selector for choosing video input
-var webcam_feed = document.getElementById("webcam_feed");//Video Element for Webcam Feed
-var reload_cam_button = document.getElementById('reload_cam_button')//button for reloading the video feed
-var set_selector = document.getElementById('set_selector');//Select Element to Choose Set
-var card_image = document.getElementById('card_image');//Image Element to Display Identified Card Image
-var card_name = document.getElementById('card_name');//Text Area to Display Identified Card Name
-var identify_card_button = document.getElementById('identify_card_button');//Button to Execute Identification
-var card_list = document.getElementById('card_list');//Text Area for generating list of cards
-var clear_button = document.getElementById('clear_button');//Button to clear text area
-var sideboard_button = document.getElementById('sideboard_button');//Button to start sideboard
-var save_button = document.getElementById('save_button');//Button to save contents of textarea to file
+var cam_select = document.querySelector('.cam_select');//Selector for choosing video input
+var webcam_feed = document.querySelector('.webcam_feed');//Video Element for Webcam Feed
+var reload_cam_button = document.querySelector('.reload_cam_button')//button for reloading the video feed
+var set_selector = document.querySelector('.set_selector');//Select Element to Choose Set
+var card_image = document.querySelector('.card_image');//Image Element to Display Identified Card Image
+var card_name = document.querySelector('.card_name');//Text Area to Display Identified Card Name
+var identify_card_button = document.querySelector('.identify_card_button');//Button to Execute Identification
+var card_list = document.querySelector('.card_list');//Text Area for generating list of cards
+var clear_button = document.querySelector('.clear_button');//Button to clear text area
+var sideboard_button = document.querySelector('.sideboard_button');//Button to start sideboard
+var save_button = document.querySelector('.save_button');//Button to save contents of textarea to file
 
 //NodeLists to Hold Adding Buttons
 var addbuttons = document.querySelectorAll('.add_button');//NodeList of adding buttons
