@@ -139,7 +139,10 @@ a {
     }
 }
 @media (min-width: 550px) {
-    .add_button, .remove_button, .text_button {
+    .add_button, .remove_button {
         width:100%;
+    }
+    .text_button {
+        width: 80%;
     }
 }
