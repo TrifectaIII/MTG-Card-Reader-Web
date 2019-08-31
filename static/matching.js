@@ -42,7 +42,12 @@ identify_card_request.onload = function () {
 				//Enable adding Buttons also after image has loaded
 				enableButtons(addremovebuttons);
 			};
-			card_image.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=' + identifiedMVID + '&type=card';
+
+			// gatherer
+			// card_image.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=' + identifiedMVID + '&type=card';
+
+			// scryfall (can change version in url)
+			card_image.src = 'https://api.scryfall.com/cards/multiverse/'+ identifiedMVID +'/?format=image&version=normal';
 		};
 	} else {
         console.log('Request completed incorrectly. Error', identify_card_request.status);
