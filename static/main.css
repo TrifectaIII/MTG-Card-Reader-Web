@@ -74,7 +74,7 @@ button[disabled] {
 .identify_card_button:disabled,
 .identify_card_button[disabled] {
     background-color:lightgrey!important;
-    color:.555!important;
+    color:#555!important;
     border-color:#bbb!important;
 }
 
