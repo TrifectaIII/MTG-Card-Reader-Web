@@ -68,3 +68,8 @@
 .infocol {
     text-align: center;
 }
+
+.open-modal {
+    /* padding:0px; */
+    margin:0px;
+}
