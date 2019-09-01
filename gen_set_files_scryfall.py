@@ -97,6 +97,8 @@ def getCvImageByMVID(mvid):
     # scryfall api request formatting: only needs mvid as show 
     # https://api.scryfall.com/cards/multiverse/409574/?format=image&version=border_crop
     response = urlreq.urlopen('https://api.scryfall.com/cards/multiverse/{}/?format=image&version=border_crop'.format(str(mvid)))
+    if response.getcode() >= 400:
+        raise OSError('scryfall api error code'+str(response.getcode()))
     nparr = np.frombuffer(response.read(), np.uint8)
     img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     return img_np
@@ -138,7 +140,7 @@ for setcode in getSets():
                 pass
             else:
                 #time delay to avoid overloading scryfall api
-                time.sleep(0.5)
+                time.sleep(1)
                 img = getCvImageByMVID(mvid)
 
                 _, des = orb.detectAndCompute(img, None)

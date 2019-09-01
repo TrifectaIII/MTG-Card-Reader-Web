@@ -1,0 +1,19 @@
+/* set Selector to match skeleton buttons */
+.choices__inner {
+    border-color:#bbb;
+    background-color:white;
+}
+
+/* When set selector is focused */
+.is-focused .choices__inner,
+.is-open .choices__inner,
+.is-open .choices__list--dropdown {
+    border-color:#888;
+}
+
+/* to center options even when on desktop */
+@media (min-width: 640px) {
+    .choices__list--dropdown .choices__item--selectable {
+      padding-right: 10px;
+    }
+}
