@@ -140,7 +140,7 @@ for setcode in getSets():
                 pass
             else:
                 #time delay to avoid overloading scryfall api
-                time.sleep(1)
+                time.sleep(10)
                 img = getCvImageByMVID(mvid)
 
                 _, des = orb.detectAndCompute(img, None)
