@@ -1,5 +1,6 @@
 
 *.pyc
 AllSets.json
+AllPrintings*.json
 *.des
 *.pkl

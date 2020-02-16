@@ -11,7 +11,7 @@ from os import path, rename, remove
 # Setup JSON File #####################################################
 
 try:
-    with open('resources/AllSets.json', encoding="utf8") as json_file:
+    with open('resources/AllPrintings_2_15_2020.json', encoding="utf8") as json_file:
         jsonsets = json.loads(json_file.read())
 except MemoryError:
     raise Exception('Please ensure you are running 64 bit Python')
@@ -50,8 +50,7 @@ def getSets():
 
 
 def getSetsDict():
-    # Joins all setcodes by commas
-    #return ','.join(getSets())
+    # creates dict where setcodes are keys and names are values
     setsdict = dict()
     for set in getSets():
         setsdict[set] = jsonsets[set]['name']
