@@ -8,10 +8,26 @@ import json
 from urllib import request as urlreq
 from os import path, rename, remove
 
+# Fetch JSON File from MTGJSON ########################################
+
+url = 'https://www.mtgjson.com/files/AllPrintings.json'
+# need user agent header to avoid 403
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'}
+requestobj = urlreq.Request(url, data=None, headers=headers, origin_req_host=None, unverifiable=False, method=None)
+response = urlreq.urlopen(requestobj)
+
+# make sure response was successful
+if response.status == 200:
+    with open('resources/AllPrintings.json', 'wb') as file:
+        file.write(response.read())
+#otherwise throw error
+else:
+    raise Exception("Could not get json file from MTGJSON")
+
 # Setup JSON File #####################################################
 
 try:
-    with open('resources/AllPrintings_6_28_2020.json', encoding="utf8") as json_file:
+    with open('resources/AllPrintings.json', encoding="utf8") as json_file:
         jsonsets = json.loads(json_file.read())
 except MemoryError:
     raise Exception('Please ensure you are running 64 bit Python')
