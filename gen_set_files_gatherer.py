@@ -18,8 +18,8 @@ response = urlreq.urlopen(requestobj)
 
 # make sure response was successful
 if response.status == 200:
-    with open('resources/AllPrintings.json', 'wb') as file:
-        file.write(response.read())
+    with open('resources/AllPrintings.json', 'wb') as json_file:
+        json_file.write(response.read())
 #otherwise throw error
 else:
     raise Exception("Could not get json file from MTGJSON")
