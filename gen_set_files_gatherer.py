@@ -10,11 +10,12 @@ from os import path, rename, remove
 
 # Fetch JSON File from MTGJSON ########################################
 
+print("Downloading MTGJSON File")
 url = 'https://www.mtgjson.com/files/AllPrintings.json'
 # need user agent header to avoid 403
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'}
-requestobj = urlreq.Request(url, data=None, headers=headers, origin_req_host=None, unverifiable=False, method=None)
-response = urlreq.urlopen(requestobj)
+request = urlreq.Request(url, data=None, headers=headers, origin_req_host=None, unverifiable=False, method=None)
+response = urlreq.urlopen(request)
 
 # make sure response was successful
 if response.status == 200:
@@ -22,7 +23,7 @@ if response.status == 200:
         json_file.write(response.read())
 #otherwise throw error
 else:
-    raise Exception("Could not get json file from MTGJSON")
+    raise Exception("Could not get MTGJSON File, STATUS" + str(response.status))
 
 # Setup JSON File #####################################################
 
@@ -31,7 +32,7 @@ try:
         jsonsets = json.loads(json_file.read())
 except MemoryError:
     raise Exception('Please ensure you are running 64 bit Python')
-print('json file loaded')
+print('MTGJSON File Loaded')
 
 
 # setup ORB  ##########################################################
