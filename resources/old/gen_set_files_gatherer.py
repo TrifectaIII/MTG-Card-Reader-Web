@@ -100,7 +100,7 @@ for set in (list(jsonsets.keys())):
             total += 1
             mvidDict[mvid] = {'name':name, 'number':number, 'purchaseUrls':purchaseUrls}
 
-with open('static/cardsInfo.json','w') as jsonfile:
+with open('resources/cardsInfo.json','w') as jsonfile:
     json.dump(mvidDict,jsonfile)
 
 
