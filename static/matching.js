@@ -30,7 +30,7 @@ identify_card_request.onload = function () {
 		if (identifiedName.length == 0) {
 			// If no identify is made, display error
 			card_image.onload = function () {
-				card_name.innerHTML = 'IDENTIFY ERROR';
+				card_name.innerHTML = '&nbsp;';
 				notify('Identification Error: Unable to identify card. Please ensure card is against a neutral background.');
 			};
 			card_image.src = '/static/error.gif';
@@ -59,7 +59,7 @@ identify_card_request.onerror = function () {
 
 	//display error image
 	card_image.onload = function () {
-		card_name.innerHTML = 'SERVER ERROR';
+		card_name.innerHTML = '&nbsp;';
 		notify('Server Error: identify_card request failed before receipt. Please reload page and try again.');
 	};
 	card_image.src = '/static/error.gif';
@@ -75,8 +75,7 @@ identify_card_button.addEventListener('click', function () {
 
 		//Remove previous card and display loading
 		card_image.onload = function () {
-			card_name.innerHTML = 'Loading...';
-			card_name.style.backgroundColor = '';
+			card_name.innerHTML = '&nbsp;';
 			//Disable all adding buttons until new card identifyed
 			disableButtons(addremovebuttons);
 		};
