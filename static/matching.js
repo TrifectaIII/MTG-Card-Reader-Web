@@ -33,7 +33,7 @@ identify_card_request.onload = function () {
 				card_name.innerHTML = 'IDENTIFY ERROR';
 				notify('Identification Error: Unable to identify card. Please ensure card is against a neutral background.');
 			};
-			card_image.src = '/static/errorcard.png';
+			card_image.src = '/static/error.gif';
 		} else {
             
 			// Display card image from URL and name from name
@@ -62,7 +62,7 @@ identify_card_request.onerror = function () {
 		card_name.innerHTML = 'SERVER ERROR';
 		notify('Server Error: identify_card request failed before receipt. Please reload page and try again.');
 	};
-	card_image.src = '/static/errorcard.png';
+	card_image.src = '/static/error.gif';
 
 };
 
@@ -80,7 +80,7 @@ identify_card_button.addEventListener('click', function () {
 			//Disable all adding buttons until new card identifyed
 			disableButtons(addremovebuttons);
 		};
-		card_image.src = '/static/loadingcard.gif';
+		card_image.src = '/static/identifying.gif';
 
 
 		//Capture image from webcam feed to temp canvas

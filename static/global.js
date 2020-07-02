@@ -47,6 +47,6 @@ var identify_start = 0;//integer to help calculate response time of identify req
 
 //Preload Loading Card and Error Card Images
 var plimg_load = new Image();
-plimg_load.src = '/static/loadingcard.gif';
+plimg_load.src = '/static/identifying.gif';
 var plimg_error = new Image();
-plimg_error.src = '/static/errorcard.png';
+plimg_error.src = '/static/error.gif';
