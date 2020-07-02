@@ -135,10 +135,10 @@ def getCvImageBySFID(sfid):
 for setcode in getSets():
     # SKIP IF FILE EXISTS
     if path.isfile('setDes/set'+setcode+'.pkl'):
-        print(setcode, 'file found, skipping')
+        # print(setcode, 'file found, skipping')
         pass
     else:
-        print('Starting', setcode)
+        print('', setcode, '--------------------------------------')
         set_sfids = []
         set_des = []
         try:
@@ -150,7 +150,7 @@ for setcode in getSets():
             # For each card, save to dictionary
             try:
                 sfid = card['scryfallId']
-                print(card['name'], card['scryfallId'])
+                print(setcode, card['name'], card['scryfallId'])
             except:
                 pass
             else:
@@ -162,7 +162,7 @@ for setcode in getSets():
                 set_sfids.append(sfid)
                 set_des.append(des)
 
-        #Whether or not file can be converted from old, generate new file under current naming scheme
+        #generate new file
         setInfo = dict()
 
         for i in range(len(set_sfids)):
