@@ -8,9 +8,9 @@ from base64 import b64decode
 import pickle
 import json
 
-#Load MVID Dictionary
-with open('static/cardsInfo.json','r') as mvidfile:
-    cardsInfo = json.load(mvidfile)
+#Load SFID Dictionary
+with open('resources/cardsInfo.json','r') as sfidfile:
+    cardsInfo = json.load(sfidfile)
 
 # Setup ORB
 orb = cv2.ORB_create()
@@ -26,7 +26,7 @@ setsDict = dict()
 def loadAllFiles():
     from os import walk
     setsGen = []
-    for (dirpath, dirnames, filenames) in walk('setDes/'):
+    for (dirpath, dirnames, filenames) in walk('setDes'):
         for fn in filenames:
             setsGen.append(fn[3:-4])#cuts off the leading 'set' and trailing '.des'
         break
@@ -96,32 +96,32 @@ def identify(cam_png_uri, setcode):
 
     # Find Match
     bestCount = 0
-    bestMVID = ''
+    bestSFID = ''
 
-    for mvid in (list(desDict.keys())):
-        des = desDict[mvid]
+    for sfid in (list(desDict.keys())):
+        des = desDict[sfid]
         matchCount = ratioTestCount(bf, desCam, des)
         if matchCount > bestCount:
             bestCount = matchCount
-            bestMVID = mvid
+            bestSFID = sfid
 
-    #convert MVID into String
-    bestMVID = str(bestMVID)
+    #convert SFID into String
+    bestSFID = str(bestSFID)
 
     # Build Dictionary to return and send to JS
     try:
-        bestName = cardsInfo[bestMVID]['name']
+        bestName = cardsInfo[bestSFID]['name']
     except:
         bestName = ''
 
     try:
-        bestPurchase = cardsInfo[bestMVID]['purchaseUrls']
+        bestPurchase = cardsInfo[bestSFID]['purchaseUrls']
     except:
         bestPurchase = ''
 
 
     card_dict = {'name':bestName,
-                 'mvid':bestMVID,
+                 'sfid':bestSFID,
                  'purchaseUrls':bestPurchase}
     
     return (card_dict)

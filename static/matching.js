@@ -22,10 +22,10 @@ identify_card_request.onload = function () {
 
 		//Access response for name and url
 		let identifiedName = respJSON.name;
-		let identifiedMVID = respJSON.mvid;
+		let identifiedSFID = respJSON.sfid;
 		let identifiedPurchaseUrls = respJSON.purchaseUrls;
 
-		console.log(identifiedPurchaseUrls);
+		// console.log(identifiedPurchaseUrls);
 
 		if (identifiedName.length == 0) {
 			// If no identify is made, display error
@@ -35,19 +35,17 @@ identify_card_request.onload = function () {
 			};
 			card_image.src = '/static/errorcard.png';
 		} else {
+            
 			// Display card image from URL and name from name
 			card_image.onload = function () {
 				// Display name only after image has loaded
 				card_name.innerHTML = identifiedName;
 				//Enable adding Buttons also after image has loaded
 				enableButtons(addremovebuttons);
-			};
-
-			// gatherer
-			// card_image.src = 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=' + identifiedMVID + '&type=card';
-
+            };
+            
 			// scryfall (can change version in url)
-			card_image.src = 'https://api.scryfall.com/cards/multiverse/'+ identifiedMVID +'/?format=image&version=normal';
+			card_image.src = 'https://api.scryfall.com/cards/' + identifiedSFID.toString() + '/?format=image&version=border_crop';
 		};
 	} else {
         console.log('Request completed incorrectly. Error', identify_card_request.status);

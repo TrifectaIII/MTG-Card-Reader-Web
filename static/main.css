@@ -66,8 +66,8 @@ button[disabled] {
 }
 
 .card_image {
+    background-color:black;
     border-style:solid;
-    border-radius: 13px;
     border-width: 1px;
     border-color:#bbb;
 }
