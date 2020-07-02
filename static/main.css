@@ -66,10 +66,10 @@ button[disabled] {
 }
 
 .card_image {
-    background-color:black;
     border-style:solid;
     border-width: 1px;
-    border-color:#bbb;
+    border-color:black;
+    max-width: 80%;
 }
 
 .card_list {
@@ -135,5 +135,8 @@ a {
     }
     .text_button {
         width: 80%;
+    }
+    .card_image {
+        max-width: 100%;
     }
 }
