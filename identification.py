@@ -8,19 +8,24 @@ from base64 import b64decode
 import pickle
 import json
 
+
 #Load SFID Dictionary
 with open('resources/cardsInfo.json','r') as sfidfile:
     cardsInfo = json.load(sfidfile)
 
+
 # Setup ORB
 orb = cv2.ORB_create()
+
 
 # Create Brute Force Matcher Object
 bf = cv2.BFMatcher(cv2.NORM_HAMMING)
 
+
 # Global Switch on Reading From Files vs Loading All to Memory
 loadall = False
 setsDict = dict()
+
 
 #Load All SetDes files to Memory
 def loadAllFiles():
@@ -42,9 +47,8 @@ def loadAllFiles():
     loadall = True
 
 
+# Converts URI PNG/JPG from AJAX to cv2 Image
 def uriToCv2(img_uri):
-    # Converts URI PNG/JPG from AJAX to cv2 Image
-
     # Remove URI header from png data
     img_arr = img_uri.split(',')
     img_data = img_arr[1]
@@ -57,8 +61,8 @@ def uriToCv2(img_uri):
     return img_cv2
 
 
+# Counts Number of Good Matches using Ratio Test ()
 def ratioTestCount(matcher, des1, des2):
-    # Counts Number of Good Matches using Ratio Test ()
     good_matches = 0
     matches = matcher.knnMatch(des1, des2, k=2)
     for pair in matches:
@@ -71,8 +75,8 @@ def ratioTestCount(matcher, des1, des2):
     return good_matches
 
 
+# Main Function: Matches URI PNG to Card
 def identify(cam_png_uri, setcode):
-    # Matches URI PNG to Card
 
     global bf
     global orb
