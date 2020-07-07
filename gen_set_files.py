@@ -14,11 +14,13 @@ import time
 
 print("Downloading MTGJSON File")
 
-url = 'https://www.mtgjson.com/files/AllPrintings.json'
+# url for MTGJSONv5 API
+url = 'https://mtgjson.com/api/v5/AllPrintings.json'
 
 # need user agent header to avoid 403
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'}
 
+# send request and recieve response
 request = urlreq.Request(url, data=None, headers=headers, origin_req_host=None, unverifiable=False, method=None)
 response = urlreq.urlopen(request)
 
@@ -34,7 +36,8 @@ else:
 
 try:
     with open('resources/AllPrintings.json', encoding="utf8") as json_file:
-        jsonsets = json.loads(json_file.read())
+        # all sets in data space for MTGJSONv5
+        jsonsets = json.loads(json_file.read())['data']
 except MemoryError:
     raise Exception('Please ensure you are running 64 bit Python')
 print('MTGJSON File Loaded')
@@ -58,7 +61,7 @@ def getSets():
         scryfall_ids = []
         for card in cards:
             try:
-                scryfall_ids.append(card['scryfallId'])
+                scryfall_ids.append(card['identifiers']['scryfallId'])
                 exists += 1
             except:
                 scryfall_ids.append(None)
@@ -95,7 +98,7 @@ for set in (list(jsonsets.keys())):
     cards = jsonsets[set]['cards']
     for card in cards:
         try:
-            sfid = card['scryfallId']
+            sfid = card['identifiers']['scryfallId']
             name = card['name']
             number = card['number']
             purchaseUrls = card['purchaseUrls']
@@ -134,11 +137,11 @@ def getCvImageBySFID(sfid):
 
 for setcode in getSets():
     # SKIP IF FILE EXISTS
-    if path.isfile('setDes/set'+setcode+'.pkl'):
+    if path.isfile('setDesV5/set'+setcode+'.pkl'):
         # print(setcode, 'file found, skipping')
         pass
     else:
-        print('', setcode, '--------------------------------------')
+        print(setcode, '--------------------------------------')
         set_sfids = []
         set_des = []
         try:
@@ -149,8 +152,8 @@ for setcode in getSets():
         for card in cards:
             # For each card, save to dictionary
             try:
-                sfid = card['scryfallId']
-                print(setcode, card['name'], card['scryfallId'])
+                sfid = card['identifiers']['scryfallId']
+                print(setcode, card['name'], card['identifiers']['scryfallId'])
             except:
                 pass
             else:
@@ -168,5 +171,5 @@ for setcode in getSets():
         for i in range(len(set_sfids)):
             setInfo[set_sfids[i]] = set_des[i]
 
-        with open('setDes/set'+setcode+'.pkl', 'wb') as des_file:
+        with open('setDesV5/set'+setcode+'.pkl', 'wb') as des_file:
             pickle.dump(setInfo, des_file)
