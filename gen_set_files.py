@@ -6,9 +6,14 @@ import cv2
 import pickle
 import json
 from urllib import request as urlreq
-from os import path, rename, remove
+from os import path, rename, remove, chdir
 import numpy as np
 import time
+
+# change working directory to directory of file
+abspath = path.abspath(__file__)
+dname = path.dirname(abspath)
+chdir(dname)
 
 # Fetch JSON File from MTGJSON ########################################
 
@@ -137,7 +142,7 @@ def getCvImageBySFID(sfid):
 
 for setcode in getSets():
     # SKIP IF FILE EXISTS
-    if path.isfile('setDesV5/set'+setcode+'.pkl'):
+    if path.isfile('setDes/set'+setcode+'.pkl'):
         # print(setcode, 'file found, skipping')
         pass
     else:
@@ -171,5 +176,5 @@ for setcode in getSets():
         for i in range(len(set_sfids)):
             setInfo[set_sfids[i]] = set_des[i]
 
-        with open('setDesV5/set'+setcode+'.pkl', 'wb') as des_file:
+        with open('setDes/set'+setcode+'.pkl', 'wb') as des_file:
             pickle.dump(setInfo, des_file)
