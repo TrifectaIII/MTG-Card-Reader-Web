@@ -30,16 +30,18 @@ identify_card_request.onload = function () {
 		if (identifiedName.length == 0) {
 			// If no identify is made, display error
 			card_image.onload = function () {
-				card_name.innerHTML = '&nbsp;';
-				notify('Identification Error: Unable to identify card. Please ensure card is against a neutral background.');
+                card_name.innerHTML = '&nbsp;';
+                card_link.innerHTML = '&nbsp;';
+                notify('Identification Error: Unable to identify card. Please ensure card is against a neutral background.');
 			};
 			card_image.src = '/static/error.gif';
 		} else {
             
 			// Display card image from URL and name from name
 			card_image.onload = function () {
-				// Display name only after image has loaded
-				card_name.innerHTML = identifiedName;
+				// Display name and link only after image has loaded
+                card_name.innerHTML = identifiedName;
+                card_link.innerHTML = '<a target = "_blank" href="https://scryfall.com/card/' + identifiedSFID.toString()+ '">Scryfall</a>';
 				//Enable adding Buttons also after image has loaded
 				enableButtons(addremovebuttons);
             };
@@ -59,8 +61,9 @@ identify_card_request.onerror = function () {
 
 	//display error image
 	card_image.onload = function () {
-		card_name.innerHTML = '&nbsp;';
-		notify('Server Error: identify_card request failed before receipt. Please reload page and try again.');
+        card_name.innerHTML = '&nbsp;';
+        card_link.innerHTML = '&nbsp;';
+        notify('Server Error: identify_card request failed before receipt. Please reload page and try again.');
 	};
 	card_image.src = '/static/error.gif';
 
@@ -75,9 +78,10 @@ identify_card_button.addEventListener('click', function () {
 
 		//Remove previous card and display loading
 		card_image.onload = function () {
-			card_name.innerHTML = '&nbsp;';
+            card_name.innerHTML = '&nbsp;';
+            card_link.innerHTML = '&nbsp;';
 			//Disable all adding buttons until new card identifyed
-			disableButtons(addremovebuttons);
+            disableButtons(addremovebuttons);
 		};
 		card_image.src = '/static/identifying.gif';
 
