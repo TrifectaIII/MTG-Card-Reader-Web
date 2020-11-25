@@ -118,14 +118,9 @@ def identify(cam_png_uri, setcode):
     except:
         bestName = ''
 
-    try:
-        bestPurchase = cardsInfo[bestSFID]['purchaseUrls']
-    except:
-        bestPurchase = ''
-
-
-    card_dict = {'name':bestName,
-                 'sfid':bestSFID,
-                 'purchaseUrls':bestPurchase}
+    card_dict = {
+        'name':bestName,
+        'sfid':bestSFID,
+    }
     
     return (card_dict)

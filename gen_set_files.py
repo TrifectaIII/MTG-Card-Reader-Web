@@ -106,7 +106,6 @@ for set in (list(jsonsets.keys())):
             sfid = card['identifiers']['scryfallId']
             name = card['name']
             number = card['number']
-            purchaseUrls = card['purchaseUrls']
         except:
             pass
         else:
@@ -114,7 +113,6 @@ for set in (list(jsonsets.keys())):
             sfidDict[sfid] = {
                 'name':name, 
                 'number':number, 
-                'purchaseUrls':purchaseUrls
             }
 
 with open('resources/cardsInfo.json','w') as jsonfile:

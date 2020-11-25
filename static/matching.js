@@ -23,9 +23,6 @@ identify_card_request.onload = function () {
 		//Access response for name and url
 		let identifiedName = respJSON.name;
 		let identifiedSFID = respJSON.sfid;
-		let identifiedPurchaseUrls = respJSON.purchaseUrls;
-
-		// console.log(identifiedPurchaseUrls);
 
 		if (identifiedName.length == 0) {
 			// If no identify is made, display error
@@ -33,6 +30,7 @@ identify_card_request.onload = function () {
                 card_name.innerHTML = '&nbsp;';
                 card_link.innerHTML = '&nbsp;';
                 notify('Identification Error: Unable to identify card. Please ensure card is against a neutral background.');
+                card_image.onlick = null;
 			};
 			card_image.src = '/static/error.gif';
 		} else {
@@ -41,9 +39,13 @@ identify_card_request.onload = function () {
 			card_image.onload = function () {
 				// Display name and link only after image has loaded
                 card_name.innerHTML = identifiedName;
-                card_link.innerHTML = '<a target = "_blank" href="https://scryfall.com/card/' + identifiedSFID.toString()+ '">Scryfall</a>';
+                card_link.innerHTML = '<a target = "_blank" href="https://scryfall.com/card/' + identifiedSFID.toString() + '">Scryfall</a>';
 				//Enable adding Buttons also after image has loaded
-				enableButtons(addremovebuttons);
+                enableButtons(addremovebuttons);
+                //card itself links to scryfall page as well
+                card_image.onclick = () => {
+                    window.open('https://scryfall.com/card/'+identifiedSFID.toString(),'_blank');
+                }
             };
             
 			// scryfall (can change version in url)
@@ -64,6 +66,7 @@ identify_card_request.onerror = function () {
         card_name.innerHTML = '&nbsp;';
         card_link.innerHTML = '&nbsp;';
         notify('Server Error: identify_card request failed before receipt. Please reload page and try again.');
+        card_image.onlick = null;
 	};
 	card_image.src = '/static/error.gif';
 
