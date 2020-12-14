@@ -7,8 +7,6 @@ import numpy as np
 from base64 import b64decode
 import pickle
 import json
-import multiprocessing as mp
-from get_match import getMatch
 
 
 #Load SFID Dictionary
@@ -21,7 +19,7 @@ orb = cv2.ORB_create()
 
 
 # Create Brute Force Matcher Object
-# bf = cv2.BFMatcher(cv2.NORM_HAMMING)
+bf = cv2.BFMatcher(cv2.NORM_HAMMING)
 
 
 # Global Switch on Reading From Files vs Loading All to Memory
@@ -63,8 +61,8 @@ def uriToCv2(img_uri):
     return img_cv2
 
 
-# Counts Number of Good Matches using Ratio Test
-def ratioTestCount(sfid, matcher, des1, des2):
+# Counts Number of Good Matches using Ratio Test ()
+def ratioTestCount(matcher, des1, des2):
     good_matches = 0
     matches = matcher.knnMatch(des1, des2, k=2)
     for pair in matches:
@@ -74,17 +72,16 @@ def ratioTestCount(sfid, matcher, des1, des2):
                 good_matches += 1
         except ValueError:
             pass
-    return (sfid, good_matches)
+    return good_matches
 
 
 # Main Function: Matches URI PNG to Card
 def identify(cam_png_uri, setcode):
 
-    # global bf
+    global bf
     global orb
     global loadall
     global cardsInfo
-    global pool
 
     # Convert request data to cv2 image
     img = uriToCv2(cam_png_uri)
@@ -101,19 +98,19 @@ def identify(cam_png_uri, setcode):
         global setsDict
         desDict = setsDict[setcode]
 
-    # obtain sfid of best matched card
-    bestSFID = getMatch(desCam, desDict)
+    # Find Match
+    bestCount = 0
+    bestSFID = ''
 
-    # # Find Best Match
-    # bestCount = 0
-    # bestSFID = ''
+    for sfid in (list(desDict.keys())):
+        des = desDict[sfid]
+        matchCount = ratioTestCount(bf, desCam, des)
+        if matchCount > bestCount:
+            bestCount = matchCount
+            bestSFID = sfid
 
-    # for sfid in (list(desDict.keys())):
-    #     des = desDict[sfid]
-    #     matchCount = ratioTestCount(bf, desCam, des)
-    #     if matchCount > bestCount:
-    #         bestCount = matchCount
-    #         bestSFID = sfid
+    #convert SFID into String
+    bestSFID = str(bestSFID)
 
     # Build Dictionary to return and send to JS
     try:
