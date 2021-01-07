@@ -27,14 +27,11 @@ headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/
 
 # send request and recieve response
 r = requests.get(url, headers=headers)
-# request = urlreq.Request(url, data=None, headers=headers, origin_req_host=None, unverifiable=False, method=None)
-# response = urlreq.urlopen(request)
 
 # make sure response was successful
 if r.status_code == 200:
     with open('resources/AllPrintings.json', 'wb') as json_file:
-        json_file.write(r.content) #response.read())
-#otherwise throw error
+        json_file.write(r.content)
 else:
     raise Exception("Could not get MTGJSON File, STATUS" + str(r.status_code))
 
@@ -125,11 +122,15 @@ with open('resources/cardsInfo.json','w') as jsonfile:
 def getCvImageBySFID(sfid):
     # scryfall api request formatting: only needs sfid
     r = requests.get('https://api.scryfall.com/cards/{}/?format=image&version=border_crop'.format(str(sfid)))
-    if r.status_code >= 400:
-        raise OSError('scryfall api error code'+str(r.status_code))
-    np_array = np.frombuffer(r.content, np.uint8)
-    img_np = cv2.imdecode(np_array, cv2.IMREAD_GRAYSCALE)
-    return img_np
+    
+    # process image if request successful
+    if r.status_code == 200:
+        np_array = np.frombuffer(r.content, np.uint8)
+        img_np = cv2.imdecode(np_array, cv2.IMREAD_GRAYSCALE)
+        return img_np
+    #otherwise throw an error
+    else:
+        raise Exception('scryfall api error code'+str(r.status_code))
 
 
 # Save each sets descriptors dict as file in setDes/ ##########
