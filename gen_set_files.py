@@ -33,7 +33,7 @@ if r.status_code == 200:
     with open('resources/AllPrintings.json', 'wb') as json_file:
         json_file.write(r.content)
 else:
-    raise Exception("Could not get MTGJSON File, STATUS" + str(r.status_code))
+    raise Exception("Could not get MTGJSON File, STATUS CODE: " + str(r.status_code))
 
 # Setup JSON File #####################################################
 
@@ -130,7 +130,7 @@ def getCvImageBySFID(sfid):
         return img_np
     #otherwise throw an error
     else:
-        raise Exception('scryfall api error code'+str(r.status_code))
+        raise Exception('Could not fetch card '+sfid+' image, STAUS CODE: '+str(r.status_code))
 
 
 # Save each sets descriptors dict as file in setDes/ ##########
@@ -153,7 +153,7 @@ for setcode in getSets():
             # Get card objects from mtgjson
             cards = jsonsets[setcode]['cards']
         except:
-            raise ValueError('No set found with that setcode')
+            raise Exception('No set found with setcode: ' + setcode)
         for card in cards:
             # For each card, save to dictionary
             try:
