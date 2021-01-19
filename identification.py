@@ -114,7 +114,7 @@ def identify(cam_png_uri, setcode):
 
     # Build Dictionary to return and send to JS
     try:
-        bestName = cardsInfo[bestSFID]['name']
+        bestName = cardsInfo[bestSFID]
     except:
         bestName = ''
 
