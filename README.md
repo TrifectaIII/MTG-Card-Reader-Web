@@ -1,6 +1,6 @@
 # MTG-Card-Reader-Web
 ## Site
-The site is currently hosted at [**mtg-cr.tk**](https://www.mtg-cr.tk)
+The site is currently hosted at [**mtg-cr.com**](https://www.mtg-cr.com)
 ## Info
 v2.0 of [MTG-Card-Reader](https://github.com/TrifectaIII/MTG-Card-Reader), built as a webpage.
 
