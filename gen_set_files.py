@@ -6,7 +6,7 @@ import cv2
 import pickle
 import json
 import requests
-from os import path, rename, remove, chdir
+from os import path, chdir, remove
 import numpy as np
 import time
 
@@ -17,23 +17,33 @@ chdir(dname)
 
 # Fetch JSON File from MTGJSON ########################################
 
-print("Downloading MTGJSON File")
+def getMtgJson() -> bytes:
 
-# url for MTGJSONv5 API
-url = 'https://mtgjson.com/api/v5/AllPrintings.json'
+    print("Fetching MTGJSON File")
 
-# need user agent header to avoid 403
-headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'}
+    # url for MTGJSONv5 API
+    url = 'https://mtgjson.com/api/v5/AllPrintings.json'
 
-# send request and recieve response
-r = requests.get(url, headers=headers)
+    # need user agent header to avoid 403
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'}
 
-# make sure response was successful
-if r.status_code == 200:
+    # send request and recieve response
+    r = requests.get(url, headers=headers)
+
+    # make sure response was successful
+    if r.status_code == 200:
+        return r.content
+    else:
+        raise Exception("Could not get MTGJSON File, STATUS CODE: " + str(r.status_code))
+
+# Download JSON File from MTGJSON ########################################
+
+def downloadMtgJson() -> None:
+
+    print("Downloading MTGJSON File")
+
     with open('resources/AllPrintings.json', 'wb') as json_file:
-        json_file.write(r.content)
-else:
-    raise Exception("Could not get MTGJSON File, STATUS CODE: " + str(r.status_code))
+        json_file.write(getMtgJson())
 
 # Setup JSON File #####################################################
 
@@ -44,11 +54,6 @@ try:
 except MemoryError:
     raise Exception('Please ensure you are running 64 bit Python')
 print('MTGJSON File Loaded')
-
-
-# setup ORB  ##########################################################
-
-orb = cv2.ORB_create()
 
 
 # getSets returns list of all setcodes ################################
@@ -131,15 +136,18 @@ def getCvImageBySFID(sfid):
 
 # Save each sets descriptors dict as file in setDes/ ##########
 
-# WARNING: FOR DELETING MANY FILES AT ONCE
+# WARNING: FOR DELETING ALL OLD FILES
 # for setcode in getSets():
 #     if path.isfile('setDes/set'+setcode+'.pkl'):
 #         remove('setDes/set'+setcode+'.pkl')
 
+# setup ORB  
+orb = cv2.ORB_create()
+
 for setcode in getSets():
     # SKIP IF FILE EXISTS
     if path.isfile('setDes/set'+setcode+'.pkl'):
-        # print(setcode, 'file found, skipping')
+        print(setcode, 'file found, skipping')
         pass
     else:
         print(setcode, '--------------------------------------')
@@ -150,7 +158,7 @@ for setcode in getSets():
             cards = jsonsets[setcode]['cards']
         except:
             raise Exception('No set found with setcode: ' + setcode)
-        for card in cards:
+        for card in cards[:5]:
             # For each card, save to dictionary
             try:
                 sfid = card['identifiers']['scryfallId']
