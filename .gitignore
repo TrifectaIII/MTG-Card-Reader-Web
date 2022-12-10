@@ -1,6 +1,4 @@
 
 *.pyc
-AllSets.json
-AllPrintings*.json
-*.des
 *.pkl
+AllPrintings*.json
