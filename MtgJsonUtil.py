@@ -1,7 +1,7 @@
 import json
 import requests
 import os
-import MtgModels
+import Models
 
 
 def changeDirectory() -> None:
@@ -60,10 +60,10 @@ def downloadMtgJson() -> None:
         json_file.write(getMtgJson())
 
 
-def parseMtgJson() -> MtgModels.MtgData:
-    # Parse JSON File from MTGJSON
+def parseMtgJson() -> Models.MtgData:
+    # Parse JSON File from MTGJSON into local models
 
-    return MtgModels.MtgData.fromMtgJson(getMtgJson())
+    return Models.MtgData.fromMtgJson(getMtgJson())
 
 def saveParsedMtgJson() -> None:
     # Save parsed data as json file

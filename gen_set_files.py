@@ -1,4 +1,3 @@
-from typing import List
 import numpy as np
 import cv2
 import pickle
@@ -6,6 +5,8 @@ import requests
 import os
 import time
 import MtgJsonUtil
+import Models
+import sqlite3
 
 
 # change working directory to directory of file
@@ -52,22 +53,10 @@ def getCvImageBySFID(sfid):
 orb = cv2.ORB_create()
 
 # get data from mtgjson
-setsList: List[str] = list(MtgJsonUtil.getSetsWithSfids().keys())
-jsonData: dict = MtgJsonUtil.parseMtgJson()
-
-# WARNING: FOR DELETING ALL OLD FILES
-# for setcode in getSets():
-#     if path.isfile('setDes/set'+setcode+'.pkl'):
-#         remove('setDes/set'+setcode+'.pkl')
+MtgData = MtgJsonUtil.parseMtgJson()
 
 # loop through each set
-for setcode in setsList:
-    # SKIP IF FILE EXISTS
-    if os.path.isfile('setDes/set'+setcode+'.pkl'):
-        print(setcode, 'file found, skipping')
-        pass
-    else:
-        print(setcode, '--------------------------------------')
+for mtgSet in MtgData.getSets():
         set_sfids = []
         set_des = []
         try:

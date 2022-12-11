@@ -9,17 +9,12 @@ import pickle
 import json
 
 
-#Load SFID Dictionary
-with open('resources/cardsInfo.json','r') as sfidfile:
-    cardsInfo = json.load(sfidfile)
+class Identification:
 
-
-# Setup ORB
-orb = cv2.ORB_create()
-
-
-# Create Brute Force Matcher Object
-bf = cv2.BFMatcher(cv2.NORM_HAMMING)
+    def __init__(self) -> None:
+        # creat required cv2 orb and brute force matcher objects
+        self.orb = cv2.ORB_create()
+        self.matcher = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
 
 
 # Global Switch on Reading From Files vs Loading All to Memory
@@ -61,7 +56,7 @@ def uriToCv2(img_uri):
     return img_cv2
 
 
-# Counts Number of Good Matches using Ratio Test ()
+# Counts Number of Good Matches using Ratio Test
 def ratioTestCount(matcher, des1, des2):
     good_matches = 0
     matches = matcher.knnMatch(des1, des2, k=2)
@@ -123,4 +118,4 @@ def identify(cam_png_uri, setcode):
         'sfid':bestSFID,
     }
     
-    return (card_dict)
+    return card_dict
