@@ -2,7 +2,6 @@ from typing import List
 import numpy as np
 import cv2
 import pickle
-import json
 import requests
 import os
 import time
@@ -15,9 +14,6 @@ dname = os.path.dirname(abspath)
 os.chdir(dname)
 
 
-# tracks the backoff
-backoffLevel = 0
-
 def getCvImageBySFID(sfid):
     # Function for getting cv2 image with sfid using scryfall api
 
@@ -25,15 +21,24 @@ def getCvImageBySFID(sfid):
     url = 'https://api.scryfall.com/cards/{}/?format=image&version=border_crop'.format(str(sfid))
 
     # make request
-    r = requests.get(url)
+    try:
+        r = requests.get(url)
+    except:
+        r = None
+
+    # tracks the backoff
+    backoffLevel: int = 0
 
     # continue to retry with exponential backoff, if failed
-    while r.status_code != 200:
+    while not r or r.status_code != 200:
         backoffLevel += 1
         backoffMinutes = backoffLevel ** backoffLevel
-        print("Will retry after +" + backoffMinutes + " minutes... SFID: " + sfid)
-        time.sleep(60* backoffMinutes)
-        r = requests.get(url)
+        print("Will retry after " + str(backoffMinutes) + " minutes... SFID: " + str(sfid))
+        time.sleep(60 * backoffMinutes)
+        try:
+            r = requests.get(url, timeout=20)
+        except:
+            r = None
 
     # process image when request successful
     np_array = np.frombuffer(r.content, np.uint8)

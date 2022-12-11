@@ -1,6 +1,7 @@
 import json
 import requests
 import os
+import MtgModels
 
 
 def changeDirectory() -> None:
@@ -59,71 +60,17 @@ def downloadMtgJson() -> None:
         json_file.write(getMtgJson())
 
 
-def parseMtgJson() -> dict:
+def parseMtgJson() -> MtgModels.MtgData:
     # Parse JSON File from MTGJSON
 
-    # all sets in data space for MTGJSONv5
-    return json.loads(getMtgJson())["data"]
+    return MtgModels.MtgData.fromMtgJson(getMtgJson())
 
+def saveParsedMtgJson() -> None:
+    # Save parsed data as json file
 
-def getSetsWithSfids() -> dict[str, str]:
-    # return dict of all sets that have sfids
-    # setcodes are keys, names are values
-
-    jsonData = parseMtgJson()
-
-    setsWithSfids: dict[str, str] = dict()
-
-    # loop through each set
-    for setCode in (list(jsonData.keys())):
-        # loop through each card in the set
-        for card in jsonData[setCode]['cards']:
-            if "identifiers" in card and "scryfallId" in card["identifiers"]:
-                # add to dict if at least 1 card has a scryfall id
-                setsWithSfids[setCode] = jsonData[setCode]['name']
-                break
-    
-    return setsWithSfids
-
-
-def saveSetsWithSfids() -> None:
-    # Save sets dict as json file
-
-    print("Saving Sets Info")
+    print("Saving Parsed Data")
 
     changeDirectory()
 
-    with open('static/sets.json','w') as jsonfile:
-        json.dump(getSetsWithSfids(), jsonfile)
-
-
-def getSfids() -> dict[str, str]:
-    # Save dictionary of all sfids as keys and names as values
-
-    jsonData = parseMtgJson()
-
-    sfidDict = dict()
-
-    for set in (list(jsonData.keys())):
-        cards = jsonData[set]['cards']
-        for card in cards:
-            try:
-                sfid = card['identifiers']['scryfallId']
-                name = card['name']
-            except:
-                pass
-            else:
-                sfidDict[sfid] = name
-
-    return sfidDict
-
-
-def saveSfids() -> None:
-    # save sfid dict as json file
-
-    print("Saving Sets Info")
-
-    changeDirectory()
-
-    with open('resources/cardsInfo.json','w') as jsonfile:
-        json.dump(getSfids(), jsonfile)
+    with open('static/cardData.json', 'w') as json_file:
+        json_file.write(parseMtgJson().toJson())

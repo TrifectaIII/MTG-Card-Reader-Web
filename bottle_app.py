@@ -41,6 +41,10 @@ def index():
 @route('/static/<filepath:path>')
 def send_static(filepath):
     return static_file(filepath, root='./static/')
+    
+@route('/static/<filepath:path>')
+def send_static(filepath):
+    return static_file(filepath, root='./static/')
 
 
 ##################################################################################
