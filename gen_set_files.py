@@ -4,7 +4,7 @@ import pickle
 import requests
 import os
 import time
-import MtgJsonUtil
+import MtgJson
 import Models
 import sqlite3
 
@@ -53,7 +53,7 @@ def getCvImageBySFID(sfid):
 orb = cv2.ORB_create()
 
 # get data from mtgjson
-MtgData = MtgJsonUtil.parseMtgJson()
+MtgData = MtgJson.parseMtgJson()
 
 # loop through each set
 for mtgSet in MtgData.getSets():
