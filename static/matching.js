@@ -17,12 +17,9 @@ identify_card_request.onload = function () {
 		//Calculate Response Time and log to console
 		console.log('/identify_card Response Time (s):', (Date.now() - identify_start) / 1000);
 
-		//Get full response as JSON
-		let respJSON = JSON.parse(identify_card_request.response);
-
-		//Access response for name and url
-		let identifiedName = respJSON.name;
-		let identifiedSFID = respJSON.sfid;
+		// response should be an sfid
+		let identifiedSFID = identify_card_request.response.toString();
+		let identifiedName = identify_card_request.response.toString();
 
 		if (identifiedName.length == 0) {
 			// If no identify is made, display error

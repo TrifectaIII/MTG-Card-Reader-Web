@@ -1,25 +1,24 @@
-import numpy as np
-import cv2
-import pickle
-import requests
+import logging
 import os
-import time
-import MtgJson
-import Models
+import pickle
 import sqlite3
+import time
+
+import cv2
+import numpy
+import requests
+
+import Models
+import MtgJson
 
 
-# change working directory to directory of file
-abspath = os.path.abspath(__file__)
-dname = os.path.dirname(abspath)
-os.chdir(dname)
-
-
-def getCvImageBySFID(sfid):
-    # Function for getting cv2 image with sfid using scryfall api
+def getDescriptionBySFID(sfid: Models.ScryfallId, orb) -> numpy.ndarray:
+    # Function for getting image descriptors with sfid using scryfall api and cv2
 
     # scryfall api request formatting: only needs sfid
-    url = 'https://api.scryfall.com/cards/{}/?format=image&version=border_crop'.format(str(sfid))
+    url = "https://api.scryfall.com/cards/{}/?format=image&version=border_crop".format(
+        str(sfid)
+    )
 
     # make request
     try:
@@ -31,60 +30,63 @@ def getCvImageBySFID(sfid):
     backoffLevel: int = 0
 
     # continue to retry with exponential backoff, if failed
-    while not r or r.status_code != 200:
+    while r == None or r.status_code != 200:
         backoffLevel += 1
-        backoffMinutes = backoffLevel ** backoffLevel
-        print("Will retry after " + str(backoffMinutes) + " minutes... SFID: " + str(sfid))
-        time.sleep(60 * backoffMinutes)
+        backoffSeconds = backoffLevel**backoffLevel
+        print(
+            "Will retry after " + str(backoffSeconds) + " minutes... SFID: " + str(sfid)
+        )
+        time.sleep(backoffSeconds)
         try:
             r = requests.get(url, timeout=20)
         except:
             r = None
 
     # process image when request successful
-    np_array = np.frombuffer(r.content, np.uint8)
+    np_array = numpy.frombuffer(r.content, numpy.uint8)
     img_np = cv2.imdecode(np_array, cv2.IMREAD_GRAYSCALE)
-    return img_np
+    _, description = orb.detectAndCompute(img_np, None)
+    return description
 
 
-# Save each sets descriptors dict as file in setDes/ ##########
+def saveDescriptionsToFiles() -> None:
+    # Save each sets descriptors dict as file in setDes
 
-# setup ORB  
-orb = cv2.ORB_create()
+    # setup ORB
+    orb = cv2.ORB_create()
 
-# get data from mtgjson
-MtgData = MtgJson.parseMtgJson()
+    # get data from mtgjson
+    MtgData = MtgJson.parseMtgJson()
 
-# loop through each set
-for mtgSet in MtgData.getSets():
-        set_sfids = []
-        set_des = []
-        try:
-            # Get card objects from mtgjson
-            cards = jsonData[setcode]['cards']
-        except:
-            raise Exception('No set found with setcode: ' + setcode)
-        for card in cards:
-            # For each card, save to dictionary
-            try:
-                sfid = card['identifiers']['scryfallId']
-                print(setcode, card['name'], card['identifiers']['scryfallId'])
-            except:
-                pass
-            else:
-                #time delay to avoid overloading scryfall api
-                time.sleep(0.25)
-                img = getCvImageBySFID(sfid)
+    # loop through each set
+    for mtgSet in MtgData.getSets():
 
-                _, des = orb.detectAndCompute(img, None)
-                set_sfids.append(sfid)
-                set_des.append(des)
+        # SKIP IF FILE EXISTS
+        if os.path.isfile("setDes/set" + mtgSet.setCode + ".pkl"):
+            # print(setcode, 'file found, skipping')
+            pass
 
-        #generate new file
-        setInfo = dict()
+        # init dict
+        cardDescriptions: dict[Models.ScryfallId, numpy.ndarray] = {}
 
-        for i in range(len(set_sfids)):
-            setInfo[set_sfids[i]] = set_des[i]
+        # For each card, save to dictionary
+        for mtgCard in mtgSet.getCards():
+            print(mtgSet.setCode, mtgCard.name, mtgCard.sfid)
 
-        with open('setDes/set'+setcode+'.pkl', 'wb') as des_file:
-            pickle.dump(setInfo, des_file)
+            # time delay to avoid overloading scryfall api
+            time.sleep(0.25)
+
+            # make call and add data
+            cardDescriptions[mtgCard.sfid] = getDescriptionBySFID(mtgCard.sfid, orb)
+
+        # save dict to file
+        with open("setDes/set" + mtgSet.setCode + ".pkl", "wb") as desciptionFile:
+            pickle.dump(cardDescriptions, desciptionFile)
+
+
+if __name__ == "__main__":
+    # change working directory to directory of file
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+    # generate the files
+    saveDescriptionsToFiles()

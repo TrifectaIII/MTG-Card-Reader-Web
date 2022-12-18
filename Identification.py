@@ -3,113 +3,123 @@
 # Uses opencv's ORB feature descriptor
 
 from __future__ import annotations
-import cv2
-import numpy as np
-from base64 import b64decode
+
+import concurrent.futures
+import itertools
+import logging
 import pickle
-import json
+from collections.abc import Iterable
+
+import cv2
+import numpy
+
+import Models
+import Util
 
 
 class Match:
-
-    def __init__(self, sfid: str, matchCount: int) -> None:
+    def __init__(self, sfid: Models.ScryfallId, count: int) -> None:
         self.sfid = sfid
-        self.matchCount = matchCount
+        self.count = count
 
     @staticmethod
-    def findBest(matches: list[Match]) -> Match | None:
+    def findBest(matches: Iterable[Match | None]) -> Match | None:
         # find the best match from a list
-        if (len(matches) == 0): return None
-        bestMatch = matches[0]
-        for match in matches[1:]:
-            if match.matchCount > bestMatch.matchCount:
+
+        bestMatch = None
+
+        for match in matches:
+            if match == None:
+                continue
+            if bestMatch == None or match.count > bestMatch.count:
                 bestMatch = match
+
         return bestMatch
 
 
 class Identifier:
-
     def __init__(self) -> None:
-        # creat required cv2 orb and brute force matcher objects
+        # create required cv2 orb and brute force matcher objects
         self.orb = cv2.ORB_create()
-        self.matcher = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
 
-    # Counts Number of Good Matches using Ratio Test
-    def ratioTestCount(self, des1, des2) -> int:
+        # load descriptor data
+        self.descriptors: dict[
+            Models.ScryfallId, numpy.ndarray
+        ] = Identifier.loadCards()
+
+        # create process pool
+        self.processExecutor = concurrent.futures.ProcessPoolExecutor()
+
+        logging.info("Identifier Booted Up")
+
+    @staticmethod
+    def compare(
+        sfid: Models.ScryfallId, des1: numpy.ndarray, des2: numpy.ndarray
+    ) -> Match | None:
+        # Counts Number of Good Descriptor Matches using Ratio Test
         good_matches = 0
-        matches = self.matcher.knnMatch(des1, des2, k=2)
-        for pair in matches:
+        for pair in cv2.BFMatcher(cv2.NORM_HAMMING).knnMatch(des1, des2, k=2):
             try:
                 m, n = pair
-                if m.distance < 0.75*n.distance:
+                if m.distance < 0.75 * n.distance:
                     good_matches += 1
             except ValueError:
                 pass
-        return good_matches
+        if good_matches == 0:
+            return None
+        return Match(sfid, good_matches)
 
-    # Matches image to a card
-    def identify(self, img, setcode) -> Match | None:
+    def identify(self, img) -> Match | None:
+        # Matches image to a card
 
         # Detect and Compute ORB Descriptors
-        _, desCam = self.orb.detectAndCompute(img, None)
+        _, des = self.orb.detectAndCompute(img, None)
+        imageDescription: numpy.ndarray = des
 
-        # Read setDes Data from File if not loading all
-        if not loadall:
-            with open('setDes/set'+setcode+'.pkl', 'rb') as des_file:
-                desDict = pickle.load(des_file)
-        # Else retrieve setDes Data from dictionary
-        else:
-            global setsDict
-            desDict = setsDict[setcode]
+        # create iterators for mapping
+        sfids: list[Models.ScryfallId] = []
+        imageDescriptions: Iterable[numpy.ndarray] = itertools.cycle([imageDescription])
+        cardDescriptions: list[numpy.ndarray] = []
+        for sfid, cardDescription in self.descriptors.items():
+            sfids.append(sfid)
+            cardDescriptions.append(cardDescription)
 
-        # Find Match
-        bestCount = 0
-        bestSFID = ''
+        # send to process pool
+        futures = self.processExecutor.map(
+            Identifier.compare, sfids, imageDescriptions, cardDescriptions
+        )
 
-        for sfid in (list(desDict.keys())):
-            desCard = desDict[sfid]
-            matchCount = self.ratioTestCount(desCam, desCard)
-            if matchCount > bestCount:
-                bestCount = matchCount
-                bestSFID = sfid
+        # find the best of the bunch
+        return Match.findBest(futures)
 
-        #convert SFID into String
-        bestSFID = str(bestSFID)
+    @staticmethod
+    def loadCards() -> dict[Models.ScryfallId, numpy.ndarray]:
+        # Load All SetDes files to Memory
 
-        # Build Dictionary to return and send to JS
-        try:
-            bestName = cardsInfo[bestSFID]
-        except:
-            bestName = ''
+        from os import walk
 
-        card_dict = {
-            'name':bestName,
-            'sfid':bestSFID,
-        }
-        
-        return card_dict
+        setsGen = []
+        for (_, _, filenames) in walk("setDes"):
+            for fn in filenames:
+                setsGen.append(
+                    fn[3:-4]
+                )  # cuts off the leading 'set' and trailing '.des'
+            break
+        setsGen.sort()
+
+        combinedDict: dict[Models.ScryfallId, numpy.ndarray] = {}
+
+        for setcode in setsGen:
+            with open("setDes/set" + setcode + ".pkl", "rb") as des_file:
+                combinedDict.update(pickle.load(des_file))
+
+        logging.info("Loaded Card Descriptor Data")
+        return combinedDict
+
+    def reloadCards(self) -> None:
+        # reload from source
+        self.descriptors = Identifier.loadCards()
 
 
-# Global Switch on Reading From Files vs Loading All to Memory
-loadall = False
-setsDict = dict()
-
-
-#Load All SetDes files to Memory
-def loadAllFiles():
-    from os import walk
-    setsGen = []
-    for (dirpath, dirnames, filenames) in walk('setDes'):
-        for fn in filenames:
-            setsGen.append(fn[3:-4])#cuts off the leading 'set' and trailing '.des'
-        break
-    setsGen.sort()
-
-    global setsDict
-    for setcode in setsGen:
-        with open('setDes/set'+setcode+'.pkl', 'rb') as des_file:
-            desDict = pickle.load(des_file)
-        setsDict[setcode] = desDict
-
-    global loadall
-    loadall = True
+if __name__ == "__main__":
+    logging.info("Hello")
