@@ -14,7 +14,6 @@ import cv2
 import numpy
 
 import Models
-import Util
 
 
 class Match:

@@ -1,7 +1,6 @@
 import logging
 import os
 import pickle
-import sqlite3
 import time
 
 import cv2
@@ -22,7 +21,7 @@ def getDescriptionBySFID(sfid: Models.ScryfallId, orb) -> numpy.ndarray:
 
     # make request
     try:
-        r = requests.get(url)
+        r = requests.get(url, timeout=20)
     except:
         r = None
 
@@ -34,7 +33,7 @@ def getDescriptionBySFID(sfid: Models.ScryfallId, orb) -> numpy.ndarray:
         backoffLevel += 1
         backoffSeconds = backoffLevel**backoffLevel
         print(
-            "Will retry after " + str(backoffSeconds) + " minutes... SFID: " + str(sfid)
+            "Will retry after " + str(backoffSeconds) + " seconds... SFID: " + str(sfid)
         )
         time.sleep(backoffSeconds)
         try:
@@ -56,15 +55,19 @@ def saveDescriptionsToFiles() -> None:
     orb = cv2.ORB_create()
 
     # get data from mtgjson
-    MtgData = MtgJson.parseMtgJson()
+    mtgData = MtgJson.parseMtgJson()
+
+    # list of sets, sorted by setcode
+    setList = list(mtgData.getSets())
+    setList.sort(key=(lambda set: set.setCode))
 
     # loop through each set
-    for mtgSet in MtgData.getSets():
+    for mtgSet in setList:
 
         # SKIP IF FILE EXISTS
         if os.path.isfile("setDes/set" + mtgSet.setCode + ".pkl"):
-            # print(setcode, 'file found, skipping')
-            pass
+            print(mtgSet.setCode, "file found, skipping")
+            continue
 
         # init dict
         cardDescriptions: dict[Models.ScryfallId, numpy.ndarray] = {}
@@ -74,7 +77,7 @@ def saveDescriptionsToFiles() -> None:
             print(mtgSet.setCode, mtgCard.name, mtgCard.sfid)
 
             # time delay to avoid overloading scryfall api
-            time.sleep(0.25)
+            time.sleep(3)
 
             # make call and add data
             cardDescriptions[mtgCard.sfid] = getDescriptionBySFID(mtgCard.sfid, orb)
