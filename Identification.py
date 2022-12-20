@@ -13,11 +13,11 @@ from collections.abc import Iterable
 import cv2
 import numpy
 
-import Models
+import Model
 
 
 class Match:
-    def __init__(self, sfid: Models.ScryfallId, count: int) -> None:
+    def __init__(self, sfid: Model.ScryfallId, count: int) -> None:
         self.sfid = sfid
         self.count = count
 
@@ -43,7 +43,7 @@ class Identifier:
 
         # load descriptor data
         self.descriptors: dict[
-            Models.ScryfallId, numpy.ndarray
+            Model.ScryfallId, numpy.ndarray
         ] = Identifier.loadCards()
 
         # create process pool
@@ -53,9 +53,10 @@ class Identifier:
 
     @staticmethod
     def compare(
-        sfid: Models.ScryfallId, des1: numpy.ndarray, des2: numpy.ndarray
+        sfid: Model.ScryfallId, des1: numpy.ndarray, des2: numpy.ndarray
     ) -> Match | None:
         # Counts Number of Good Descriptor Matches using Ratio Test
+        
         good_matches = 0
         for pair in cv2.BFMatcher(cv2.NORM_HAMMING).knnMatch(des1, des2, k=2):
             try:
@@ -76,7 +77,7 @@ class Identifier:
         imageDescription: numpy.ndarray = des
 
         # create iterators for mapping
-        sfids: list[Models.ScryfallId] = []
+        sfids: list[Model.ScryfallId] = []
         imageDescriptions: Iterable[numpy.ndarray] = itertools.cycle([imageDescription])
         cardDescriptions: list[numpy.ndarray] = []
         for sfid, cardDescription in self.descriptors.items():
@@ -91,8 +92,32 @@ class Identifier:
         # find the best of the bunch
         return Match.findBest(futures)
 
+    def identifyNoPool(self, img) -> Match | None:
+        # Matches image to a card without using process pool
+
+        # Detect and Compute ORB Descriptors
+        _, des = self.orb.detectAndCompute(img, None)
+        imageDescription: numpy.ndarray = des
+
+        # create iterators for mapping
+        sfids: list[Model.ScryfallId] = []
+        imageDescriptions: Iterable[numpy.ndarray] = itertools.cycle([imageDescription])
+        cardDescriptions: list[numpy.ndarray] = []
+        for sfid, cardDescription in self.descriptors.items():
+            sfids.append(sfid)
+            cardDescriptions.append(cardDescription)
+
+        # map without processes
+        futures = map(
+            Identifier.compare, sfids, imageDescriptions, cardDescriptions
+        )
+
+        # find the best of the bunch
+        return Match.findBest(futures)
+
+
     @staticmethod
-    def loadCards() -> dict[Models.ScryfallId, numpy.ndarray]:
+    def loadCards() -> dict[Model.ScryfallId, numpy.ndarray]:
         # Load All SetDes files to Memory
 
         from os import walk
@@ -106,7 +131,7 @@ class Identifier:
             break
         setsGen.sort()
 
-        combinedDict: dict[Models.ScryfallId, numpy.ndarray] = {}
+        combinedDict: dict[Model.ScryfallId, numpy.ndarray] = {}
 
         for setcode in setsGen:
             with open("setDes/set" + setcode + ".pkl", "rb") as des_file:
@@ -121,4 +146,4 @@ class Identifier:
 
 
 if __name__ == "__main__":
-    logging.info("Hello")
+    pass

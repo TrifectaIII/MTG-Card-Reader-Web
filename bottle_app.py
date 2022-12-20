@@ -6,7 +6,7 @@ import os
 import bottle
 
 import Identification
-import Util
+import Cv2Util
 
 
 # change working directory to directory of file
@@ -39,7 +39,7 @@ def identify_card():
 
     # parse uri into image
     try:
-        img_cv2 = Util.uriToCv2(img_uri)
+        img_cv2 = Cv2Util.uriToCv2(img_uri)
     except Exception as e:
         raise bottle.HTTPError(
             status=400, body="Failed to parse data into valid image."

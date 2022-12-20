@@ -90,7 +90,6 @@ class MtgData:
     def getSets(self) -> set[MtgSet]:
         return set(self.mtgSets.values())
 
-    # get
     def getCards(self) -> set[MtgCard]:
         mtgCards: set[MtgCard] = set()
         for mtgSet in self.mtgSets.values():

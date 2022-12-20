@@ -7,11 +7,11 @@ import cv2
 import numpy
 import requests
 
-import Models
-import MtgJson
+import Model
+import MtgJsonUtil
 
 
-def getDescriptionBySFID(sfid: Models.ScryfallId, orb) -> numpy.ndarray:
+def getDescriptionBySFID(sfid: Model.ScryfallId, orb) -> numpy.ndarray:
     # Function for getting image descriptors with sfid using scryfall api and cv2
 
     # scryfall api request formatting: only needs sfid
@@ -55,7 +55,7 @@ def saveDescriptionsToFiles() -> None:
     orb = cv2.ORB_create()
 
     # get data from mtgjson
-    mtgData = MtgJson.parseMtgJson()
+    mtgData = MtgJsonUtil.parseMtgJson()
 
     # list of sets, sorted by setcode
     setList = list(mtgData.getSets())
@@ -70,14 +70,14 @@ def saveDescriptionsToFiles() -> None:
             continue
 
         # init dict
-        cardDescriptions: dict[Models.ScryfallId, numpy.ndarray] = {}
+        cardDescriptions: dict[Model.ScryfallId, numpy.ndarray] = {}
 
         # For each card, save to dictionary
         for mtgCard in mtgSet.getCards():
             print(mtgSet.setCode, mtgCard.name, mtgCard.sfid)
 
             # time delay to avoid overloading scryfall api
-            time.sleep(3)
+            time.sleep(1)
 
             # make call and add data
             cardDescriptions[mtgCard.sfid] = getDescriptionBySFID(mtgCard.sfid, orb)

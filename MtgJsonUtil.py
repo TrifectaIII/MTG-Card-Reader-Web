@@ -3,7 +3,7 @@ import os
 
 import requests
 
-import Models
+import Model
 
 
 def changeDirectory() -> None:
@@ -66,10 +66,10 @@ def downloadMtgJson() -> None:
         json_file.write(getMtgJson())
 
 
-def parseMtgJson() -> Models.MtgData:
+def parseMtgJson() -> Model.MtgData:
     # Parse JSON File from MTGJSON into local models
 
-    return Models.MtgData.fromMtgJson(getMtgJson())
+    return Model.MtgData.fromMtgJson(getMtgJson())
 
 
 def saveParsedMtgJson() -> None:
