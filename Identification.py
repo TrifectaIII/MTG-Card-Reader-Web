@@ -146,4 +146,25 @@ class Identifier:
 
 
 if __name__ == "__main__":
-    pass
+    # test script
+
+    import sys, time
+
+    if len(sys.argv) == 1:
+        print("No image file specified.")
+    else:
+        # create identifier
+        identifer = Identifier()
+
+        # read in image from command list args
+        img = cv2.imread(sys.argv[1], cv2.IMREAD_GRAYSCALE)
+
+        # run identification
+        start = time.time()
+        match = identifer.identify(img)
+        print("Identification Time: {}".format(time.time() - start))
+
+        if (match == None): 
+            print("Could not find a match")
+        else:
+            print(match.sfid)
